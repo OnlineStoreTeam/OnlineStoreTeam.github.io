@@ -14,7 +14,10 @@
 //   LuPlusCircle, 
 //   LuSearch, 
 //   LuTrash2, 
-//   LuX 
+//   LuX,
+//   LuHeart,
+//   LuUser,
+//   LuShoppingCart
 // } from "react-icons/lu";
 // import { 
 //   FiUploadCloud, 
