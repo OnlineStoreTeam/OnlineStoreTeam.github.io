@@ -35,8 +35,8 @@
     disabled:opacity-40;
   }
   .input-file {
-    @apply p-0;
-    /* @apply p-0 opacity-0 absolute top-[19px] left-0; */
+    /* @apply p-0; */
+    @apply p-0 opacity-0 absolute top-[19px] left-0;
   }
   .input-file::file-selector-button {
     @apply w-[151px] h-10 px-4 bg-neutral-900 border-none text-white;

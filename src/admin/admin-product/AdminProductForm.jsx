@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 
 import { 
-//   LuAlertCircle, 
+  LuAlertCircle, 
 //   LuAlertTriangle, 
 //   LuCheckCircle, 
 //   LuChevronDown, 
@@ -10,7 +10,7 @@ import {
 //   LuChevronUp, 
 //   LuEdit2, 
 //   LuFileText, 
-//   LuImage, 
+  LuImage, 
 //   LuMoreHorizontal, 
 //   LuPlusCircle, 
 //   LuSearch, 
@@ -144,12 +144,13 @@ function AdminProductForm({closeForm}) {
           >
             <div className='w-full grid grid-cols-[30%_22%_40%] grid-rows-[84px_84px_84px_84px_40px] gap-x-[4%] gap-y-2 text-normal'>
               <div className=''>
-                <label className=''>Name
+                <label className='relative'>Name
                   <input
                     className={'w-full mt-0.5 input '+(errors?.name ? 'input-error' : '')}
                     maxLength='50'
                     {...register('name', formValidation.name)}
                   />
+                  {errors?.name && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.name &&
@@ -159,7 +160,7 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Price, $
+                <label className='relative'>Price, $
                   <input
                     type='number'
                     className={'w-full mt-0.5 input '+(errors?.price ? 'input-error' : '')}
@@ -167,6 +168,7 @@ function AdminProductForm({closeForm}) {
                     step='0.01'
                     {...register('price', formValidation.price)}
                   />
+                  {errors?.price && <LuAlertCircle className='absolute w-5 h-5 right-9 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.price &&
@@ -189,17 +191,19 @@ function AdminProductForm({closeForm}) {
                 </label>
                 <div className='h-5'>
                   {errors?.description &&
-                  <p className='text-error'>
+                  <p className='text-error flex'>
+                    <LuAlertCircle className='w-4 h-4 text-error mr-1' />
                     {errors?.description?.message || 'Error!'}
                   </p>}
                 </div>
               </div>
               <div className=''>
-                <label className=''>Code
+                <label className='relative'>Code
                   <input
                     className={'w-full mt-0.5 input '+(errors?.article ? 'input-error' : '')}
                     maxLength='8'                  {...register('article', formValidation.article)}
                   />
+                  {errors?.article && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.article &&
@@ -209,13 +213,14 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Quantity
+                <label className='relative'>Quantity
                   <input
                     type='number'
                     className={'w-full mt-0.5 input '+(errors?.quantity ? 'input-error' : '')}
                     min='0'
                     {...register('quantity', formValidation.quantity)}
                   />
+                  {errors?.quantity && <LuAlertCircle className='absolute w-5 h-5 right-9 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.quantity &&
@@ -225,7 +230,7 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Category
+                <label className='relative'>Category
                   <select
                     className={'w-full mt-0.5 input '+(errors?.category ? 'input-error' : '')}
                     defaultValue=''
@@ -250,7 +255,7 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Status
+                <label className='relative'>Status
                   <select
                     className={'w-full mt-0.5 input'+(errors?.status ? 'input-error' : '')}
                     defaultValue=''
@@ -271,28 +276,34 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className='col-span-2'>
-                <label className='relative'>Image
-                  {/* <span className='w-full h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
-                    <button className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
+                <label className='relative'>Image <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />
+                  <span className='w-full z-1 h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
+                    <button type='button' className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
                       <FiUploadCloud className='text-xl' />
                       Select Image
                     </button>
                     <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500 '+(errors?.image ? 'input-error' : 'border-neutral-400')}>
                       {'Max file size 500 kB'}
                     </span>
-                  </span> */}
+                  </span>
                   <input
                     type='file'
-                    className={'w-full mt-0.5 input input-file '+(errors?.image ? 'input-error' : '')}
+                    className={' z-2 w-full mt-0.5 input-file'+(errors?.image ? 'input-error' : '')}
                     placeholder='Max file size 500 kB'
                     accept='.png,.jpg,.jpeg,.webp,'
                     size='512000'
                     {...register('image', formValidation.image)}
                   />
+                  {/* <div className='input w-2/5 mt-1 flex items-center justify-between'>
+                    <img src="#" alt="" />
+                    <span className='pl-1 grow'>Img_32423.jpg</span>
+                    <button><LuX className='text-lg'/></button>                 
+                  </div> */}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.image &&
-                  <p className='text-error'>
+                  <p className='text-error flex'>
+                    <LuAlertCircle className='w-4 h-4 text-error mr-1' />
                     {errors?.image?.message || 'Error!'}
                   </p>}
                 </div>
