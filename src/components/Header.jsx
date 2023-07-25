@@ -24,27 +24,33 @@ function Header() {
           <NavLink to='/' className={setActiveLink}>Blog</NavLink>
           <NavLink to='/admin/product' className={setActiveLink}>Admin</NavLink>
         </div>
-        <div className='justify-self-end flex items-center text-white hover:cursor-pointer'>
-          <span>En</span>
-          <LuChevronDown />
-        </div> 
+        <button 
+          className='justify-self-end flex items-center text-white hover:cursor-pointer' 
+          type='button'
+          name="language">
+            <span>En</span>
+            <LuChevronDown />
+        </button> 
       </nav>
       <div className='py-6 px-14'>
         <div className='flex justify-between items-center'>
           <Link to={'/'} className='inline-block w-52 p-4 bg-[#808080] text-white text-2xl text-center'>LOGO</Link>
-          <div className='relative w-[422px] '>
+          <fieldset className=' w-[422px] border-b flex justify-center' >
             <input 
               type="text" 
-              className='border-b px-4 py-2 w-full outline-0 placeholder:text-black  placeholder:text-bold placeholder:text-xl'
+              name="search-field"
+              className=' px-4 py-2 grow outline-0 placeholder:text-black  placeholder:text-bold placeholder:text-xl'
               style={{color:'black'}}
-              placeholder='Sheach'
+              placeholder='Search'
             />
-            <LuSearch className='absolute top-1/2 -translate-y-1/2 right-4 h-6 w-6 font-light'/>
-          </div>
+            <button type='button' name='search-button' className=''>
+              <LuSearch className='h-6 w-6 font-light'/>
+            </button>
+          </fieldset>
           <div className='flex justify-center items-center w-[200px] gap-8'>
-            <LuHeart className='h-6 w-6' />
-            <LuUser className='h-6 w-6' />
-            <LuShoppingCart className='h-6 w-6' />
+            <NavLink to='/' className=''><LuHeart className='h-6 w-6' /></NavLink>
+            <NavLink to='/' className=''><LuUser className='h-6 w-6' /></NavLink>
+            <NavLink to='/' className=''><LuShoppingCart className='h-6 w-6' /></NavLink>
           </div>
         </div> 
         <div className='py-6 flex justify-between items-center text-xl'>
