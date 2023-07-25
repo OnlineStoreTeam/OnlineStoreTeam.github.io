@@ -53,7 +53,7 @@ function Header() {
             <NavLink to='/' className=''><LuShoppingCart className='h-6 w-6' /></NavLink>
           </div>
         </div> 
-        <div className='py-6 flex justify-between items-center text-xl'>
+        <div className='py-6 flex justify-between flex-wrap items-center text-xl'>
           <NavLink to='/' className=''>Clothing</NavLink>
           <NavLink to='/' className=''>LEADS & HARNESSES</NavLink>
           <NavLink to='/' className=''>Collars</NavLink>
