@@ -5,15 +5,22 @@ import {
   LuSearch,
 } from "react-icons/lu";
 
-// import ReactPaginate from 'react-paginate';
-
+import { 
+  useGetAllProductsQuery,
+} from '../../store/productApi';
 import AdminProductForm from './AdminProductForm';
+import AdminProductItem from './AdminProductItem';
+
+// import ReactPaginate from 'react-paginate';
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
+  const { data } = useGetAllProductsQuery({page: 1, limit: 10});
 
-  const closeForm = (state) => setFormIsOpen(state);
+  const closeForm = (state) => {
+    setFormIsOpen(state);
+  };
  
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
@@ -112,13 +119,15 @@ function AdminProduct() {
             </tr>
           </thead>
           <tbody>
-            {countResults == 0 && 
+            {!data && 
               <tr className='border-t border-neutral-300'>
                 <td colSpan='8' className='py-5 px-4 text-neutral-800'>
                   You have not added any products yet
                 </td>
               </tr>
             }
+            {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
+            {data?.content?.map(product => <AdminProductItem key={product.id} product={product} />)}
           </tbody>
         </table>
       </div>

@@ -1,30 +1,21 @@
 // import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { LuX } from "react-icons/lu";
+import { FiUploadCloud } from "react-icons/fi";
 import { 
-//   LuAlertCircle, 
-//   LuAlertTriangle, 
-//   LuCheckCircle, 
-//   LuChevronDown, 
-//   LuChevronLeft, 
-//   LuChevronUp, 
-//   LuEdit2, 
-//   LuFileText, 
-//   LuImage, 
-//   LuMoreHorizontal, 
-//   LuPlusCircle, 
-//   LuSearch, 
-//   LuTrash2, 
-  LuX 
-} from "react-icons/lu";
-import { 
-  FiUploadCloud, 
-} from "react-icons/fi";
+  useAddProductMutation,
+  useAddImageMutation,
+ } from '../../store/productApi';
+import { useState } from 'react';
 
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
 function AdminProductForm({closeForm}) {
+  const [selectedFile, setSelectedFile] = useState();
+  const [addProduct] = useAddProductMutation();
+  const [addImage] = useAddImageMutation();
   const {
     register,
     formState: { errors, isValid },
@@ -32,6 +23,16 @@ function AdminProductForm({closeForm}) {
     watch,
     reset,
   } = useForm({
+    // defaultValues: {
+    //   name: 'Name',
+    //   article: 'BBBGGG01',
+    //   category: 'Toys',
+    //   description: 'Product description',
+    //   price: 600,
+    //   quantity: 135,
+    //   productStatus: 'ACTIVE',
+    //   imagePath: 'product.webp',
+    // },
     mode: 'onBlur',
   });
 
@@ -101,22 +102,30 @@ function AdminProductForm({closeForm}) {
     status: { required: 'This field is required!' },
     image: { 
       required: 'This field is required!', 
-      validate: v => v[0].size < 512000 || 'validate: Max size 500kb'
-    }
+      validate: v => v[0].size < 512000 || 'validate: Max size 500kb',
+    },
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-    // addPost({
-    //   name: data.name,
-    //   article: data.article,
-    //   category: data.category,
-    //   description: data.description,
-    //   price: data.price,
-    //   quantity: data.quantity,
-    //   status: data.status,
-    //   image: 'https://i.pravatar.cc',
-    // }).unwrap();
+    let newId;
+    const formData = new FormData();
+    formData.append('imageFile', selectedFile);
+    addProduct({
+      name: data.name,
+      article: data.article,
+      category: data.category,
+      description: data.description,
+      price: data.price,
+      quantity: data.quantity,
+      productStatus: data.status,
+      imagePath: 'product.webp',
+    }).unwrap()
+      .then((payload) => {
+        newId = payload;
+        addImage({id: newId, body: formData});
+      })
+      .catch((error) => console.error('rejected', error));
+    
     closeForm(false);
     reset();
   };
@@ -125,7 +134,7 @@ function AdminProductForm({closeForm}) {
   // const notify2 = () => toast.error("Write your text :)");
 
   return (
-    <div className='overlay px-36 flex justify-center items-center'>
+    <div className='overlay px-10 flex justify-center items-center lg:px-36'>
       <div className='w-full max-w-screen-lg p-6 bg-white rounded'>
         <div className='flex justify-end'>
           <button
@@ -142,7 +151,7 @@ function AdminProductForm({closeForm}) {
             className='w-full'
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className='w-full grid grid-cols-[30%_22%_40%] grid-rows-[84px_84px_84px_84px_40px] gap-x-[4%] gap-y-2 text-normal'>
+            <div className='w-full grid grid-cols-[30%_22%_40%] grid-rows-[84px_84px_84px_minmax(84px,_104px)_40px] gap-x-[4%] gap-y-2 text-normal'>
               <div className=''>
                 <label className=''>Name
                   <input
@@ -270,24 +279,27 @@ function AdminProductForm({closeForm}) {
                   </p>}
                 </div>
               </div>
-              <div className='col-span-2'>
+              <div className='col-span-3 md:col-span-2'>
                 <label className='relative'>Image
-                  {/* <span className='w-full h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
+                  <span className='w-full min-h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
                     <button className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
                       <FiUploadCloud className='text-xl' />
                       Select Image
                     </button>
-                    <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500 '+(errors?.image ? 'input-error' : 'border-neutral-400')}>
-                      {'Max file size 500 kB'}
+                    <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm'+(selectedFile ? ' text-black' : ' text-neutral-500')+(errors?.image ? ' input-error' : ' border-neutral-400')}>
+                      {selectedFile? selectedFile.name : 'Max file size 500 kB'}
                     </span>
-                  </span> */}
+                  </span>
                   <input
                     type='file'
                     className={'w-full mt-0.5 input input-file '+(errors?.image ? 'input-error' : '')}
                     placeholder='Max file size 500 kB'
                     accept='.png,.jpg,.jpeg,.webp,'
-                    size='512000'
+                    size='512000' 
                     {...register('image', formValidation.image)}
+                    onChange={(e) => {
+                      setSelectedFile(e.target.files[0]);
+                    }}
                   />
                 </label>
                 <div className='h-5 mt-1'>
@@ -297,7 +309,7 @@ function AdminProductForm({closeForm}) {
                   </p>}
                 </div>
               </div>
-              <div className='row-start-5 col-span-2'>
+              <div className='row-start-5 col-span-3 lg:col-span-2'>
                 <button
                   type='button'
                   className='btn-secondary w-40 mr-10'

@@ -5,7 +5,10 @@ function Home() {
 
 //   function get(){
 //     return fetch('http://localhost:8080/admin/products?page=0&size=10')
-//         .then(response => response.json())
+//         .then(response => {
+//           console.log(response);
+//           response.json();
+//         })
 //         .then(data => console.log(data))
 //         .catch(err => console.log(err))
 // }

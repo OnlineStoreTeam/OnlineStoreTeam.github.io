@@ -1,0 +1,114 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Name 1",
+      "article": "AAABBB01",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 2,
+      "name": "Name 2",
+      "article": "AAABBB02",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 3,
+      "name": "Name 3",
+      "article": "AAABBB03",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 4,
+      "name": "Name 4",
+      "article": "AAABBB04",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 5,
+      "name": "Name 5",
+      "article": "AAABBB05",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 6,
+      "name": "Name 6",
+      "article": "AAABBB06",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "id": 7,
+      "name": "Name 7",
+      "article": "AAABBB07",
+      "category": "Clothing",
+      "description": "Product description",
+      "price": 13.5,
+      "quantity": 240,
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc"
+    },
+    {
+      "name": "Name 8",
+      "article": "123456",
+      "category": "Toys",
+      "description": "Product description",
+      "price": "456",
+      "quantity": "800",
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc",
+      "id": 8
+    },
+    {
+      "name": "Name 9",
+      "article": "12345678",
+      "category": "Forniture",
+      "description": "Product description",
+      "price": "345.78",
+      "quantity": "356",
+      "productStatus": "ACTIVE",
+      "imagePath": "https://i.pravatar.cc",
+      "id": 9
+    },
+    {
+      "name": "jktyjiktyguj",
+      "article": "12345678",
+      "category": "Leads&harnesses",
+      "description": "jhdhgfh",
+      "price": "0.01",
+      "quantity": "1",
+      "productStatus": "ACTIVE",
+      "imagePath": "product.webp",
+      "id": 10
+    }
+  ]
+}
