@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAddProductMutation, useAddImageMutation } from '../../store/productApi'
-
-// import { LuX } from "react-icons/lu";
-// import { FiUploadCloud } from "react-icons/fi";
 import { 
   LuAlertCircle, 
 //   LuAlertTriangle, 

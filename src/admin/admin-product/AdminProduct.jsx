@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState} from 'react';
 import { Link } from 'react-router-dom';
 import { 
   LuPlusCircle, 
@@ -11,16 +11,18 @@ import {
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
 
-// import ReactPaginate from 'react-paginate';
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
   const { data } = useGetAllProductsQuery({page: 1, limit: 10});
+  
+  console.log(data?.content)
 
   const closeForm = (state) => {
     setFormIsOpen(state);
   };
+
  
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
@@ -138,27 +140,7 @@ function AdminProduct() {
           className='py-1.5 px-2.5 border rounded text-xs font-bold uppercase'
           onClick={() => console.log('Show 10 results')}
         >Show 10 Results</button>
-        <ReactPaginate
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pageCount}
-          containerClassName='pagination flex'
-          previousLabel='Previous'
-          // previousClassName='page-item'
-          previousLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-          nextLabel='Next'
-          // nextClassName='page-item'
-          nextLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-          // pageClassName='page-item'
-          pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-          activeLinkClassName='bg-black border-black text-white'
-          disabledClassName='text-gray-400'
-          breakLabel='...'
-          // breakClassName='page-item'
-          breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-          renderOnZeroPageCount={null}
-        />
+        <Pagination itemsPerPage={10} items={data}/>
       </div> */}
     </div>
   );
