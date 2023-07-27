@@ -137,7 +137,6 @@ function AdminProductForm({closeForm}) {
         addImage({id: newId, body: formData});
       })
       .catch((error) => console.error('rejected', error));
-    
     closeForm(false);
     reset();
   };

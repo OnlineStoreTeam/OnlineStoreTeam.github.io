@@ -14,7 +14,7 @@ function Admin() {
   return (
     <div className='grid grid-cols-[256px_1fr]'>
 
-      <div className='min-h-screen py-10 bg-black text-white'>
+      <div className=' fixed top-0 left-0 min-h-screen h-full py-10 bg-black text-white'>
         <Link to={'/'} className='inline-block w-36 h-11 mx-14 p-2 bg-[#808080] text-2xl text-center font-["Inter"]'>LOGO</Link>
         <nav className='pt-16'>
           <NavLink to={'product'} className={setActiveLink}>
@@ -28,9 +28,9 @@ function Admin() {
         </nav>
       </div>
 
-      <div className='text-black'>
+      <div className='text-black relative col-start-2 col-end-3 w-full'>
 
-        <header className='h-19 py-4 pl-6 pr-14 border-b border-neutral-600 flex justify-between items-center'>
+        <header className='fixed top-0 left-[256px] right-0 h-19 py-4 pl-6 pr-14 border-b border-neutral-600 flex justify-between items-center bg-white z-20'>
           <Link to={'/'} className='btn-text btn-image'>
             <LuChevronLeft className='text-xl' />
             View your store
@@ -53,7 +53,7 @@ function Admin() {
           </div>
         </header>
 
-        <main>
+        <main className='mt-24'>
           <Outlet />
         </main>
 

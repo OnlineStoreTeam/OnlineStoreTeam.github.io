@@ -10,19 +10,23 @@ import {
 } from '../../store/productApi';
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
+import { Pagination } from '../../components/details/Pagination';
 
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
-  const { data } = useGetAllProductsQuery({page: 1, limit: 10});
-  
-  console.log(data?.content)
-
+  const { data } = useGetAllProductsQuery({page: 0, limit: 20});
   const closeForm = (state) => {
     setFormIsOpen(state);
   };
+  const itemsPerPage = 10;
+  const [currentProducts, setCurrentProducts ] = useState(data?.content);
 
+  const handlePageChange = (newItemOffset) => {
+    const newCurrentItems = data?.content?.slice(newItemOffset, newItemOffset + itemsPerPage);
+    setCurrentProducts(newCurrentItems);
+  };
  
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
@@ -129,19 +133,19 @@ function AdminProduct() {
               </tr>
             }
             {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
-            {data?.content?.map(product => <AdminProductItem key={product.id} product={product} />)}
+            {currentProducts?.map(product => <AdminProductItem key={product.id} product={product} />)}           
           </tbody>
         </table>
       </div>
 
-      {/* <div className='mt-12 flex justify-between'>
+      <div className='mt-12 flex justify-between'>
         <button 
           type='button'
           className='py-1.5 px-2.5 border rounded text-xs font-bold uppercase'
           onClick={() => console.log('Show 10 results')}
         >Show 10 Results</button>
-        <Pagination itemsPerPage={10} items={data}/>
-      </div> */}
+        <Pagination itemsPerPage={itemsPerPage} items={data?.content} onPageChange={handlePageChange} />
+      </div>
     </div>
   );
 }

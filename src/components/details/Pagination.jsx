@@ -1,55 +1,44 @@
+ import { useState } from "react";
+ import ReactPaginate from 'react-paginate';
  
- 
- export const Pagination = ()=>{
-
-    // const [itemOffset, setItemOffset] = useState(0);
+ export const Pagination = ({itemsPerPage, items, onPageChange})=>{
+    const [itemOffset, setItemOffset] = useState(0);
     // const endOffset = itemOffset + itemsPerPage;
+    // const currentItems = items?.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(items?.length / itemsPerPage);
 
-    // const currentItems = items.slice(itemOffset, endOffset);
-    // const pageCount = Math.ceil(items.length / itemsPerPage);
-    // const handlePageClick = (event) => {
-    //     const newOffset = (event.selected * itemsPerPage) % items.length;
-    //     setItemOffset(newOffset);
-    // };
+    const isPreviousButtonDisabled = itemOffset === 0;
+    const isNextButtonDisabled = itemOffset + itemsPerPage >= items?.length;
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % items?.length;
+        setItemOffset(newOffset);
+        onPageChange(newOffset);
+    };
     return(
-       <h1></h1>
-
+        <ReactPaginate
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          containerClassName='pagination flex'
+          previousLabel='Previous'
+        //   previousClassName={isPreviousButtonDisabled? 'text-red-500' : ''}
+          previousLinkClassName={isPreviousButtonDisabled? 'pagination-btn opacity-40' : 'pagination-btn'}
+          nextLabel='Next'
+          // nextClassName='page-item'
+          nextLinkClassName={isNextButtonDisabled? 'pagination-btn opacity-40' : 'pagination-btn'}
+          // pageClassName='page-item'
+          pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
+          activeLinkClassName='bg-black border-black text-white'
+          disabledClassName='text-gray-400'
+          breakLabel='...'
+          // breakClassName='page-item'
+          breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
+          renderOnZeroPageCount={null}
+        />
     )
  }
 
-  // <ReactPaginate
-        //   onPageChange={handlePageClick}
-        //   pageRangeDisplayed={3}
-        //   marginPagesDisplayed={2}
-        //   pageCount={pageCount}
-        //   containerClassName='pagination flex'
-        //   previousLabel='Previous'
-        //   // previousClassName='page-item'
-        //   previousLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-        //   nextLabel='Next'
-        //   // nextClassName='page-item'
-        //   nextLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-        //   // pageClassName='page-item'
-        //   pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-        //   activeLinkClassName='bg-black border-black text-white'
-        //   disabledClassName='text-gray-400'
-        //   breakLabel='...'
-        //   // breakClassName='page-item'
-        //   breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-        //   renderOnZeroPageCount={null}
-        // />
 
-    //     <>
-    //   <Items currentItems={currentItems} />
-    //   <ReactPaginate
-    //     breakLabel="..."
-    //     nextLabel="next >"
-    //     onPageChange={handlePageClick}
-    //     pageRangeDisplayed={5}
-    //     pageCount={pageCount}
-    //     previousLabel="< previous"
-    //     renderOnZeroPageCount={null}
-    //   />
-    // </>
  
  
