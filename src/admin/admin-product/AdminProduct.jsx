@@ -11,6 +11,7 @@ import {
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
 import { Pagination } from '../../components/details/Pagination';
+import { useMemo } from 'react';
 
 
 function AdminProduct() {
@@ -22,6 +23,10 @@ function AdminProduct() {
   };
   const itemsPerPage = 10;
   const [currentProducts, setCurrentProducts ] = useState(data?.content);
+  
+  const getProductCount = useMemo(()=>{
+    return setCountResults(data?.content?.length);
+  }, [data])
 
   const handlePageChange = (newItemOffset) => {
     const newCurrentItems = data?.content?.slice(newItemOffset, newItemOffset + itemsPerPage);
