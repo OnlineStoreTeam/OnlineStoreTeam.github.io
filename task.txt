@@ -1,22 +1,27 @@
+-------------------- important --------------------
+
+npm run server
+    запускає json-server на порту 3004
+npm run deploy
+    компілює проект в папку build і пушить на github в гілку gh-pages
+
+
+гілки:
+  main
+    це production
+  dev
+    головна гілка розробки і тестування
+  ...
+    гілки для етапів розробки
+
+-------------------- to do --------------------
+
 to do
-  admin-product-item
-    status - edit styles
-    button more
-      add icons
-      add click, delete hover
   admin-product-form
     image
-      домалювати по макету
       валідувати при onChange, а не onBlur
-    save
-      close form or no?
-      перемалювати таблицю
   admin-product
     table
-      icon-more
-        edit
-      search
-        колір хрестика
       кнопки фільтрації категорії
         додати обробники
         додати дінамічни стилі
@@ -29,7 +34,6 @@ to do
 later
   видалити зайві шрифти
   admin
-    redirect to adminProduct
     button Search - onClick
     button Admin - onClick
     button LogOut - onClick
@@ -55,6 +59,7 @@ npm run server
   "server": "json-server --watch server/db.json -p 3004"
 npm run build
 npm run deploy
+
 
 npx create-react-app .
 npx create-react-app my-app --template redux
