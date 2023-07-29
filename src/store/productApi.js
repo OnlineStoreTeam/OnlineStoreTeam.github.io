@@ -45,9 +45,9 @@ export const productApi = createApi({
           url: `admin/products/${id}/image`,
           method: 'POST',
           body,
-          // headers: {
-          //   'Content-type': 'multipart/form-data',
-          // },
+          headers: {
+            'Content-type': 'multipart/form-data',
+          },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],

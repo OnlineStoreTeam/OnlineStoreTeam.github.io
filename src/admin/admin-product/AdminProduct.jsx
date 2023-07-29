@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState} from 'react';
 import { Link } from 'react-router-dom';
 import { 
   LuPlusCircle, 
@@ -10,16 +10,27 @@ import {
 } from '../../store/productApi';
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
+import { Pagination } from '../../components/details/Pagination';
+import { useMemo } from 'react';
 
-// import ReactPaginate from 'react-paginate';
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
-  const { data } = useGetAllProductsQuery({page: 1, limit: 10});
-
+  const { data } = useGetAllProductsQuery({page: 0, limit: 20});
   const closeForm = (state) => {
     setFormIsOpen(state);
+  };
+  const itemsPerPage = 10;
+  const [currentProducts, setCurrentProducts ] = useState(data?.content);
+  
+  const getProductCount = useMemo(()=>{
+    return setCountResults(data?.content?.length);
+  }, [data])
+
+  const handlePageChange = (newItemOffset) => {
+    const newCurrentItems = data?.content?.slice(newItemOffset, newItemOffset + itemsPerPage);
+    setCurrentProducts(newCurrentItems);
   };
  
   return (
@@ -127,39 +138,19 @@ function AdminProduct() {
               </tr>
             }
             {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
-            {data?.content?.map(product => <AdminProductItem key={product.id} product={product} />)}
+            {currentProducts?.map(product => <AdminProductItem key={product.id} product={product} />)}           
           </tbody>
         </table>
       </div>
 
-      {/* <div className='mt-12 flex justify-between'>
+      <div className='mt-12 flex justify-between'>
         <button 
           type='button'
           className='py-1.5 px-2.5 border rounded text-xs font-bold uppercase'
           onClick={() => console.log('Show 10 results')}
         >Show 10 Results</button>
-        <ReactPaginate
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pageCount}
-          containerClassName='pagination flex'
-          previousLabel='Previous'
-          // previousClassName='page-item'
-          previousLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-          nextLabel='Next'
-          // nextClassName='page-item'
-          nextLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-          // pageClassName='page-item'
-          pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-          activeLinkClassName='bg-black border-black text-white'
-          disabledClassName='text-gray-400'
-          breakLabel='...'
-          // breakClassName='page-item'
-          breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
-          renderOnZeroPageCount={null}
-        />
-      </div> */}
+        <Pagination itemsPerPage={itemsPerPage} items={data?.content} onPageChange={handlePageChange} />
+      </div>
     </div>
   );
 }

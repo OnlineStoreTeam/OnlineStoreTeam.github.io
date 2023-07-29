@@ -12,7 +12,7 @@ function AdminProductItem({ product }) {
   productStatus === 'ACTIVE' ? ' bg-green-400' : 'bg-neutral-500';
     
   return (
-    <tr className='border-t border-neutral-300'>
+    <tr className='border-t border-neutral-300 hover:bg-neutral-100 cursor-pointer'>
       <td className='py-3 px-5'>
         <img 
           // src={product.imagePath} 
@@ -41,20 +41,20 @@ function AdminProductItem({ product }) {
             <LuMoreHorizontal />
           </button>
           <div className={
-            'w-40 py-2 bg-white border border-neutral-300 rounded flex flex-col items-start gap-1 absolute top-9 right-0 z-[1]' 
+            'w-40 py-2 bg-white border border-neutral-300 rounded flex flex-col items-start gap-1 absolute top-9 right-0 z-[15]' 
             + (displayMenu ? ' block' : ' hidden')
           }>
-            <button type='button' className='w-full px-4 text-small flex items-center gap-2' 
+            <button type='button' className='w-full px-4 text-small flex items-center gap-2 hover:bg-neutral-200' 
               onClick={() => console.log('View')}>
-              <LuSearch className='text-base' />
+              <LuSearch className='text-base ' />
               View
             </button>
-            <button type='button' className='w-full px-4 py-2 text-small flex items-center gap-2' 
+            <button type='button' className='w-full px-4 py-2 text-small flex items-center gap-2 hover:bg-neutral-200' 
               onClick={() => console.log('Edit')}>
               <LuEdit2 className='text-base' />
               Edit
             </button>
-            <button type='button' className='w-full px-4 text-small flex items-center gap-2' 
+            <button type='button' className='w-full px-4 text-small flex items-center gap-2 hover:bg-neutral-200' 
               onClick={() => console.log('Delete')}>
               <LuTrash2 className='text-base' />
               Delete
