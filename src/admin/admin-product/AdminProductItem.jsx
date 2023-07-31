@@ -6,11 +6,15 @@ import {
   LuTrash2, 
  } from 'react-icons/lu';
 
-function AdminProductItem({ product }) {
+function AdminProductItem({ product, editProduct }) {
   const [displayMenu, setDisplayMenu] = useState(false);
   const setStatusColor = (productStatus) => 
   productStatus === 'ACTIVE' ? ' bg-green-400' : 'bg-neutral-500';
-    
+
+  const editProd = (prod)=>{
+    editProduct(prod);
+    setDisplayMenu(false);
+  }
   return (
     <tr className='border-t border-neutral-300 hover:bg-neutral-100 cursor-pointer'>
       <td className='py-3 px-5'>
@@ -50,7 +54,7 @@ function AdminProductItem({ product }) {
               View
             </button>
             <button type='button' className='w-full px-4 py-2 text-small flex items-center gap-2 hover:bg-neutral-200' 
-              onClick={() => console.log('Edit')}>
+              onClick={() =>editProd(product)}>
               <LuEdit2 className='text-base' />
               Edit
             </button>

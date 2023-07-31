@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAddProductMutation, useAddImageMutation } from '../../store/productApi'
 import { 
@@ -24,7 +24,7 @@ import {
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-function AdminProductForm({closeForm}) {
+function AdminProductForm({closeForm, product}) {
   const [selectedFile, setSelectedFile] = useState();
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
@@ -47,6 +47,21 @@ function AdminProductForm({closeForm}) {
     // },
     mode: 'onBlur',
   });
+  
+  useEffect(()=>{
+    if (product) {
+      reset({
+        name: product.name,
+        article: product.article,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        quantity: product.quantity,
+        status: product.productStatus,
+        imagePath: 'product.webp',
+      });
+    }
+  }, [product])
 
   const formValidation = {
     name: {
@@ -122,27 +137,34 @@ function AdminProductForm({closeForm}) {
     let newId;
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
-    addProduct({
-      name: data.name,
-      article: data.article,
-      category: data.category,
-      description: data.description,
-      price: data.price,
-      quantity: data.quantity,
-      productStatus: data.status,
-      imagePath: 'product.webp',
-    }).unwrap()
-      .then((payload) => {
-        newId = payload;
-        addImage({id: newId, body: formData});
-      })
-      .catch((error) => console.error('rejected', error));
+    if(product && product.article===data.article){
+      // editProduct({id: product.id, body: formData});
+      console.log(product, formData)
+    }
+    else{
+      addProduct({
+        name: data.name,
+        article: data.article,
+        category: data.category,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        productStatus: data.status,
+        imagePath: 'product.webp',
+      }).unwrap()
+        .then((payload) => {
+          newId = payload;
+          addImage({id: newId, body: formData});
+        })
+        .catch((error) => console.error('rejected', error));
+    }
     closeForm(false);
     reset();
   };
 
   // const notify1 = () => toast.success("Wow so easy!");
   // const notify2 = () => toast.error("Write your text :)");
+
 
   return (
     <div className='overlay px-10 flex justify-center items-center lg:px-36'>

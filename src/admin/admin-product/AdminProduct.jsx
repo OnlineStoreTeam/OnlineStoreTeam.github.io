@@ -17,6 +17,7 @@ function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
   const { data } = useGetAllProductsQuery({page: 0, limit: 20});
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const closeForm = (state) => {
     setFormIsOpen(state);
   };
@@ -27,6 +28,12 @@ function AdminProduct() {
     const newCurrentItems = data?.content?.slice(newItemOffset, newItemOffset + itemsPerPage);
     setCurrentProducts(newCurrentItems);
   };
+
+  const editProduct = (prod)=>{
+    setFormIsOpen(true);
+    setSelectedProduct(prod);
+    console.log(prod)
+  }
  
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
@@ -51,7 +58,7 @@ function AdminProduct() {
       </div>
 
       {formIsOpen && 
-      <AdminProductForm closeForm={closeForm} />}
+      <AdminProductForm closeForm={closeForm} product={selectedProduct}/>}
 
       <div className='mt-6 border border-neutral-300 rounded'>
         <table className=' w-full text-normal'>
@@ -133,7 +140,7 @@ function AdminProduct() {
               </tr>
             }
             {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
-            {currentProducts?.map(product => <AdminProductItem key={product.id} product={product} />)}           
+            {currentProducts?.map(product => <AdminProductItem key={product.id} product={product} editProduct={editProduct} />)}           
           </tbody>
         </table>
       </div>
