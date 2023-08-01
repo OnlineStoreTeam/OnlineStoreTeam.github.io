@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddProductMutation, useAddImageMutation } from '../../store/productApi'
+import { useAddProductMutation, useAddImageMutation, useEditProductMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
 //   LuAlertTriangle, 
@@ -28,6 +28,7 @@ function AdminProductForm({closeForm, product}) {
   const [selectedFile, setSelectedFile] = useState();
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
+  const [editProduct] = useEditProductMutation();
   const {
     register,
     formState: { errors, isValid },
@@ -137,9 +138,8 @@ function AdminProductForm({closeForm, product}) {
     let newId;
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
-    if(product && product.article===data.article){
-      // editProduct({id: product.id, body: formData});
-      console.log(product, formData)
+    if(product && product.id){
+      editProduct({id: product.id, body: data});
     }
     else{
       addProduct({

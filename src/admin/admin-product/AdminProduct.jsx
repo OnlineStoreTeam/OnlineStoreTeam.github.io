@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { 
   LuPlusCircle, 
@@ -16,13 +16,20 @@ import { Pagination } from '../../components/details/Pagination';
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
-  const { data } = useGetAllProductsQuery({page: 0, limit: 20});
+  const { data } = useGetAllProductsQuery({page: 0, limit: 10});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const closeForm = (state) => {
     setFormIsOpen(state);
   };
   const itemsPerPage = 10;
   const [currentProducts, setCurrentProducts ] = useState(data?.content);
+
+  useEffect(()=>{
+    if(data){
+      setCurrentProducts(data.content);
+      setCountResults(data.totalElements);
+    }
+  }, [data])
 
   const handlePageChange = (newItemOffset) => {
     const newCurrentItems = data?.content?.slice(newItemOffset, newItemOffset + itemsPerPage);
@@ -32,7 +39,6 @@ function AdminProduct() {
   const editProduct = (prod)=>{
     setFormIsOpen(true);
     setSelectedProduct(prod);
-    console.log(prod)
   }
  
   return (
