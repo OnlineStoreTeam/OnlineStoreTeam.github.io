@@ -3,10 +3,7 @@
  
  export const Pagination = ({itemsPerPage, items, onPageChange})=>{
     const [itemOffset, setItemOffset] = useState(0);
-    // const endOffset = itemOffset + itemsPerPage;
-    // const currentItems = items?.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(items?.length / itemsPerPage);
-
+    const pageCount = items? Math.ceil(items?.length / itemsPerPage) : 0;
     const isPreviousButtonDisabled = itemOffset === 0;
     const isNextButtonDisabled = itemOffset + itemsPerPage >= items?.length;
     const handlePageClick = (event) => {

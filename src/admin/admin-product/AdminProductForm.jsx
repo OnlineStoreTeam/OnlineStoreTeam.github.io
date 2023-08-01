@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddProductMutation, useAddImageMutation } from '../../store/productApi'
+import { useAddProductMutation, useAddImageMutation, useEditProductMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
 //   LuAlertTriangle, 
@@ -24,10 +24,11 @@ import {
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-function AdminProductForm({closeForm}) {
+function AdminProductForm({closeForm, product}) {
   const [selectedFile, setSelectedFile] = useState();
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
+  const [editProduct] = useEditProductMutation();
   const {
     register,
     formState: { errors, isValid },
@@ -47,6 +48,21 @@ function AdminProductForm({closeForm}) {
     // },
     mode: 'onBlur',
   });
+  
+  useEffect(()=>{
+    if (product) {
+      reset({
+        name: product.name,
+        article: product.article,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        quantity: product.quantity,
+        status: product.productStatus,
+        imagePath: 'product.webp',
+      });
+    }
+  }, [product])
 
   const formValidation = {
     name: {
@@ -122,21 +138,26 @@ function AdminProductForm({closeForm}) {
     let newId;
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
-    addProduct({
-      name: data.name,
-      article: data.article,
-      category: data.category,
-      description: data.description,
-      price: data.price,
-      quantity: data.quantity,
-      productStatus: data.status,
-      imagePath: 'product.webp',
-    }).unwrap()
-      .then((payload) => {
-        newId = payload;
-        addImage({id: newId, body: formData});
-      })
-      .catch((error) => console.error('rejected', error));
+    if(product && product.id){
+      editProduct({id: product.id, body: data});
+    }
+    else{
+      addProduct({
+        name: data.name,
+        article: data.article,
+        category: data.category,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        productStatus: data.status,
+        imagePath: 'product.webp',
+      }).unwrap()
+        .then((payload) => {
+          newId = payload;
+          addImage({id: newId, body: formData});
+        })
+        .catch((error) => console.error('rejected', error));
+    }
     closeForm(false);
     reset();
   };
@@ -144,8 +165,9 @@ function AdminProductForm({closeForm}) {
   // const notify1 = () => toast.success("Wow so easy!");
   // const notify2 = () => toast.error("Write your text :)");
 
+
   return (
-    <div className='overlay px-10 flex justify-center items-center lg:px-36'>
+    <div className='overlay px-10 flex justify-center items-center lg:px-36 z-40'>
       <div className='w-full max-w-screen-lg p-6 bg-white rounded'>
         <div className='flex justify-end'>
           <button
@@ -284,7 +306,7 @@ function AdminProductForm({closeForm}) {
                     <option value='' disabled>
                       Status
                     </option>
-                    <option value='ACTIVE'>Enabled</option>
+                    <option value='ACTIVE'>In stock</option>
                     <option value='TEMPORARILY_ABSENT'>Out of stock</option>
                   </select>
                 </label>
