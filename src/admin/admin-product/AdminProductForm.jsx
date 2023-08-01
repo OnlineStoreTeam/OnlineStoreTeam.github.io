@@ -167,7 +167,7 @@ function AdminProductForm({closeForm, product}) {
 
 
   return (
-    <div className='overlay px-10 flex justify-center items-center lg:px-36'>
+    <div className='overlay px-10 flex justify-center items-center lg:px-36 z-40'>
       <div className='w-full max-w-screen-lg p-6 bg-white rounded'>
         <div className='flex justify-end'>
           <button
@@ -306,7 +306,7 @@ function AdminProductForm({closeForm, product}) {
                     <option value='' disabled>
                       Status
                     </option>
-                    <option value='ACTIVE'>Enabled</option>
+                    <option value='ACTIVE'>In stock</option>
                     <option value='TEMPORARILY_ABSENT'>Out of stock</option>
                   </select>
                 </label>
