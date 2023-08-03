@@ -17,7 +17,7 @@ import { useMemo } from 'react';
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [countResults, setCountResults] = useState(0);    // можливо змінну треба змінити на кількість отриману з сервера
-  const { data } = useGetAllProductsQuery({page: 0, limit: 10});
+  const { data } = useGetAllProductsQuery({page: 0, limit: 100});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const closeForm = (state) => {
     setFormIsOpen(state);
