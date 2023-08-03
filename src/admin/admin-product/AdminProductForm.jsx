@@ -21,17 +21,35 @@ import {
   FiUploadCloud, 
 } from "react-icons/fi";
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AdminProductForm({closeForm, product}) {
   const [selectedFile, setSelectedFile] = useState();
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
+  const [fileURL, setFileURL] = useState('');
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setFileURL(url);
+      setSelectedFile(file);
+    } else if(!file){
+      setFileURL('');
+      setSelectedFile(null);
+    }
+    console.log(file)
+  };
+  const handleFileRemove = () => {
+    setFileURL('');
+    setSelectedFile(null);
+  };
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid},
     handleSubmit,
     watch,
     reset,
@@ -124,13 +142,28 @@ function AdminProductForm({closeForm, product}) {
         value: 0,
         message: 'The value cannot be negative'
       },
-      validate: v => Number.isInteger(+v) || 'Must be an integer'
+      validate: v => {
+        const regex = /^\d+$/;
+        if (v.charAt(0) === '+') {
+          return 'Invalid characters';
+        }
+        if (!regex.test(v)) {
+          return 'Must be an integer';
+        }
+        return true;
+      },
+      
     },
     category: { required: 'This field is required!' },
     status: { required: 'This field is required!' },
     image: { 
       required: 'This field is required!', 
-      validate: v => v[0].size < 512000 || 'validate: Max size 500kb',
+      validate: v => {
+        if (v && v[0] && v[0].size) {
+          return v[0].size < 512000 || 'Max size 500kb';
+        }
+        return true;
+      },
     },
   };
 
@@ -139,7 +172,16 @@ function AdminProductForm({closeForm, product}) {
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
     if(product && product.id){
-      editProduct({id: product.id, body: data});
+      editProduct({id: product.id, body: data})
+      .then(()=>{
+        toast.success('Product successfully edited')
+      })
+      .catch((error)=>{
+        console.error(error.message);
+        toast.error(error.message);
+      })
+      
+
     }
     else{
       addProduct({
@@ -155,8 +197,12 @@ function AdminProductForm({closeForm, product}) {
         .then((payload) => {
           newId = payload;
           addImage({id: newId, body: formData});
+          toast.success('Product successfully created');
         })
-        .catch((error) => console.error('rejected', error));
+        .catch((error) => {
+          console.error('rejected', error);
+          toast.error('упс, щось не так')
+        });
     }
     closeForm(false);
     reset();
@@ -257,12 +303,12 @@ function AdminProductForm({closeForm, product}) {
               <div className=''>
                 <label className='relative'>Quantity
                   <input
-                    type='number'
+                    type='text'
                     className={'w-full mt-0.5 input '+(errors?.quantity ? 'input-error' : '')}
                     min='0'
                     {...register('quantity', formValidation.quantity)}
                   />
-                  {errors?.quantity && <LuAlertCircle className='absolute w-5 h-5 right-9 top-8 text-error' />}
+                  {errors?.quantity && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.quantity &&
@@ -299,7 +345,7 @@ function AdminProductForm({closeForm, product}) {
               <div className=''>
                 <label className='relative'>Status
                   <select
-                    className={'w-full mt-0.5 input'+(errors?.status ? 'input-error' : '')}
+                    className={'w-full mt-0.5 input '+(errors?.status ? 'input-error' : '')}
                     defaultValue=''
                     {...register('status', formValidation.status)}
                   >
@@ -318,33 +364,42 @@ function AdminProductForm({closeForm, product}) {
                 </div>
               </div>
               <div className='col-span-2'>
-                <label className='relative'>Image <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />
-                  <span className='w-full z-1 h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
-                    <button type='button' className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
-                      <FiUploadCloud className='text-xl' />
-                      Select Image
-                    </button>
-                    <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm'+(selectedFile ? ' text-black' : ' text-neutral-500')+(errors?.image ? ' input-error' : ' border-neutral-400')}>
-                      {selectedFile? selectedFile.name : 'Max file size 500 kB'}
-                    </span>
-                  </span>
+                <div className='relative'>Image {!selectedFile && <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />}</div>
+                <div className='relative'>
                   <input
                     type='file'
-                    className={' z-2 w-full mt-0.5 input-file'+(errors?.image ? 'input-error' : '')}
+                    id='input_file'
+                    className=' w-full input-file opacity-0 absolute invisible '
+                    // className={' w-full input-file ' + (errors?.image ? 'input-error': ' border-neutral-900')}
                     placeholder='Max file size 500 kB'
                     accept='.png,.jpg,.jpeg,.webp,'
                     size='512000' 
                     {...register('image', formValidation.image)}
-                    onChange={(e) => {
-                      setSelectedFile(e.target.files[0]);
-                    }}
+                    onChange={handleFileChange}
                   />
-                  {/* <div className='input w-2/5 mt-1 flex items-center justify-between'>
-                    <img src="#" alt="" />
-                    <span className='pl-1 grow'>Img_32423.jpg</span>
-                    <button><LuX className='text-lg'/></button>                 
-                  </div> */}
-                </label>
+                  {!selectedFile && 
+                    <label 
+                      htmlFor="input_file" 
+                      className='w-full z-1 h-10 mt-0.5 grid grid-cols-[151px_1fr] '
+                    > 
+                      <span className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
+                        <FiUploadCloud className='text-xl' />
+                        Select Image
+                      </span>
+                      <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500 '+(errors?.image ? ' input-error' : ' border-neutral-400')}>
+                        Max file size 500 kB
+                      </span>
+                    </label>
+                  }
+                  {selectedFile &&
+                    <div className='input w-2/5 mt-1 flex items-center justify-between'>
+                      <img src={fileURL} alt="" className='max-h-full' />
+                      <span className='pl-1 grow'>{selectedFile.name}</span>
+                      <button type='button' onClick={handleFileRemove}><LuX className='text-lg'/></button>                 
+                    </div>
+                  }
+                
+                </div>
                 <div className='h-5 mt-1'>
                   {errors?.image &&
                   <p className='text-error flex'>
@@ -374,10 +429,7 @@ function AdminProductForm({closeForm, product}) {
         </div>
       </div>
     
-      {/* <ToastContainer 
-        position="bottom-left" 
-        autoClose={3000} 
-      /> */}
+     
     </div>
   );
 }
