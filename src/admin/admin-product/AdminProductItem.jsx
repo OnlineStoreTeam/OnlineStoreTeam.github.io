@@ -19,8 +19,8 @@ function AdminProductItem({ product, editProduct }) {
     <tr className='border-t border-neutral-300 hover:bg-neutral-100 cursor-pointer'>
       <td className='py-3 px-5'>
         <img 
-          // src={product.imagePath} 
-          // src={'http://localhost:8080/'+product.image} 
+          // src={'/'+(product.imagePath)}
+          // src={'http://localhost:8080/images/'+product.imagePath} 
           // src='http://localhost:8080/images/product.webp' 
           src='/product.webp' 
           alt={product.name} className='h-12' 

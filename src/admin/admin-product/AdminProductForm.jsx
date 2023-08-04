@@ -30,6 +30,7 @@ function AdminProductForm({closeForm, product}) {
   const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
   const [fileURL, setFileURL] = useState('');
+  const [editedProduct, setEditedProduct] = useState(product);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -37,12 +38,15 @@ function AdminProductForm({closeForm, product}) {
       const url = URL.createObjectURL(file);
       setFileURL(url);
       setSelectedFile(file);
-    } else if(!file){
-      setFileURL('');
-      setSelectedFile(null);
-    }
-    console.log(file)
+      
+    } 
+    // else if(!file){
+    //   setFileURL('');
+    //   setSelectedFile(null);
+    // }
+    // e.target.value = null;
   };
+
   const handleFileRemove = () => {
     setFileURL('');
     setSelectedFile(null);
@@ -68,19 +72,19 @@ function AdminProductForm({closeForm, product}) {
   });
   
   useEffect(()=>{
-    if (product) {
+    if (editedProduct) {
       reset({
-        name: product.name,
-        article: product.article,
-        category: product.category,
-        description: product.description,
-        price: product.price,
-        quantity: product.quantity,
-        status: product.productStatus,
-        imagePath: 'product.webp',
+        name: editedProduct.name,
+        article: editedProduct.article,
+        category: editedProduct.category,
+        description: editedProduct.description,
+        price: editedProduct.price,
+        quantity: editedProduct.quantity,
+        status: editedProduct.productStatus,
+        // imagePath: 'product.webp',
       });
-    }
-  }, [product])
+    } 
+  }, [editedProduct])
 
   const formValidation = {
     name: {
@@ -144,7 +148,7 @@ function AdminProductForm({closeForm, product}) {
       },
       validate: v => {
         const regex = /^\d+$/;
-        if (v.charAt(0) === '+') {
+        if (v.toString().charAt(0) === '+') {
           return 'Invalid characters';
         }
         if (!regex.test(v)) {
@@ -166,22 +170,31 @@ function AdminProductForm({closeForm, product}) {
       },
     },
   };
-
+  
   const onSubmit = (data) => {
     let newId;
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
-    if(product && product.id){
-      editProduct({id: product.id, body: data})
-      .then(()=>{
-        toast.success('Product successfully edited')
-      })
-      .catch((error)=>{
-        console.error(error.message);
-        toast.error(error.message);
-      })
-      
-
+    // console.log(formData.getAll());
+    if(editedProduct && editedProduct.id){
+    //  editProduct({id: editedProduct.id, body: data})
+    //   .unwrap()
+    //     .then(() => {
+    //       addImage({id: editedProduct.id, body: formData})
+    //       .then(()=>{
+    //         toast.success('Product successfully edited');
+    //       })
+    //       .catch((error)=>{
+    //         console.error('rejected', error);
+    //         toast.error('картинку не вдалось додати')
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       setSelectedFile(null);
+    //       console.error('rejected', error);
+    //       toast.error('товар не вдалось редагувати')
+    //     });
+    //     setEditedProduct({});
     }
     else{
       addProduct({
@@ -192,21 +205,28 @@ function AdminProductForm({closeForm, product}) {
         price: data.price,
         quantity: data.quantity,
         productStatus: data.status,
-        imagePath: 'product.webp',
+        // imagePath: 'product.webp',
       }).unwrap()
         .then((payload) => {
           newId = payload;
-          addImage({id: newId, body: formData});
-          toast.success('Product successfully created');
+          addImage({id: newId, body: formData})
+          .then(()=>{
+            toast.success('Product successfully created');
+          })
+          .catch((error)=>{
+            console.error('rejected', error);
+            toast.error('товар додався, але картинка не загрузилась')
+          });
         })
         .catch((error) => {
           console.error('rejected', error);
-          toast.error('упс, щось не так')
+          toast.error('не вдалось додати товар')
         });
     }
     closeForm(false);
     reset();
   };
+
 
   // const notify1 = () => toast.success("Wow so easy!");
   // const notify2 = () => toast.error("Write your text :)");
