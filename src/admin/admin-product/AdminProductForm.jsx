@@ -25,7 +25,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AdminProductForm({closeForm, product}) {
-  const [selectedFile, setSelectedFile] = useState();
+  const [selectedFile, setSelectedFile] = useState(null);
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
@@ -39,12 +39,10 @@ function AdminProductForm({closeForm, product}) {
       setFileURL(url);
       setSelectedFile(file);
       
-    } 
-    // else if(!file){
-    //   setFileURL('');
-    //   setSelectedFile(null);
-    // }
-    // e.target.value = null;
+    } else if(!file){
+      setFileURL('');
+      setSelectedFile(null);
+    }
   };
 
   const handleFileRemove = () => {
@@ -53,7 +51,7 @@ function AdminProductForm({closeForm, product}) {
   };
   const {
     register,
-    formState: { errors, isValid},
+    formState: { errors, isValid },
     handleSubmit,
     watch,
     reset,
@@ -91,16 +89,16 @@ function AdminProductForm({closeForm, product}) {
       required: 'This field is required!',
       pattern: {
         value: /^[a-zA-Z0-9 ,\._-]{2,50}$/,
-        message: 'Invalid character'
+        message: 'Name should only contain alphanumeric characters'
       },
       minLength: {
         value: 2,
-        message: 'From 2 to 50 characters'
+        message: 'Name should be between 2 and 50 characters long'
       },
       maxLength: {
         value: 50,
-        message: 'From 2 to 50 characters'
-      }
+        message: 'Name should be between 2 and 50 characters long'
+      },
     },
     price: {
       required: 'This field is required!',
@@ -114,30 +112,30 @@ function AdminProductForm({closeForm, product}) {
       required: 'This field is required!',
       pattern: {
         value: /^[a-zA-Z0-9 '&!#%\(\)\*\+,\.:;_-]{2,255}$/,
-        message: 'Invalid character'
+        message: 'Description should only contain alphanumeric characters'
       },
       minLength: {
         value: 2,
-        message: 'From 2 to 255 characters'
+        message: 'Description should be between 2 and 255 characters long'
       },
       maxLength: {
         value: 255,
-        message: 'From 2 to 255 characters'
+        message: 'Description should be between 2 and 255 characters long'
       },
     },
     article: {
       required: 'This field is required!',
       pattern: {
         value: /^[A-Z0-9]{3,8}$/,
-        message: 'Invalid character'
+        message: 'Article should only contain alphanumeric characters'
       },
       minLength: {
         value: 3,
-        message: 'From 3 to 8 characters'
+        message: 'Article should be between 3 and 8 characters long'
       },
       maxLength: {
         value: 8,
-        message: 'From 3 to 8 characters'
+        message: 'Article should be between 3 and 8 characters long'
       }
     },
     quantity: { 
@@ -219,7 +217,7 @@ function AdminProductForm({closeForm, product}) {
           });
         })
         .catch((error) => {
-          console.error('rejected', error);
+          console.error('rejected', error.data);
           toast.error('не вдалось додати товар')
         });
     }
@@ -389,9 +387,9 @@ function AdminProductForm({closeForm, product}) {
                   <input
                     type='file'
                     id='input_file'
-                    className=' w-full input-file opacity-0 absolute invisible '
-                    // className={' w-full input-file ' + (errors?.image ? 'input-error': ' border-neutral-900')}
-                    placeholder='Max file size 500 kB'
+                    // className=' w-full input-file '
+                    className={' input-file absolute opacity-0 '+(selectedFile? 'w-0': 'w-full')}
+                    // placeholder='Max file size 500 kB'
                     accept='.png,.jpg,.jpeg,.webp,'
                     size='512000' 
                     {...register('image', formValidation.image)}
@@ -400,13 +398,13 @@ function AdminProductForm({closeForm, product}) {
                   {!selectedFile && 
                     <label 
                       htmlFor="input_file" 
-                      className='w-full z-1 h-10 mt-0.5 grid grid-cols-[151px_1fr] '
+                      className='w-full z-20 h-10 mt-0.5 grid grid-cols-[151px_1fr]'
                     > 
                       <span className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
                         <FiUploadCloud className='text-xl' />
                         Select Image
                       </span>
-                      <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500 '+(errors?.image ? ' input-error' : ' border-neutral-400')}>
+                      <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500'+(errors?.image ? ' input-error' : ' border-neutral-400')}>
                         Max file size 500 kB
                       </span>
                     </label>

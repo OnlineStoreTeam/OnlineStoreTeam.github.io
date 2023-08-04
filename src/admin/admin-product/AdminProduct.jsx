@@ -1,5 +1,4 @@
 import { useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
 import { 
   LuPlusCircle, 
   LuSearch,
@@ -11,31 +10,32 @@ import {
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
 import ReactPaginate from 'react-paginate';
-// import { Pagination } from '../../components/details/Pagination';
-// import { useMemo } from 'react';
-
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
-  const [countResults, setCountResults] = useState(0);
-  const [pageCount, setPageCount ] = useState();
-  const { data } = useGetAllProductsQuery({page: 0, limit: 10});
+  const [countResults, setCountResults] = useState();
+  const [pageCount, setPageCount ] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data } = useGetAllProductsQuery({page: currentPage, limit: 10});
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
   const closeForm = (state) => {
     setFormIsOpen(state);
   };
-
-  const handlePageClick = ()=>{
-    setCountResults(data?.numberOfElements);
-    setPageCount(data?.totalPages);
+ 
+  const handlePageClick = (page)=>{
+    if(page && data){
+      setCountResults(data.totalElements);
+      setPageCount(data.totalPages);
+      setCurrentPage(page.selected);
+      console.log(page.selected)
+    }
   }
 
   const editProduct = (prod)=>{
     setFormIsOpen(true);
     setSelectedProduct(prod);
   }
-  
-  console.log(data);
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
       <nav className='text-small'>
@@ -147,7 +147,7 @@ function AdminProduct() {
       </div>
 
       <div className='mt-12 flex justify-end'>
-        <ReactPaginate
+        {data && <ReactPaginate
           onPageChange={handlePageClick}
           pageRangeDisplayed={3}
           marginPagesDisplayed={2}
@@ -167,7 +167,7 @@ function AdminProduct() {
           // breakClassName='page-item'
           breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
           renderOnZeroPageCount={null}
-        />
+        />}
       </div>
     </div>
   );
