@@ -6,7 +6,7 @@ import {
   LuTrash2, 
  } from 'react-icons/lu';
 
-function AdminProductItem({ product, editProduct }) {
+function AdminProductItem({ product, editProduct, deleteProduct }) {
   const [displayMenu, setDisplayMenu] = useState(false);
   const setStatusColor = (productStatus) => 
   productStatus === 'ACTIVE' ? ' bg-green-400' : 'bg-neutral-500';
@@ -15,15 +15,20 @@ function AdminProductItem({ product, editProduct }) {
     editProduct(prod);
     setDisplayMenu(false);
   }
+  const deleteProductFunc = (id)=>{
+    deleteProduct(id)
+    setDisplayMenu(false);
+  }
+  
   return (
     <tr className='border-t border-neutral-300 hover:bg-neutral-100 cursor-pointer'>
       <td className='py-3 px-5'>
         <img 
-          // src={'/'+(product.imagePath)}
-          // src={'http://localhost:8080/images/'+product.imagePath} 
-          // src='http://localhost:8080/images/product.webp' 
-          src='/product.webp' 
-          alt={product.name} className='h-12' 
+          src={product.imagePath}
+          // src={'http://localhost:8080/'+product.imagePath} 
+          // src='http:\\localhost:8080\images\image.png' 
+          // src='/product.webp' 
+          alt='' className='h-12' 
         />
       </td>
       <td className='py-3 px-5'>{product.name}</td>
@@ -59,7 +64,7 @@ function AdminProductItem({ product, editProduct }) {
               Edit
             </button>
             <button type='button' className='w-full px-4 text-small flex items-center gap-2 hover:bg-neutral-200' 
-              onClick={() => console.log('Delete')}>
+              onClick={() => deleteProductFunc(product.id)}>
               <LuTrash2 className='text-base' />
               Delete
             </button>

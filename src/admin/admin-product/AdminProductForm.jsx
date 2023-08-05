@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddProductMutation, useAddImageMutation, useEditProductMutation } from '../../store/productApi'
+import { useAddProductMutation, useAddImageMutation, useEditProductMutation, useEditImageMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
 //   LuAlertTriangle, 
@@ -24,11 +24,12 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AdminProductForm({closeForm, product}) {
+function AdminProductForm({closeForm, product, allProducts}) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [addProduct] = useAddProductMutation();
   const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
+  const [editImage] = useEditImageMutation();
   const [fileURL, setFileURL] = useState('');
   const [editedProduct, setEditedProduct] = useState(product);
 
@@ -44,7 +45,7 @@ function AdminProductForm({closeForm, product}) {
       setSelectedFile(null);
     }
   };
-
+  // console.log(allProducts)
   const handleFileRemove = () => {
     setFileURL('');
     setSelectedFile(null);
@@ -79,10 +80,9 @@ function AdminProductForm({closeForm, product}) {
         price: editedProduct.price,
         quantity: editedProduct.quantity,
         status: editedProduct.productStatus,
-        // imagePath: 'product.webp',
       });
     } 
-  }, [editedProduct])
+  }, [product])
 
   const formValidation = {
     name: {
@@ -173,26 +173,29 @@ function AdminProductForm({closeForm, product}) {
     let newId;
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
-    // console.log(formData.getAll());
     if(editedProduct && editedProduct.id){
-    //  editProduct({id: editedProduct.id, body: data})
-    //   .unwrap()
-    //     .then(() => {
-    //       addImage({id: editedProduct.id, body: formData})
-    //       .then(()=>{
-    //         toast.success('Product successfully edited');
-    //       })
-    //       .catch((error)=>{
-    //         console.error('rejected', error);
-    //         toast.error('картинку не вдалось додати')
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       setSelectedFile(null);
-    //       console.error('rejected', error);
-    //       toast.error('товар не вдалось редагувати')
-    //     });
-    //     setEditedProduct({});
+      console.log(data)
+
+     editProduct({id: editedProduct.id, body: data})
+      .unwrap()
+        .then(() => {
+          console.log('done')
+          // editImage({id: editedProduct.id, body: formData})
+          // .then(()=>{
+          //   toast.success('Product successfully edited');
+          // })
+          // .catch((error)=>{
+          //   console.error('rejected', error);
+          //   toast.error('картинку не вдалось додати')
+          // });
+        })
+        .catch((error) => {
+          setSelectedFile(null);
+          console.error('rejected', error);
+          toast.error('товар не вдалось редагувати')
+        });
+        setEditedProduct({});
+        
     }
     else{
       addProduct({
@@ -208,17 +211,20 @@ function AdminProductForm({closeForm, product}) {
         .then((payload) => {
           newId = payload;
           addImage({id: newId, body: formData})
-          .then(()=>{
+          .then((data)=>{
             toast.success('Product successfully created');
           })
           .catch((error)=>{
             console.error('rejected', error);
-            toast.error('товар додався, але картинка не загрузилась')
           });
         })
         .catch((error) => {
+          if(allProducts.find(prod=>prod.article === data.article)){
+            toast.error('такий артикль існує вже')
+          } else{
+            toast.error('не вдалось додати товар')
+          }
           console.error('rejected', error.data);
-          toast.error('не вдалось додати товар')
         });
     }
     closeForm(false);

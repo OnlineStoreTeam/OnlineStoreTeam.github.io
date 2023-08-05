@@ -4,20 +4,15 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    // baseUrl: 'http://localhost:3004',
     baseUrl: 'http://localhost:8080',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      // query: (page = 0, limit = 10) => `/products?_page=${page}&_limit=${limit}`,
-      // query: (limit = 10) => `products?_limit=${limit}`,
-      // query: ({page, limit}) => `admin/products?page=0&size=15`,
       query: ({page, limit}) => `admin/products?page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
           ? [
               ...result.content.map(({ id }) => ({ type: 'Products', id })),
-              // ...result.map(({ id }) => ({ type: 'Products', id })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
@@ -45,9 +40,22 @@ export const productApi = createApi({
           url: `admin/products/${id}/image`,
           method: 'POST',
           body,
-          headers: {
-            'Content-type': 'multipart/form-data',
-          },
+          // headers: {
+          //   'Content-type': 'multipart/form-data',
+          // },
+        };
+      },
+      invalidatesTags: [{ type: 'Products', id: 'LIST' }],
+    }),
+    editImage: builder.mutation({
+      query({id, body}) {
+        return {
+          url: `admin/products/${id}/image`,
+          method: 'PUT',
+          body,
+          // headers: {
+          //   'Content-type': 'multipart/form-data',
+          // },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
@@ -80,5 +88,6 @@ export const {
   useAddProductMutation,
   useAddImageMutation,
   useEditProductMutation,
+  useEditImageMutation,
   useDeleteProductMutation,
 } = productApi;

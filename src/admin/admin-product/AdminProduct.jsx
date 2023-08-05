@@ -9,18 +9,22 @@ import {
 } from '../../store/productApi';
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
+import AdminProductDeleteMessage from './AdminProductDeleteMessage';
 import ReactPaginate from 'react-paginate';
 
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen ]= useState(false); 
+  const [deletedProductId, setDeletedProductId]= useState();
   const [countResults, setCountResults] = useState();
   const [pageCount, setPageCount ] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const { data } = useGetAllProductsQuery({page: currentPage, limit: 10});
+  const { data } = useGetAllProductsQuery({page: currentPage, limit: 30});
   const [selectedProduct, setSelectedProduct] = useState(null);
   
   const closeForm = (state) => {
     setFormIsOpen(state);
+    setSelectedProduct({})
   };
  
   const handlePageClick = (page)=>{
@@ -31,11 +35,21 @@ function AdminProduct() {
       console.log(page.selected)
     }
   }
-
+  // console.log(data)
   const editProduct = (prod)=>{
     setFormIsOpen(true);
     setSelectedProduct(prod);
   }
+
+  const isOpenModalDelete = (state)=>{
+    setDeleteModalOpen(state);
+  }
+  const deleteProduct = (id)=>{
+    setDeletedProductId(id);
+    setDeleteModalOpen(true);
+  }
+
+
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
       <nav className='text-small'>
@@ -59,7 +73,11 @@ function AdminProduct() {
       </div>
 
       {formIsOpen && 
-      <AdminProductForm closeForm={closeForm} product={selectedProduct}/>}
+      <AdminProductForm closeForm={closeForm} product={selectedProduct} allProducts={data?.content}/>}
+
+      {deleteModalOpen && 
+        <AdminProductDeleteMessage isOpenModalDelete={isOpenModalDelete} id={deletedProductId}/>
+      }
 
       <div className='mt-6 border border-neutral-300 rounded'>
         <table className=' w-full text-normal'>
@@ -141,7 +159,7 @@ function AdminProduct() {
               </tr>
             }
             {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
-            {data?.content.map(product => <AdminProductItem key={product.id} product={product} editProduct={editProduct} />)}           
+            {data?.content.map(product => <AdminProductItem key={product.id} product={product} editProduct={editProduct} deleteProduct={deleteProduct}/>)}           
           </tbody>
         </table>
       </div>
