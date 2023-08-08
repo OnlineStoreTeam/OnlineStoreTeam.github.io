@@ -15,27 +15,25 @@ import ReactPaginate from 'react-paginate';
 function AdminProduct() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen ]= useState(false); 
-  const [deletedProductId, setDeletedProductId]= useState();
+  const [deletedProduct, setDeletedProduct]= useState();
   const [countResults, setCountResults] = useState();
-  const [pageCount, setPageCount ] = useState(0);
+  const [pageCount, setPageCount ] = useState();
   const [currentPage, setCurrentPage] = useState(0);
-  const { data } = useGetAllProductsQuery({page: currentPage, limit: 30});
+  const { data } = useGetAllProductsQuery({page: currentPage, limit: 10});
   const [selectedProduct, setSelectedProduct] = useState(null);
   
   const closeForm = (state) => {
     setFormIsOpen(state);
     setSelectedProduct({})
   };
- 
   const handlePageClick = (page)=>{
-    if(page && data){
-      setCountResults(data.totalElements);
-      setPageCount(data.totalPages);
-      setCurrentPage(page.selected);
-      console.log(page.selected)
-    }
+    setCurrentPage(page?.selected);    
   }
-  // console.log(data)
+  useEffect(()=>{
+    setCountResults(data?.totalElements);
+    setPageCount(data?.totalPages);
+  }, [data])
+
   const editProduct = (prod)=>{
     setFormIsOpen(true);
     setSelectedProduct(prod);
@@ -44,11 +42,10 @@ function AdminProduct() {
   const isOpenModalDelete = (state)=>{
     setDeleteModalOpen(state);
   }
-  const deleteProduct = (id)=>{
-    setDeletedProductId(id);
+  const deleteProduct = (prod)=>{
+    setDeletedProduct(prod);
     setDeleteModalOpen(true);
   }
-
 
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
@@ -76,7 +73,7 @@ function AdminProduct() {
       <AdminProductForm closeForm={closeForm} product={selectedProduct} allProducts={data?.content}/>}
 
       {deleteModalOpen && 
-        <AdminProductDeleteMessage isOpenModalDelete={isOpenModalDelete} id={deletedProductId}/>
+        <AdminProductDeleteMessage isOpenModalDelete={isOpenModalDelete} product={deletedProduct}/>
       }
 
       <div className='mt-6 border border-neutral-300 rounded'>
@@ -165,7 +162,7 @@ function AdminProduct() {
       </div>
 
       <div className='mt-12 flex justify-end'>
-        {data && <ReactPaginate
+       {countResults>10 && <ReactPaginate
           onPageChange={handlePageClick}
           pageRangeDisplayed={3}
           marginPagesDisplayed={2}
@@ -180,7 +177,7 @@ function AdminProduct() {
           // pageClassName='page-item'
           pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
           activeLinkClassName='bg-black border-black text-white'
-          disabledClassName='text-gray-400'
+          disabledClassName='opacity-50 cursor-default'
           breakLabel='...'
           // breakClassName='page-item'
           breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'

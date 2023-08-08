@@ -174,7 +174,6 @@ function AdminProductForm({closeForm, product, allProducts}) {
     const formData = new FormData();
     formData.append('imageFile', selectedFile);
     if(editedProduct && editedProduct.id){
-      console.log(data)
 
      editProduct({id: editedProduct.id, body: data})
       .unwrap()
@@ -212,6 +211,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
           newId = payload;
           addImage({id: newId, body: formData})
           .then((data)=>{
+            // console.log(data)
             toast.success('Product successfully created');
           })
           .catch((error)=>{

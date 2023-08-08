@@ -2,12 +2,12 @@ import {useDeleteProductMutation} from '../../store/productApi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AdminProductDeleteMessage({id, isOpenModalDelete}) {
+function AdminProductDeleteMessage({product, isOpenModalDelete}) {
 
     const [deleteProduct]= useDeleteProductMutation();
 
     const onDelete = ()=>{
-        deleteProduct(id)
+        deleteProduct(product.id)
             .then((message)=>{
                 console.log(message);
                 // toast.success('Product successfully deleted');
@@ -48,17 +48,17 @@ function AdminProductDeleteMessage({id, isOpenModalDelete}) {
                         </div>
                     </div>
                     <div className='flex flex-col justify-between gap-3' >
-                        <h1 className='text-center text-base font-bold'>Delete “111F patched jeans with fancy badges? </h1>
+                        <h1 className='text-center text-base font-bold'>Delete "{product.name}" </h1>
                         <p className='text-center font-normal text-sm leading-5 text-neutral-600 '>Are you sure you want to delete the selected product?</p>
                     </div>
                 </div>
                 <div className="flex justify-end">
                     <button 
-                        className="py-2 px-4 mr-3 w-20 font-bold rounded border border-transparent hover:border-neutral-600 "
+                        className="btn-text"
                         onClick={()=>isOpenModalDelete(false)}
                         >Cancel</button>
                     <button 
-                        className="py-2 px-4 w-36 border border-transparent rounded font-bold hover:border-neutral-600 "
+                        className="btn-secondary"
                         onClick={()=>onDelete()}
                         >Delete</button>
                 </div>

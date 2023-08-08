@@ -12,7 +12,7 @@
     @apply min-w-[144px] h-11 px-4 rounded-sm text-base text-white whitespace-nowrap bg-black hover:bg-orange-400 active:bg-orange-500 disabled:bg-black disabled:opacity-40;
   }
   .btn-secondary {
-    @apply min-w-[144px] h-11 px-4 border border-neutral-400 rounded-sm text-base text-black whitespace-nowrap bg-transparent hover:bg-neutral-200 active:bg-neutral-300 disabled:bg-transparent disabled:opacity-40;
+    @apply min-w-[144px] h-11 px-4 border border-neutral-400 rounded-sm text-base font-bold text-black whitespace-nowrap bg-transparent hover:bg-neutral-200 active:bg-neutral-300 disabled:bg-transparent disabled:opacity-40;
   }
   .btn-image {
     @apply inline-flex justify-center items-center gap-2;
@@ -27,7 +27,7 @@
     @apply z-10 w-9 h-9 px-2.5 py-2.5 border border-neutral-400 rounded-sm text-base text-black bg-transparent hover:bg-neutral-300 hover:border-neutral-500 active:bg-neutral-400 disabled:bg-transparent disabled:opacity-40;
   }
   .btn-text {
-    @apply min-w-[144px] h-11 px-4 text-base whitespace-nowrap text-black bg-transparent hover:text-orange-400 active:text-orange-500 disabled:text-black disabled:opacity-40;
+    @apply min-w-[144px] h-11 px-4 text-base font-bold whitespace-nowrap text-black bg-transparent hover:text-orange-400 active:text-orange-500 disabled:text-black disabled:opacity-40;
   }
 
   .input {

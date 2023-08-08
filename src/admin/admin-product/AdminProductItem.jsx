@@ -15,8 +15,8 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
     editProduct(prod);
     setDisplayMenu(false);
   }
-  const deleteProductFunc = (id)=>{
-    deleteProduct(id)
+  const deleteProductFunc = (prod)=>{
+    deleteProduct(prod)
     setDisplayMenu(false);
   }
   
@@ -26,7 +26,7 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
         <img 
           src={product.imagePath}
           // src={'http://localhost:8080/'+product.imagePath} 
-          // src='http:\\localhost:8080\images\image.png' 
+          // src='http:\\localhost:8080\images\\image.png' 
           // src='/product.webp' 
           alt='' className='h-12' 
         />
@@ -64,7 +64,7 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
               Edit
             </button>
             <button type='button' className='w-full px-4 text-small flex items-center gap-2 hover:bg-neutral-200' 
-              onClick={() => deleteProductFunc(product.id)}>
+              onClick={() => deleteProductFunc(product)}>
               <LuTrash2 className='text-base' />
               Delete
             </button>
