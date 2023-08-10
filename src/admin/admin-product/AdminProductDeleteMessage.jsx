@@ -8,13 +8,12 @@ function AdminProductDeleteMessage({product, isOpenModalDelete}) {
 
     const onDelete = ()=>{
         deleteProduct(product.id)
-            .then((message)=>{
-                console.log(message);
-                // toast.success('Product successfully deleted');
+            .then(()=>{
+                toast.success('Product successfully removed');
             })
             .catch((error)=>{
                 console.log(error.message);
-                toast.error('товар не вдалось видалити')
+                toast.error('Failed to delete the product')
             })
         isOpenModalDelete(false);
     }

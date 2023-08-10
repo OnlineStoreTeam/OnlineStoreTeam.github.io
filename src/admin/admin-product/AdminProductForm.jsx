@@ -44,8 +44,8 @@ function AdminProductForm({closeForm, product, allProducts}) {
       setFileURL('');
       setSelectedFile(null);
     }
+    console.log(URL.createObjectURL(file))
   };
-  // console.log(allProducts)
   const handleFileRemove = () => {
     setFileURL('');
     setSelectedFile(null);
@@ -189,12 +189,14 @@ function AdminProductForm({closeForm, product, allProducts}) {
           // });
         })
         .catch((error) => {
-          setSelectedFile(null);
+         
           console.error('rejected', error);
-          toast.error('товар не вдалось редагувати')
+          toast.error('Editing the product was unsuccessful')
         });
-        setEditedProduct({});
-        
+      setSelectedFile(null);
+      setEditedProduct({});
+      closeForm(false);
+      reset();
     }
     else{
       addProduct({
@@ -211,30 +213,28 @@ function AdminProductForm({closeForm, product, allProducts}) {
           newId = payload;
           addImage({id: newId, body: formData})
           .then((data)=>{
-            // console.log(data)
+            console.log(data)
             toast.success('Product successfully created');
           })
           .catch((error)=>{
             console.error('rejected', error);
           });
+          closeForm(false);
+          reset();
         })
         .catch((error) => {
           if(allProducts.find(prod=>prod.article === data.article)){
-            toast.error('такий артикль існує вже')
+            toast.error('Such an article already exists')
           } else{
-            toast.error('не вдалось додати товар')
+            toast.error('Adding the product was unsuccessful')
+            closeForm(false);
+            reset();
           }
           console.error('rejected', error.data);
         });
     }
-    closeForm(false);
-    reset();
+    
   };
-
-
-  // const notify1 = () => toast.success("Wow so easy!");
-  // const notify2 = () => toast.error("Write your text :)");
-
 
   return (
     <div className='overlay px-10 flex justify-center items-center lg:px-36 z-40'>
@@ -393,9 +393,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
                   <input
                     type='file'
                     id='input_file'
-                    // className=' w-full input-file '
                     className={' input-file absolute opacity-0 '+(selectedFile? 'w-0': 'w-full')}
-                    // placeholder='Max file size 500 kB'
                     accept='.png,.jpg,.jpeg,.webp,'
                     size='512000' 
                     {...register('image', formValidation.image)}

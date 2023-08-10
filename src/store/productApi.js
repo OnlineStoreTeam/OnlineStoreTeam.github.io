@@ -18,7 +18,7 @@ export const productApi = createApi({
           : [{ type: 'Products', id: 'LIST' }],
     }),
     getOneProduct: builder.query({
-      query: (id = 1) => `products/${id}`,
+      query: (id = 1) => `admin/products/${id}`,
     }),
     addProduct: builder.mutation({
       query(body) {
@@ -63,9 +63,12 @@ export const productApi = createApi({
     editProduct: builder.mutation({
       query(id, body) {
         return {
-          url: `products/${id}`,
+          url: `admin/products/${id}`,
           method: 'PUT',
           body,
+          // headers: {
+          //   'Content-type': 'application/json; charset=UTF-8',
+          // },
         }
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }]
@@ -73,7 +76,7 @@ export const productApi = createApi({
     deleteProduct: builder.mutation({
       query(id) {
         return {
-          url: `products/${id}`,
+          url: `admin/products/${id}`,
           method: 'DELETE',
         }
       },
