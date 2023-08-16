@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddProductMutation, useAddImageMutation, useEditProductMutation, useEditImageMutation } from '../../store/productApi'
+import { useAddProductMutation, useEditProductMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
 //   LuAlertTriangle, 
@@ -17,38 +17,30 @@ import {
 //   LuTrash2, 
   LuX 
 } from "react-icons/lu";
-import { 
-  FiUploadCloud, 
-} from "react-icons/fi";
+// import { 
+//   FiUploadCloud, 
+// } from "react-icons/fi";
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminProductUploadWidget from './AdminProductUploadWidget';
 
 function AdminProductForm({closeForm, product, allProducts}) {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [addProduct] = useAddProductMutation();
-  const [addImage] = useAddImageMutation();
+  // const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
-  const [editImage] = useEditImageMutation();
-  const [fileURL, setFileURL] = useState('');
+  // const [editImage] = useEditImageMutation();
   const [editedProduct, setEditedProduct] = useState(product);
+  const [imageUrl, setImageUrl] = useState();
+  const [imageName, setImageName] = useState();
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setFileURL(url);
-      setSelectedFile(file);
-      
-    } else if(!file){
-      setFileURL('');
-      setSelectedFile(null);
-    }
-    console.log(URL.createObjectURL(file))
-  };
+  const handleImageAdd = (name, url)=>{
+    setImageName(name);
+    setImageUrl(url);
+  }
   const handleFileRemove = () => {
-    setFileURL('');
-    setSelectedFile(null);
+    setImageName('');
+    setImageUrl('');
   };
   const {
     register,
@@ -160,40 +152,31 @@ function AdminProductForm({closeForm, product, allProducts}) {
     status: { required: 'This field is required!' },
     image: { 
       required: 'This field is required!', 
-      validate: v => {
-        if (v && v[0] && v[0].size) {
-          return v[0].size < 512000 || 'Max size 500kb';
-        }
-        return true;
-      },
     },
   };
   
   const onSubmit = (data) => {
-    let newId;
-    const formData = new FormData();
-    formData.append('imageFile', selectedFile);
+    const newProduct = {
+      name: data.name,
+      article: data.article,
+      category: data.category,
+      description: data.description,
+      price: data.price,
+      quantity: data.quantity,
+      productStatus: data.status,
+      imagePath: imageUrl,
+    }
     if(editedProduct && editedProduct.id){
 
-     editProduct({id: editedProduct.id, body: data})
-      .unwrap()
+     editProduct({id: editedProduct.id, body: newProduct})
         .then(() => {
           console.log('done')
-          // editImage({id: editedProduct.id, body: formData})
-          // .then(()=>{
           //   toast.success('Product successfully edited');
-          // })
-          // .catch((error)=>{
-          //   console.error('rejected', error);
-          //   toast.error('картинку не вдалось додати')
-          // });
         })
         .catch((error) => {
-         
           console.error('rejected', error);
           toast.error('Editing the product was unsuccessful')
         });
-      setSelectedFile(null);
       setEditedProduct({});
       closeForm(false);
       reset();
@@ -207,18 +190,10 @@ function AdminProductForm({closeForm, product, allProducts}) {
         price: data.price,
         quantity: data.quantity,
         productStatus: data.status,
-        // imagePath: 'product.webp',
-      }).unwrap()
-        .then((payload) => {
-          newId = payload;
-          addImage({id: newId, body: formData})
-          .then((data)=>{
-            console.log(data)
-            toast.success('Product successfully created');
-          })
-          .catch((error)=>{
-            console.error('rejected', error);
-          });
+        imagePath: imageUrl,
+      }).then((result) => {
+          console.log(result)
+          //   toast.success('Product successfully created');
           closeForm(false);
           reset();
         })
@@ -233,7 +208,6 @@ function AdminProductForm({closeForm, product, allProducts}) {
           console.error('rejected', error.data);
         });
     }
-    
   };
 
   return (
@@ -388,45 +362,27 @@ function AdminProductForm({closeForm, product, allProducts}) {
                 </div>
               </div>
               <div className='col-span-2'>
-                <div className='relative'>Image {!selectedFile && <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />}</div>
+                <div className='relative'>Image {!imageUrl && <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />}</div>
                 <div className='relative'>
-                  <input
-                    type='file'
-                    id='input_file'
-                    className={' input-file absolute opacity-0 '+(selectedFile? 'w-0': 'w-full')}
-                    accept='.png,.jpg,.jpeg,.webp,'
-                    size='512000' 
-                    {...register('image', formValidation.image)}
-                    onChange={handleFileChange}
-                  />
-                  {!selectedFile && 
-                    <label 
-                      htmlFor="input_file" 
-                      className='w-full z-20 h-10 mt-0.5 grid grid-cols-[151px_1fr]'
-                    > 
-                      <span className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
-                        <FiUploadCloud className='text-xl' />
-                        Select Image
-                      </span>
-                      <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500'+(errors?.image ? ' input-error' : ' border-neutral-400')}>
-                        Max file size 500 kB
-                      </span>
-                    </label>
+                  {!imageUrl && 
+                    <AdminProductUploadWidget 
+                      handleImageAdd={handleImageAdd} 
+                    />
                   }
-                  {selectedFile &&
+                  {imageUrl &&
                     <div className='input w-2/5 mt-1 flex items-center justify-between'>
-                      <img src={fileURL} alt="" className='max-h-full' />
-                      <span className='pl-1 grow'>{selectedFile.name}</span>
+                      <img src={imageUrl} alt="" className='max-h-full' />
+                      <span className='pl-1 grow'>{imageName}</span>
                       <button type='button' onClick={handleFileRemove}><LuX className='text-lg'/></button>                 
                     </div>
                   }
                 
                 </div>
                 <div className='h-5 mt-1'>
-                  {errors?.image &&
+                  {!imageUrl &&
                   <p className='text-error flex'>
                     <LuAlertCircle className='w-4 h-4 text-error mr-1' />
-                    {errors?.image?.message || 'Error!'}
+                    {'This field is required!'}
                   </p>}
                 </div>
               </div>
@@ -440,7 +396,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
                 </button>
                 <button
                   type='submit'
-                  disabled={!isValid}
+                  disabled={!isValid || !imageUrl}
                   className='btn-primary w-40'
                 >
                   Save

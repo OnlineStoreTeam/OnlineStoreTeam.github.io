@@ -4,7 +4,7 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'https://happytail.onrender.com/',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({
@@ -23,7 +23,6 @@ export const productApi = createApi({
     addProduct: builder.mutation({
       query(body) {
         return {
-          // url: 'products',
           url: 'admin/products',
           method: 'POST',
           body,
@@ -34,41 +33,41 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }]
     }),
-    addImage: builder.mutation({
-      query({id, body}) {
-        return {
-          url: `admin/products/${id}/image`,
-          method: 'POST',
-          body,
-          // headers: {
-          //   'Content-type': 'multipart/form-data',
-          // },
-        };
-      },
-      invalidatesTags: [{ type: 'Products', id: 'LIST' }],
-    }),
-    editImage: builder.mutation({
-      query({id, body}) {
-        return {
-          url: `admin/products/${id}/image`,
-          method: 'PUT',
-          body,
-          // headers: {
-          //   'Content-type': 'multipart/form-data',
-          // },
-        };
-      },
-      invalidatesTags: [{ type: 'Products', id: 'LIST' }],
-    }),
+    // addImage: builder.mutation({
+    //   query({id, body}) {
+    //     return {
+    //       url: `admin/products/${id}/image`,
+    //       method: 'POST',
+    //       body,
+    //       // headers: {
+    //       //   'Content-type': 'multipart/form-data',
+    //       // },
+    //     };
+    //   },
+    //   invalidatesTags: [{ type: 'Products', id: 'LIST' }],
+    // }),
+    // editImage: builder.mutation({
+    //   query({id, body}) {
+    //     return {
+    //       url: `admin/products/${id}/image`,
+    //       method: 'PUT',
+    //       body,
+    //       // headers: {
+    //       //   'Content-type': 'multipart/form-data',
+    //       // },
+    //     };
+    //   },
+    //   invalidatesTags: [{ type: 'Products', id: 'LIST' }],
+    // }),
     editProduct: builder.mutation({
       query(id, body) {
         return {
           url: `admin/products/${id}`,
           method: 'PUT',
           body,
-          // headers: {
-          //   'Content-type': 'application/json; charset=UTF-8',
-          // },
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         }
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }]
@@ -89,8 +88,8 @@ export const {
   useGetAllProductsQuery,
   useGetOneProductQuery,
   useAddProductMutation,
-  useAddImageMutation,
+  // useAddImageMutation,
   useEditProductMutation,
-  useEditImageMutation,
+  // useEditImageMutation,
   useDeleteProductMutation,
 } = productApi;
