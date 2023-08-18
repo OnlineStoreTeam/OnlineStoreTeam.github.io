@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import {Link, NavLink, Outlet, useNavigate} from 'react-router-dom';
 
 import { 
   LuChevronLeft, 
@@ -8,6 +8,13 @@ import {
 } from "react-icons/lu";
 
 function Admin() {
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    localStorage.removeItem('loggedInEmail');
+    localStorage.removeItem('loggedInPassword');
+    navigate('/admin/auth');
+  };
   const setActiveLink = ({ isActive }) =>
     'w-full mb-8 pl-14 py-2 headline-2 flex items-center gap-3  hover:bg-neutral-100/20 ' + (isActive ? 'bg-orange-400 hover:bg-orange-400 text-white' : 'bg-transparent text-neutral-400');
 
@@ -45,7 +52,7 @@ function Admin() {
             </button>
             <button 
               className='btn-secondary btn-image' 
-              onClick={() => console.log('Admin Log Out')}
+              onClick={handleLogOut}
             >
               <LuLogOut  className='text-xl' />
               Log Out
