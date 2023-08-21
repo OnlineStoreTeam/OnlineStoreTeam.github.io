@@ -79,6 +79,7 @@ const HeaderContainer = styled(Box)`
   display: flex;
   width: 100%;
   padding-top: 16px;
+  padding-bottom: 16px;
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;

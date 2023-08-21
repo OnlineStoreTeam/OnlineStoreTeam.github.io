@@ -6,10 +6,10 @@ import Header from "../Header/Header";
 function Layout() {
 
   return (
-    <div className='bg-white'>
+    <div className=' h-screen bg-white flex flex-col justify-between '>
       <Header />
 
-      <main>
+      <main className='grow'>
         <Outlet />
       </main>
 

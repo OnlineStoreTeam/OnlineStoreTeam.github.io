@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Link} from "react-router-dom";
 import {Typography} from "@mui/material";
 import { styled as muiStyled } from '@mui/system';
+import { CategoryNameContext } from '../Context';
 
 
 const NavLinkTabList = muiStyled(Typography)`
@@ -12,11 +13,21 @@ const NavLinkTabList = muiStyled(Typography)`
   line-height: normal;
 `;
 
-const NavLinkTab = ({ label }) => (
-    <>
-        <Link to='/'>
-            <NavLinkTabList>{label}</NavLinkTabList>
-        </Link>
-    </>
-);
+function NavLinkTab ({ label, path }) {
+    const { categoryName, setCategoryName} = useContext(CategoryNameContext);
+
+    const choseCategory = ()=>{
+        setCategoryName(label);
+    }
+
+    return(
+        <>
+            <Link to={path} onClick={choseCategory}>
+                <NavLinkTabList>{label}</NavLinkTabList>
+            </Link>
+        </>
+    )
+        
+    
+};
 export default NavLinkTab;

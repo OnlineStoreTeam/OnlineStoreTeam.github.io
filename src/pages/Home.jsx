@@ -25,58 +25,11 @@ function Home() {
         <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
             Home
         </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
+        
         <Box sx={{backgroundColor: 'grey', width: '150px', padding: '10px', margin: '0 auto' }}>
            <NavLink to='/admin/product' className={setActiveLink}>Admin</NavLink>
         </Box>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-        Home
-    </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-        Home
-    </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-        <h1 className='mt-4 text-neutral-600 text-3xl font-bold text-center'>
-            Home
-        </h1>
-
+  
     </div>
   );
 }
