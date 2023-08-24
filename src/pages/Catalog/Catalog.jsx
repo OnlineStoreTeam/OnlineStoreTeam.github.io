@@ -12,11 +12,10 @@ import { Box } from "@mui/system";
 import ProductCard from "../../components/ProductCard/ProductCard";
 
 const Wrapper = styled(Container)`
-  padding: 0 56px;
+  // padding: 0 56px;
 `;
 const TextCategory = styled(Typography)`
   text-align: center;
-  font-family: Lato;
   font-size: 16px;
   font-style: normal;
   font-weight: 300;
@@ -27,7 +26,7 @@ function Catalog() {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
 
   return (
-    <Wrapper maxWidth="false" disableGutters="true">
+    <Wrapper maxWidth="lg"  disableGutters="true">
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="text.primary" href="/">
           Home
@@ -44,20 +43,28 @@ function Catalog() {
           component="h1"
           align="center"
           sx={{ fontSize: "32px" }}
+          fontFamily='Lato'
         >
           {categoryName}
         </Typography>
-        <TextCategory component="p">
+        <TextCategory component="p" fontFamily='Lato'>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis nemo
           fuga placeat. Vero nemo soluta illo, at et repellat nulla?
           Necessitatibus, harum commo
         </TextCategory>
       </Box>
-      <Grid container columns={{ xs: 4, sm: 8, md: 12 }} pt={2} pb={5} gap={3} >
-        <ProductCard/>
-        <ProductCard/>
-        <ProductCard/>
-        <ProductCard/>
+      <Grid 
+          container 
+          columns={{ xs: 4}} 
+          pt={2} 
+          pb={5} 
+          gap={4}
+          justifyContent="start"
+          >
+          <ProductCard/>
+          <ProductCard/>
+          <ProductCard/>
+          <ProductCard/>
       </Grid>
     </Wrapper>
   );
