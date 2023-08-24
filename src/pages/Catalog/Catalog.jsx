@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Breadcrumbs,
@@ -11,9 +11,11 @@ import { CategoryNameContext } from "../../components/Context";
 import { Box } from "@mui/system";
 import ProductCard from "../../components/ProductCard/ProductCard";
 
-const Wrapper = styled(Container)`
-  // padding: 0 56px;
-`;
+import { 
+  useGetAllProductsQuery,
+} from '../../store/productApi';
+
+
 const TextCategory = styled(Typography)`
   text-align: center;
   font-size: 16px;
@@ -24,9 +26,18 @@ const TextCategory = styled(Typography)`
 
 function Catalog() {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [ catalog, setCatalog ]= useState();
 
+  const { data } = useGetAllProductsQuery({page: currentPage, limit: 12});
+
+  useEffect(()=>{
+    setCatalog(data?.content);
+  }, [data])
+
+  console.log(catalog)
   return (
-    <Wrapper maxWidth="lg"  disableGutters="true">
+    <Container maxWidth="lg"  disableGutters={true}>
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="text.primary" href="/">
           Home
@@ -61,12 +72,9 @@ function Catalog() {
           gap={4}
           justifyContent="start"
           >
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
+         {catalog?.map(product => <ProductCard key={product.id} product={product} />)}           
       </Grid>
-    </Wrapper>
+    </Container>
   );
 }
 export default Catalog;
