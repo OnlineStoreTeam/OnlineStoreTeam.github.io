@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { styled as muiStyled } from "@mui/system";
 import {
@@ -31,11 +31,19 @@ const StyledCard = styled(Card)`
   transition: all 0.2s ease-in-out;
   &:hover {
     cursor: pointer;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
   }
 `;
 
 function ProductCard({ product }) {
   const [isCardHover, setIsCardHover] = useState(false);
+  const [ productName, setProductName ] = useState(product.name);
+
+  useEffect(()=>{
+    if(productName.length > 50){
+      setProductName( productName.substring(0, 50) + '...');
+    }
+  }, [])
 
   return (
     <Grid item>
@@ -54,7 +62,7 @@ function ProductCard({ product }) {
           // image={product.imagePath}
           title="photo"
           sx={{
-            transform: isCardHover ? "scale(0.9)" : "scale(1)",
+            transform: isCardHover ? "scale(0.95)" : "scale(1)",
             height: isCardHover ? "223px" : "287px",
           }}
         />
@@ -73,11 +81,17 @@ function ProductCard({ product }) {
             variant="h6"
             component="h2"
             fontFamily="Lato"
+            fontWeight={700}
+            height={60}
             pb={1.5}
+            mb={0}
+            lineHeight={1}
           >
-            {product.name}
+            {
+            productName
+            }
           </Typography>
-          <Typography variant="caption text" color="text.secondary">
+          <Typography variant="caption text">
             $ {product.price}
           </Typography>
         </CardContent>
