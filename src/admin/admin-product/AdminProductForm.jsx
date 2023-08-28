@@ -3,23 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useAddProductMutation, useEditProductMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
-//   LuAlertTriangle, 
-//   LuCheckCircle, 
-//   LuChevronDown, 
-//   LuChevronLeft, 
-//   LuChevronUp, 
-//   LuEdit2, 
-//   LuFileText, 
-  LuImage, 
-//   LuMoreHorizontal, 
-//   LuPlusCircle, 
-//   LuSearch, 
-//   LuTrash2, 
   LuX 
 } from "react-icons/lu";
-// import { 
-//   FiUploadCloud, 
-// } from "react-icons/fi";
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,9 +12,7 @@ import AdminProductUploadWidget from './AdminProductUploadWidget';
 
 function AdminProductForm({closeForm, product, allProducts}) {
   const [addProduct] = useAddProductMutation();
-  // const [addImage] = useAddImageMutation();
   const [editProduct] = useEditProductMutation();
-  // const [editImage] = useEditImageMutation();
   const [editedProduct, setEditedProduct] = useState(product);
   const [imageUrl, setImageUrl] = useState();
   const [imageName, setImageName] = useState();
@@ -166,12 +149,11 @@ function AdminProductForm({closeForm, product, allProducts}) {
       productStatus: data.status,
       imagePath: imageUrl,
     }
+    
     if(editedProduct && editedProduct.id){
-
      editProduct({id: editedProduct.id, body: newProduct})
         .then(() => {
-          console.log('done')
-          //   toast.success('Product successfully edited');
+            toast.success('Product successfully edited');
         })
         .catch((error) => {
           console.error('rejected', error);
@@ -193,7 +175,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
         imagePath: imageUrl,
       }).then((result) => {
           console.log(result)
-          //   toast.success('Product successfully created');
+          toast.success('Product successfully created');
           closeForm(false);
           reset();
         })

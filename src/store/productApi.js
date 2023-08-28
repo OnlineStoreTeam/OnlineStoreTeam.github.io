@@ -34,34 +34,8 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }]
     }),
-    // addImage: builder.mutation({
-    //   query({id, body}) {
-    //     return {
-    //       url: `admin/products/${id}/image`,
-    //       method: 'POST',
-    //       body,
-    //       // headers: {
-    //       //   'Content-type': 'multipart/form-data',
-    //       // },
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: 'Products', id: 'LIST' }],
-    // }),
-    // editImage: builder.mutation({
-    //   query({id, body}) {
-    //     return {
-    //       url: `admin/products/${id}/image`,
-    //       method: 'PUT',
-    //       body,
-    //       // headers: {
-    //       //   'Content-type': 'multipart/form-data',
-    //       // },
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: 'Products', id: 'LIST' }],
-    // }),
     editProduct: builder.mutation({
-      query(id, body) {
+      query({id, body}) {
         return {
           url: `admin/products/${id}`,
           method: 'PUT',
@@ -89,8 +63,6 @@ export const {
   useGetAllProductsQuery,
   useGetOneProductQuery,
   useAddProductMutation,
-  // useAddImageMutation,
   useEditProductMutation,
-  // useEditImageMutation,
   useDeleteProductMutation,
 } = productApi;
