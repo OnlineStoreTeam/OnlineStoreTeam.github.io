@@ -22,13 +22,13 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
   
   return (
     <tr className='border-t border-neutral-300 hover:bg-neutral-100 cursor-pointer'>
-      <td className='py-3 px-5'>
+      <td className='py-3 px-3 flex justify-center'>
         <img 
           src={product.imagePath}
           // src={'http://localhost:8080/'+product.imagePath} 
           // src='http:\\localhost:8080\images\\image.png' 
           // src='/product.webp' 
-          alt='' className='h-12' 
+          alt='' className='h-12 block' 
         />
       </td>
       <td className='py-3 px-5'>{product.name}</td>

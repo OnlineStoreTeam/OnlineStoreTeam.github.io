@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useAddProductMutation, useEditProductMutation } from '../../store/productApi'
 import { 
   LuAlertCircle, 
@@ -55,7 +55,9 @@ function AdminProductForm({closeForm, product, allProducts}) {
         price: editedProduct.price,
         quantity: editedProduct.quantity,
         status: editedProduct.productStatus,
+        
       });
+      setImageUrl(editedProduct.imagePath);
     } 
   }, [product])
 
@@ -139,20 +141,22 @@ function AdminProductForm({closeForm, product, allProducts}) {
   };
   
   const onSubmit = (data) => {
-    const newProduct = {
-      name: data.name,
-      article: data.article,
-      category: data.category,
-      description: data.description,
-      price: data.price,
-      quantity: data.quantity,
-      productStatus: data.status,
-      imagePath: imageUrl,
-    }
-    
     if(editedProduct && editedProduct.id){
+      const newProduct = {
+        name: data.name,
+        article: data.article,
+        category: data.category,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        productStatus: data.status,
+        imagePath: imageUrl
+      }
+     
+    //  console.log(newProduct.imagePath)
      editProduct({id: editedProduct.id, body: newProduct})
         .then(() => {
+          // console.log(newProduct.imagePath)
             toast.success('Product successfully edited');
         })
         .catch((error) => {
@@ -173,8 +177,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
         quantity: data.quantity,
         productStatus: data.status,
         imagePath: imageUrl,
-      }).then((result) => {
-          console.log(result)
+      }).then(() => {
           toast.success('Product successfully created');
           closeForm(false);
           reset();

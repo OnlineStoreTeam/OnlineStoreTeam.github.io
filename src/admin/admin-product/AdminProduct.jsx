@@ -32,7 +32,6 @@ function AdminProduct() {
   useEffect(()=>{
     setCountResults(data?.totalElements);
     setPageCount(data?.totalPages);
-    
   }, [data])
 
   const editProduct = (prod)=>{
