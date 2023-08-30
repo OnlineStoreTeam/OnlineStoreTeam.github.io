@@ -6,8 +6,7 @@ import {
   Typography,
   Grid,
   Box,
-  Button,
-  duration
+  Button
 } from "@mui/material";
 import styled from "styled-components";
 import { styled as muiStyled } from "@mui/system";
@@ -16,8 +15,8 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import ReactPaginate from 'react-paginate';
 
 import { 
-  useGetAllProductsQuery,
-} from '../../store/productApi';
+  useGetAllProductsQuery, useGetProductsByCategoryQuery,
+} from '../../store/userProductApi';
 
 
 const TextCategory = styled(Typography)`
@@ -83,6 +82,7 @@ function Catalog() {
 
 
   const { data } = useGetAllProductsQuery({page: currentPage, limit: 12});
+  // const { filteredByCategoryData } = useGetProductsByCategoryQuery({page: currentPage, limit: 12, category: categoryName});
 
   const changeCategoryDescription = ()=>{
     switch(categoryName.toLowerCase()){
@@ -111,12 +111,16 @@ function Catalog() {
     }
   }
   useEffect(()=>{
-    if (data) {
-      setCatalog(data.content);
-      changeCategoryDescription();
-      setCountResults(data.totalElements);
-    setPageCount(data.totalPages);
-    }
+    // if(categoryName === "All products"){
+      setCatalog(data?.content);
+      setCountResults(data?.totalElements);
+      setPageCount(data?.totalPages);
+    // } else{
+    //   setCatalog(filteredByCategoryData?.content);
+    //   setCountResults(filteredByCategoryData?.totalElements);
+    //   setPageCount(filteredByCategoryData?.totalPages);
+    // }
+    changeCategoryDescription();
   }, [data])
 
   const handlePageClick = (page)=>{
