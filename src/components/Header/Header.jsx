@@ -66,14 +66,14 @@
 //
 // export default Header;
 
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Logo from "../Logo/Logo";
 import NavLink from "../NavLink/NavLink";
 import NavIcon from "../NavIcon/NavIcon";
-import {HiMenuAlt1} from "react-icons/hi";
-import { styled as muiStyled } from '@mui/system';
+import { HiMenuAlt1 } from "react-icons/hi";
+import { styled as muiStyled } from "@mui/system";
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -83,7 +83,7 @@ const HeaderContainer = styled(Box)`
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
-  background: #FDFDFD;
+  background: #fdfdfd;
 `;
 const NavBar = styled(Box)`
   display: flex;
@@ -107,7 +107,6 @@ const StyledIcon = styled.div`
   justify-content: center;
 `;
 const MenuTitle = muiStyled(Typography)`
-  font-family: 'lato', sans-serif;
   font-size: 18px;
   color: #161616;
   font-style: normal;
@@ -119,19 +118,19 @@ const StyledHiMenuAlt1 = styled(HiMenuAlt1)`
 `;
 function Header() {
   return (
-      <HeaderContainer>
-          <NavBar>
-              <MenuContainer>
-                  <StyledIcon>
-                      <StyledHiMenuAlt1 />
-                  </StyledIcon>
-                  <MenuTitle>Menu</MenuTitle>
-              </MenuContainer>
-              <Logo />
-              <NavIcon />
-          </NavBar>
-        <NavLink/>
-      </HeaderContainer>
+    <HeaderContainer>
+      <NavBar>
+        <MenuContainer>
+          <StyledIcon>
+            <StyledHiMenuAlt1 />
+          </StyledIcon>
+          <MenuTitle>Menu</MenuTitle>
+        </MenuContainer>
+        <Logo />
+        <NavIcon />
+      </NavBar>
+      <NavLink />
+    </HeaderContainer>
   );
 }
 
