@@ -72,6 +72,7 @@ function Catalog() {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
   const [ catalog, setCatalog ]= useState();
   const [ categoryDescription, setCategoryDescription ] = useState('');
+  const [ categoryTitle, setCategoryTitle ] = useState('');
   const initialCategoryName = useRef(categoryName);
   const [countResults, setCountResults] = useState();
   const [pageCount, setPageCount ] = useState();
@@ -87,24 +88,31 @@ function Catalog() {
   const changeCategoryDescription = ()=>{
     switch(categoryName.toLowerCase()){
       case 'all products':
+        setCategoryTitle("Premium Dog Essentials Catalog");
         setCategoryDescription("Explore our wide range of dog products designed to cater to the needs of your furry friend. From premium dog food and stylish accessories to durable toys and cozy beds, our collection offers everything your dog needs for a happy and healthy life. ")
         break;
       case 'clothing':
+        setCategoryTitle("Clothing Collection");
         setCategoryDescription("Elevate your pup's style with our exquisite collection of dog clothing. From cozy sweaters and trendy jackets to adorable costumes for special occasions, we offer a wide range of options to keep your furry friend both comfortable and fashionable. Browse our selection and dress your dog in charming outfits that reflect their personality.")
         break;
       case 'leads&harnesses':
+        setCategoryTitle("Leads&Harnesses Collection");
         setCategoryDescription("Discover our collection of premium dog leads and harnesses designed for both style and functionality. Whether you're looking for sturdy and reliable leads for walks or comfortable harnesses for added control, our selection offers a variety of options to suit your dog's needs.")
         break;
       case 'collars':
+        setCategoryTitle("Collars Collection");
         setCategoryDescription("Explore our assortment of dog collars that blend style and functionality seamlessly. From elegant leather designs to adjustable nylon options, our collection offers a wide range of collars to suit your dog's personality and needs. Whether you're looking for everyday wear or a special occasion, keep your beloved pet both safe and stylish with our diverse selection of collars.")
         break;
       case 'toys':
+        setCategoryTitle("Toys Collection");
         setCategoryDescription("Discover a world of fun and entertainment with our curated collection of dog toys. From interactive puzzle toys that engage your pet's mind to durable chew toys that satisfy their natural instincts, our range offers a diverse selection to keep your furry friend happily occupied. Explore our assortment and provide your canine companion with hours of joy and playtime.")
         break;
       case 'forniture':
+        setCategoryTitle("Forniture Collection");
         setCategoryDescription("Elevate your dog's comfort with our selection of stylish and functional dog furniture. From cozy beds and plush sofas to ergonomic feeding stations, our collection offers a range of furniture pieces designed to provide your canine companion with a comfortable and relaxing environment. Browse our assortment and create a cozy oasis for your furry friend.")
         break;
       case 'care':
+        setCategoryTitle("Care Collection");
         setCategoryDescription("Nurture your dog's well-being with our comprehensive range of dog care products. From grooming essentials like shampoos and brushes to health supplements and dental care items, our collection offers everything you need to ensure your furry friend's health and happiness. ")
         break;
         
@@ -162,7 +170,7 @@ function Catalog() {
           sx={{ fontSize: "32px" }}
           fontFamily='Lato'
         >
-          {categoryName}
+          {categoryTitle}
         </Typography>
         <TextCategory component="p" fontFamily='Lato'>
         {categoryDescription} 
