@@ -50,7 +50,7 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
             <LuMoreHorizontal />
           </button>
           <div className={
-            'w-40 py-2 bg-white border border-neutral-300 rounded flex flex-col items-start gap-1 absolute top-9 right-0 z-[15]' 
+            'w-40 py-2 bg-white border border-neutral-300 rounded flex flex-col items-start gap-1 absolute top-9 right-0 z-[15] shadow' 
             + (displayMenu ? ' block' : ' hidden')
           }>
             <button type='button' className='w-full px-4 text-small flex items-center gap-2 hover:bg-neutral-200' 
