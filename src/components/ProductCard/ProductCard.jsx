@@ -58,12 +58,13 @@ function ProductCard({ product }) {
       >
       
         <StyledCardMedia
-        image="product.webp"
-          // image={product.imagePath}
+        // image="product.webp"
+          image={product.imagePath}
           title="photo"
           sx={{
             transform: isCardHover ? "scale(0.95)" : "scale(1)",
             height: isCardHover ? "223px" : "287px",
+            
           }}
         />
         <CardContent sx={{ padding: "20px 0" }}>

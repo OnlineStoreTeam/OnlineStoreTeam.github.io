@@ -1,33 +1,23 @@
-import React, { useContext } from 'react';
-import {Link} from "react-router-dom";
-import {Typography} from "@mui/material";
-import { styled as muiStyled } from '@mui/system';
-import { CategoryNameContext } from '../Context';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
+import { CategoryNameContext } from "../Context";
 
+function NavLinkTab({ label, path }) {
+  const { categoryName, setCategoryName } = useContext(CategoryNameContext);
 
-const NavLinkTabList = muiStyled(Typography)`
-  color: #161616;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
+  const choseCategory = () => {
+    setCategoryName(label);
+  };
 
-function NavLinkTab ({ label, path }) {
-    const { categoryName, setCategoryName} = useContext(CategoryNameContext);
-
-    const choseCategory = ()=>{
-        setCategoryName(label);
-    }
-
-    return(
-        <>
-            <Link to={path} onClick={choseCategory}>
-                <NavLinkTabList>{label}</NavLinkTabList>
-            </Link>
-        </>
-    )
-        
-    
-};
+  return (
+    <>
+      <Link to={path} onClick={choseCategory}>
+        <Typography variant="h4" color="#161616">
+          {label}
+        </Typography>
+      </Link>
+    </>
+  );
+}
 export default NavLinkTab;
