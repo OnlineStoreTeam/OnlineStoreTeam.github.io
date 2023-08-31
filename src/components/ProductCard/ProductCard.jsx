@@ -23,6 +23,11 @@ const StyledButton = muiStyled(Button)`
   border-radius: 0;
   text-transform: none;
   transition: all 0.2s ease-in-out;
+ 
+  &.Mui-focusVisible{
+    background-color: black;
+  }
+ 
   `;
 const StyledCard = styled(Card)`
   padding: 28px;
@@ -38,6 +43,7 @@ const StyledCard = styled(Card)`
 function ProductCard({ product }) {
   const [isCardHover, setIsCardHover] = useState(false);
   const [ productName, setProductName ] = useState(product.name);
+  const [ isButtonPressed, setIsButtonPressed ] = useState(false);
 
   useEffect(()=>{
     if(productName.length > 50){
@@ -58,13 +64,13 @@ function ProductCard({ product }) {
       >
       
         <StyledCardMedia
-        // image="product.webp"
-          image={product.imagePath}
+          component="img"
+          src={product.imagePath}
           title="photo"
           sx={{
             transform: isCardHover ? "scale(0.95)" : "scale(1)",
             height: isCardHover ? "223px" : "287px",
-            
+            objectFit: "contain",
           }}
         />
         <CardContent sx={{ padding: "20px 0" }}>
@@ -97,14 +103,17 @@ function ProductCard({ product }) {
           </Typography>
         </CardContent>
         <StyledButton
+          // disableRipple={true}
           variant="contained"
           fullWidth={true}
           disableElevation
-          color="primary"
           disabled = { product.productStatus === 'TEMPORARILY_ABSENT'? true : false }
           sx={{
-            display: isCardHover ? "block" : "none"
+            display: isCardHover ? "block" : "none",
+            // backgroundColor: isButtonPressed ? "#DB8420" : "#F39324"
           }}
+          // onMouseDown={()=>setIsButtonPressed(true)}
+          // onMouseUp={()=> setIsButtonPressed(false)}
         >
           {product.productStatus === 'TEMPORARILY_ABSENT'? 'Out of stock' : 'Add to card'}
         </StyledButton>

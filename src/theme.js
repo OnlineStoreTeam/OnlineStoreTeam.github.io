@@ -23,14 +23,15 @@ const theme = createTheme({
   ],
   palette: {
     primary: {
-      main: "#000000",
-      light: "#FFFFFF",
-      contrastText: "#FFFFFF",
+      main: "#F39324",
+      light: "#FDEFDE",
+      dark: "#DB8420",
+      contrastText: "#FDFDFD",
     },
     secondary: {
-      main: "#FFFFFF",
-      dark: "#FFFFFF",
-      contrastText: "#000000",
+      main: "#C8C8C8",
+      dark: "#B4B4B4",
+      contrastText: "#161616",
     },
     error: {
       main: "#DC362E",
@@ -40,6 +41,14 @@ const theme = createTheme({
       boxShadow: "none",
       color: "#DC362E",
     },
+    success: {
+      main: "#389B48",
+      dark: "#328C41",
+      width: "100%",
+      backgroundColor: "transparent",
+      boxShadow: "none",
+      color: "#389B48",
+    },
     buttonDark: {
       backgroundColor: "#161616",
       borderRadius: 2,
@@ -47,8 +56,9 @@ const theme = createTheme({
       fontSize: "16px",
       padding: "12px 16px",
     },
-    disabled: {
-      backgroundColor: "",
+    action: {
+      disabled: "#FDFDFD",
+      disabledBackground: "rgb(22, 22, 22, 0.4)",
     },
   },
   typography: {

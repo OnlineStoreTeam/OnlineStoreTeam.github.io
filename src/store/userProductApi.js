@@ -19,7 +19,7 @@ export const userProductApi = createApi({
           : [{ type: 'Products', id: 'LIST' }],
     }),
     getProductsByCategory: builder.query({
-        query: ({page, limit, category}) => `products/categories/?page=${page}&size=${limit}&category=${category}`,
+        query: ({category, page, limit }) => `products/categories/${category}?page=${page}&size=${limit}`,
         providesTags: (result) =>
           result
             ? [

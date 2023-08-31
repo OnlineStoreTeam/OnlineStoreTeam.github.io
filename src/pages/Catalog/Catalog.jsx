@@ -83,53 +83,59 @@ function Catalog() {
 
 
   const { data } = useGetAllProductsQuery({page: currentPage, limit: 12});
-  // const { filteredByCategoryData } = useGetProductsByCategoryQuery({page: currentPage, limit: 12, category: categoryName});
+   
+  const { filteredByCategoryData } = useGetProductsByCategoryQuery({ category: "Toys",  page: currentPage, limit:12 });
+
 
   const changeCategoryDescription = ()=>{
     switch(categoryName.toLowerCase()){
       case 'all products':
         setCategoryTitle("Premium Dog Essentials Catalog");
-        setCategoryDescription("Explore our wide range of dog products designed to cater to the needs of your furry friend. From premium dog food and stylish accessories to durable toys and cozy beds, our collection offers everything your dog needs for a happy and healthy life. ")
+        setCategoryDescription("We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog's comfort, happiness, and well-being ")
         break;
       case 'clothing':
         setCategoryTitle("Clothing Collection");
-        setCategoryDescription("Elevate your pup's style with our exquisite collection of dog clothing. From cozy sweaters and trendy jackets to adorable costumes for special occasions, we offer a wide range of options to keep your furry friend both comfortable and fashionable. Browse our selection and dress your dog in charming outfits that reflect their personality.")
+        setCategoryDescription("Transform your dog's style with our exquisite collection of canine clothing. From cozy sweaters to trendy jackets and adorable costumes, elevate your pet's look with our fashionable attire.")
         break;
       case 'leads&harnesses':
         setCategoryTitle("Leads&Harnesses Collection");
-        setCategoryDescription("Discover our collection of premium dog leads and harnesses designed for both style and functionality. Whether you're looking for sturdy and reliable leads for walks or comfortable harnesses for added control, our selection offers a variety of options to suit your dog's needs.")
+        setCategoryDescription("Discover premium dog leads & harnesses that blend style & functionality. Whether for walks or control, our collection offers the perfect accessory for your beloved companion.")
         break;
       case 'collars':
         setCategoryTitle("Collars Collection");
-        setCategoryDescription("Explore our assortment of dog collars that blend style and functionality seamlessly. From elegant leather designs to adjustable nylon options, our collection offers a wide range of collars to suit your dog's personality and needs. Whether you're looking for everyday wear or a special occasion, keep your beloved pet both safe and stylish with our diverse selection of collars.")
+        setCategoryDescription("Discover a diverse range of dog collars that combine style and function seamlessly. From elegant leather to adjustable nylon, find the perfect collar for your beloved canine companion.")
         break;
       case 'toys':
         setCategoryTitle("Toys Collection");
-        setCategoryDescription("Discover a world of fun and entertainment with our curated collection of dog toys. From interactive puzzle toys that engage your pet's mind to durable chew toys that satisfy their natural instincts, our range offers a diverse selection to keep your furry friend happily occupied. Explore our assortment and provide your canine companion with hours of joy and playtime.")
+        setCategoryDescription("Explore our captivating collection of dog toys, designed to provide endless joy. From interactive puzzles to durable chew toys, keep your furry friend entertained and engaged.")
         break;
       case 'forniture':
         setCategoryTitle("Forniture Collection");
-        setCategoryDescription("Elevate your dog's comfort with our selection of stylish and functional dog furniture. From cozy beds and plush sofas to ergonomic feeding stations, our collection offers a range of furniture pieces designed to provide your canine companion with a comfortable and relaxing environment. Browse our assortment and create a cozy oasis for your furry friend.")
+        setCategoryDescription("Elevate your dog's well-being with our extensive selection of premium care products. From grooming items to health essentials, prioritize your pet's vitality, comfort, and joy.")
         break;
       case 'care':
         setCategoryTitle("Care Collection");
-        setCategoryDescription("Nurture your dog's well-being with our comprehensive range of dog care products. From grooming essentials like shampoos and brushes to health supplements and dental care items, our collection offers everything you need to ensure your furry friend's health and happiness. ")
+        setCategoryDescription("Nurture your dog's overall well-being with our comprehensive range of premium care products. From grooming to health essentials, prioritize your pet's vitality and happiness.")
         break;
         
     }
   }
   useEffect(()=>{
-    // if(categoryName === "All products"){
+    if(categoryName === "All products"){
       setCatalog(data?.content);
       setCountResults(data?.totalElements);
       setPageCount(data?.totalPages);
-    // } else{
-    //   setCatalog(filteredByCategoryData?.content);
-    //   setCountResults(filteredByCategoryData?.totalElements);
-    //   setPageCount(filteredByCategoryData?.totalPages);
-    // }
+    } else{
+      if(filteredByCategoryData){
+        console.log(filteredByCategoryData)
+        setCatalog(filteredByCategoryData?.content);
+        setCountResults(filteredByCategoryData?.totalElements);
+        setPageCount(filteredByCategoryData?.totalPages);
+      }
+     
+    }
     changeCategoryDescription();
-  }, [data])
+  }, [data, filteredByCategoryData])
 
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
@@ -161,7 +167,7 @@ function Catalog() {
       <Box
         component="div"
         pb={4.5}
-        sx={{ width: "45%", height: "auto", margin: "0 auto" }}
+        sx={{ width: "572px", height: "auto", margin: "0 auto" }}
       >
         <Typography
           variant="h4"
