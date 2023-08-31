@@ -30,7 +30,7 @@ const theme = createTheme({
     },
     secondary: {
       main: "#C8C8C8",
-      dark: "#B4B4B4",
+      dark: "#969696",
       contrastText: "#161616",
     },
     error: {
@@ -58,7 +58,8 @@ const theme = createTheme({
     },
     action: {
       disabled: "#FDFDFD",
-      disabledBackground: "rgb(22, 22, 22, 0.4)",
+      disabledBackground: "rgba(22, 22, 22, 0.4)",
+      hoverOpacity: 0,
     },
   },
   typography: {
@@ -82,7 +83,19 @@ const theme = createTheme({
     h6: {
       fontSize: "14px",
     },
+    body1: {
+      fontSize: "12px",
+    },
+    body2: {
+      fontSize: "10px",
+    },
+    
   },
+  breakpoints:{
+    values:{
+      lg: 1168,
+    }
+  }
 });
 
 export default theme;

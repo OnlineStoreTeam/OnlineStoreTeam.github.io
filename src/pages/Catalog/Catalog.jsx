@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Breadcrumbs,
@@ -13,6 +13,7 @@ import { styled as muiStyled } from "@mui/system";
 import { CategoryNameContext } from "../../components/Context";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ReactPaginate from 'react-paginate';
+import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
 
 import { 
   useGetAllProductsQuery, useGetProductsByCategoryQuery,
@@ -22,7 +23,6 @@ import {
 const TextCategory = styled(Typography)`
   width: 572px;
   text-align: center;
-  font-size: 16px;
   font-style: normal;
   font-weight: 300;
   line-height: 150%;
@@ -73,7 +73,8 @@ function Catalog() {
   const [ catalog, setCatalog ]= useState();
   const [ categoryDescription, setCategoryDescription ] = useState('');
   const [ categoryTitle, setCategoryTitle ] = useState('');
-  const initialCategoryName = useRef(categoryName);
+  // const initialCategoryName = useRef(categoryName);
+  const [ preCategoryName, setPreCategoryName ] = useState(categoryName);
   const [countResults, setCountResults] = useState();
   const [pageCount, setPageCount ] = useState();
   const [currentPage, setCurrentPage] = useState(0);
@@ -84,7 +85,7 @@ function Catalog() {
 
   const { data } = useGetAllProductsQuery({page: currentPage, limit: 12});
    
-  const { filteredByCategoryData } = useGetProductsByCategoryQuery({ category: "Toys",  page: currentPage, limit:12 });
+  const { filteredByCategoryData } = useGetProductsByCategoryQuery({ category: "toys",  page: currentPage, limit:12 });
 
 
   const changeCategoryDescription = ()=>{
@@ -94,7 +95,7 @@ function Catalog() {
         setCategoryDescription("We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog's comfort, happiness, and well-being ")
         break;
       case 'clothing':
-        setCategoryTitle("Clothing Collection");
+        setCategoryTitle("Clothes Collection");
         setCategoryDescription("Transform your dog's style with our exquisite collection of canine clothing. From cozy sweaters to trendy jackets and adorable costumes, elevate your pet's look with our fashionable attire.")
         break;
       case 'leads&harnesses':
@@ -120,33 +121,45 @@ function Catalog() {
         
     }
   }
-  useEffect(()=>{
-    if(categoryName === "All products"){
-      setCatalog(data?.content);
-      setCountResults(data?.totalElements);
-      setPageCount(data?.totalPages);
-    } else{
-      if(filteredByCategoryData){
-        console.log(filteredByCategoryData)
-        setCatalog(filteredByCategoryData?.content);
-        setCountResults(filteredByCategoryData?.totalElements);
-        setPageCount(filteredByCategoryData?.totalPages);
-      }
+  // useEffect(()=>{
+  //   if(categoryName === "All products"){
+  //     setCatalog(data?.content);
+  //     setCountResults(data?.totalElements);
+  //     setPageCount(data?.totalPages);
+  //   } else{
+  //     if(filteredByCategoryData){
+  //       console.log(filteredByCategoryData)
+  //       setCatalog(filteredByCategoryData?.content);
+  //       setCountResults(filteredByCategoryData?.totalElements);
+  //       setPageCount(filteredByCategoryData?.totalPages);
+  //     }
      
-    }
-    changeCategoryDescription();
-  }, [data, filteredByCategoryData])
+  //   }
+  //   changeCategoryDescription();
+  // }, [data, filteredByCategoryData])
 
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
   }
 
   useEffect(() => {
-    if (categoryName !== initialCategoryName.current) {
+    if (categoryName !== preCategoryName) {
+      setPreCategoryName(categoryName);
+      }
       changeCategoryDescription();
-      initialCategoryName.current = categoryName;
+    if(categoryName === "All products"){
+      setCatalog(data?.content);
+      setCountResults(data?.totalElements);
+      setPageCount(data?.totalPages);
+    } else{
+      if(filteredByCategoryData){
+        setCatalog(filteredByCategoryData?.content);
+        setCountResults(filteredByCategoryData?.totalElements);
+        setPageCount(filteredByCategoryData?.totalPages);
+      }
     }
-  }, [categoryName]);
+    console.log(catalog)
+  }, [data, categoryName, preCategoryName]);
 
 
   const showMore = ()=>{
@@ -170,24 +183,30 @@ function Catalog() {
         sx={{ width: "572px", height: "auto", margin: "0 auto" }}
       >
         <Typography
-          variant="h4"
           component="h1"
           align="center"
-          sx={{ fontSize: "32px" }}
-          fontFamily='Lato'
+          sx={{ fontSize: "38px" }}
         >
           {categoryTitle}
         </Typography>
-        <TextCategory component="p" fontFamily='Lato'>
+        <TextCategory variant="h5" component="p">
         {categoryDescription} 
         </TextCategory>
       </Box>
+      {!countResults && 
+        <Typography 
+          align="center" 
+          variant="h2"
+          color="secondary.dark"
+          mt={4.5}
+          >There are no products in this category yet</Typography>}
       <Grid 
           container 
           columns={{ xs: 4}} 
           pt={2} 
           mb={11} 
-          gap={4}
+          rowSpacing={6} 
+          columnSpacing={3}
           justifyContent="start"
           >
          {catalog?.map(product => <ProductCard key={product.id} product={product} />)}           
@@ -220,6 +239,8 @@ function Catalog() {
         </StyledSeoTypography>}
         <Typography 
           mb={2} 
+          variant="h5"
+          component="p"
           sx={{
             overflow:'hidden',
             maxHeight: isMoreText ? '200px' : '119px',
@@ -227,7 +248,9 @@ function Catalog() {
            }}
           >{categorySEOText}</Typography>
         <StyledMoreButton
+          disableRipple={true}
           onClick={showMore}
+          endIcon={isMoreText && <ExpandLessOutlinedIcon fontSize="large"/>}
         >Show more</StyledMoreButton>
       </Box>
     </Container>

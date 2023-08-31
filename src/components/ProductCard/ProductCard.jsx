@@ -23,7 +23,7 @@ const StyledButton = muiStyled(Button)`
   border-radius: 0;
   text-transform: none;
   transition: all 0.2s ease-in-out;
- 
+  border-radius: 2px;
   &.Mui-focusVisible{
     background-color: black;
   }
@@ -34,6 +34,7 @@ const StyledCard = styled(Card)`
   height: 473px;
   width: 373px;
   transition: all 0.2s ease-in-out;
+  border-radius: 2px;
   &:hover {
     cursor: pointer;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
@@ -75,7 +76,7 @@ function ProductCard({ product }) {
         />
         <CardContent sx={{ padding: "20px 0" }}>
           <Typography
-            variant="body2"
+            variant="body1"
             component="p"
             fontSize={12}
             fontFamily="Lato"
@@ -85,7 +86,7 @@ function ProductCard({ product }) {
           </Typography>
           <Typography
             gutterBottom
-            variant="h6"
+            variant="h3"
             component="h2"
             fontFamily="Lato"
             fontWeight={700}
@@ -98,7 +99,7 @@ function ProductCard({ product }) {
             productName
             }
           </Typography>
-          <Typography variant="caption text">
+          <Typography variant="h5">
             $ {product.price}
           </Typography>
         </CardContent>
