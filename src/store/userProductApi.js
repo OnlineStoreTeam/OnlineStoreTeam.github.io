@@ -18,16 +18,6 @@ export const userProductApi = createApi({
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
-    getProductsByCategory: builder.query({
-        query: ({category, page, limit }) => `products/categories/${category}?page=${page}&size=${limit}`,
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.content.map(({ id }) => ({ type: 'Products', id })),
-                { type: 'Products', id: 'LIST' },
-              ]
-            : [{ type: 'Products', id: 'LIST' }],
-      }),
     getOneProduct: builder.query({
       query: (id = 1) => `products/${id}`,
     }),
@@ -38,5 +28,4 @@ export const userProductApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetOneProductQuery,
-  useGetProductsByCategoryQuery
 } = userProductApi;

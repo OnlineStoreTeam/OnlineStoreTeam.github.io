@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Container,
   Breadcrumbs,
@@ -14,9 +14,10 @@ import { CategoryNameContext } from "../../components/Context";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ReactPaginate from 'react-paginate';
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { 
-  useGetAllProductsQuery, useGetProductsByCategoryQuery,
+  useGetAllProductsQuery, 
 } from '../../store/userProductApi';
 
 
@@ -45,7 +46,7 @@ const StyledSeoTypography = styled(Typography)`
   opacity: 0;
   &.visible {
     opacity: 1;
-    transition-delay: 0.3s; // Затримка 0.3 секунди
+    transition-delay: 0.3s; 
   }
 `;
 const StyledMoreButton = muiStyled(Button)`
@@ -63,18 +64,14 @@ const StyledMoreButton = muiStyled(Button)`
     color: #E86936;
     background-color: none;
   }
-  // &:focus{
-  //   color: #D15F31;
-  // }
-`
+`;
 
 function Catalog() {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
   const [ catalog, setCatalog ]= useState();
   const [ categoryDescription, setCategoryDescription ] = useState('');
   const [ categoryTitle, setCategoryTitle ] = useState('');
-  // const initialCategoryName = useRef(categoryName);
-  const [ preCategoryName, setPreCategoryName ] = useState(categoryName);
+  const initialCategoryName = useRef(categoryName);
   const [countResults, setCountResults] = useState();
   const [pageCount, setPageCount ] = useState();
   const [currentPage, setCurrentPage] = useState(0);
@@ -83,12 +80,38 @@ function Catalog() {
   const [ isMoreTextVisible, setIsMoreTextVisible ] = useState(false);
 
 
-  const { data } = useGetAllProductsQuery({page: currentPage, limit: 12});
-   
-  const { filteredByCategoryData } = useGetProductsByCategoryQuery({ category: "toys",  page: currentPage, limit:12 });
+  const { data, isLoading, isError } = useGetAllProductsQuery({page: currentPage, limit: 12});
+  
+  const filteringProducts = (category)=>{
+    if(category === "All products"){
+      setCatalog(data?.content);
+      setCountResults(data?.totalElements);
+      setPageCount(data?.totalPages);
+    } else {
+      
+      const productsByCategory = data?.content.filter(product=> product.category.toLowerCase() === categoryName.toLowerCase());
+      
+      setCatalog(productsByCategory);
+      setCountResults(productsByCategory?.length);
+      setPageCount(1)
+    }
+  }
 
+  useEffect(() => {
+    if (categoryName !== initialCategoryName.current) {
+      changeCategoryDescription();
+      filteringProducts(categoryName);
+      initialCategoryName.current = categoryName;
+    }
+  }, [categoryName]);
 
-  const changeCategoryDescription = ()=>{
+  useEffect(() => {
+    if (!isLoading && !isError && data) {
+      filteringProducts(categoryName);
+    }
+  }, [data, isLoading, isError]);
+     
+    const changeCategoryDescription = ()=>{
     switch(categoryName.toLowerCase()){
       case 'all products':
         setCategoryTitle("Premium Dog Essentials Catalog");
@@ -121,45 +144,11 @@ function Catalog() {
         
     }
   }
-  // useEffect(()=>{
-  //   if(categoryName === "All products"){
-  //     setCatalog(data?.content);
-  //     setCountResults(data?.totalElements);
-  //     setPageCount(data?.totalPages);
-  //   } else{
-  //     if(filteredByCategoryData){
-  //       console.log(filteredByCategoryData)
-  //       setCatalog(filteredByCategoryData?.content);
-  //       setCountResults(filteredByCategoryData?.totalElements);
-  //       setPageCount(filteredByCategoryData?.totalPages);
-  //     }
-     
-  //   }
-  //   changeCategoryDescription();
-  // }, [data, filteredByCategoryData])
 
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
   }
 
-  useEffect(() => {
-    if (categoryName !== preCategoryName) {
-      setPreCategoryName(categoryName);
-      }
-      changeCategoryDescription();
-    if(categoryName === "All products"){
-      setCatalog(data?.content);
-      setCountResults(data?.totalElements);
-      setPageCount(data?.totalPages);
-    } else{
-      if(filteredByCategoryData){
-        setCatalog(filteredByCategoryData?.content);
-        setCountResults(filteredByCategoryData?.totalElements);
-        setPageCount(filteredByCategoryData?.totalPages);
-      }
-    }
-    console.log(catalog)
-  }, [data, categoryName, preCategoryName]);
 
 
   const showMore = ()=>{
@@ -193,7 +182,18 @@ function Catalog() {
         {categoryDescription} 
         </TextCategory>
       </Box>
-      {!countResults && 
+      { isLoading && <CircularProgress sx={{display: 'block', margin: '0 auto'}}/>}
+      { isError  && (
+        <Typography 
+          align="center" 
+          variant="h2"
+          color="secondary.dark"
+          mt={4.5}
+        >
+          Error: Unable to load data
+        </Typography>
+      )}
+      { !isLoading && !isError && !countResults && 
         <Typography 
           align="center" 
           variant="h2"
