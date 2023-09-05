@@ -52,7 +52,7 @@ function SeoTextBox() {
   const getCategoryComponent = () => {
     switch (categoryName.toLowerCase()) {
       case "clothing":
-        return <SeoClothing />;refactoring
+        return <SeoClothing />;
     }
   };
   return (
