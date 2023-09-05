@@ -1,11 +1,11 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function Logo() {
     return (
-        <NavLink to="/">
+        <Link to="/">
                 <img src="/logo_header.png" alt="" />
-        </NavLink>
+        </Link>
     );
 }
 

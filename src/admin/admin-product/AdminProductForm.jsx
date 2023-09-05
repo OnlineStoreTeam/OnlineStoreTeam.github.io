@@ -314,7 +314,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
                     <option value='Leads&harnesses'>Leads&harnesses</option>
                     <option value='Toys'>Toys</option>
                     <option value='Care'>Care</option>
-                    <option value='Forniture'>Forniture</option>
+                    <option value='Furniture'>Furniture</option>
                     <option value='Collars'>Collars</option>
                   </select>
                 </label>

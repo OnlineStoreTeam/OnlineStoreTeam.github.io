@@ -22,7 +22,7 @@ function NavLink() {
             <NavLinkTab label='Leads&amp;Harnesses' path='leads&amp;harnesses'></NavLinkTab>
             <NavLinkTab label='Collars' path='collars'></NavLinkTab>
             <NavLinkTab label='Toys' path='toys'></NavLinkTab>
-            <NavLinkTab label='Forniture' path='forniture'></NavLinkTab>
+            <NavLinkTab label='Furniture' path='furniture'></NavLinkTab>
             <NavLinkTab label='Care' path='care'></NavLinkTab>
         </NavLinkContainer>
 
