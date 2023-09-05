@@ -44,7 +44,7 @@ function App() {
             <Route path="leads&amp;harnesses" element={<Catalog />} />
             <Route path="collars" element={<Catalog />} />
             <Route path="toys" element={<Catalog />} />
-            <Route path="forniture" element={<Catalog />} />
+            <Route path="furniture" element={<Catalog />} />
             <Route path="care" element={<Catalog />} />
           </Route>
           <Route path="admin" element={<Admin />}>

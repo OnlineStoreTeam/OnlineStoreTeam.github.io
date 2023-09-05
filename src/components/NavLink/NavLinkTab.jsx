@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { CategoryNameContext } from "../Context";
 
@@ -12,11 +12,11 @@ function NavLinkTab({ label, path }) {
 
   return (
     <>
-      <Link to={path} onClick={choseCategory}>
-        <Typography variant="h4" color="#161616">
+      <NavLink to={path} onClick={choseCategory} >
+        <Typography variant="h4" color="#161616" px={'2px'}>
           {label}
         </Typography>
-      </Link>
+      </NavLink>
     </>
   );
 }
