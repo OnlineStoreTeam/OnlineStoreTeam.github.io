@@ -5,15 +5,20 @@ import styled from "styled-components";
 import SeoClothing from "../../components/SeoText/SeoClothing";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
 import { CategoryNameContext } from "../../components/Context";
+import SeoAllProducts from "./SeoAllProducts";
+import SeoCollars from "./SeoCollars";
+import SeoLeads from "./SeoLeads";
+import SeoToys from "./SeoToys";
+import SeoFurniture from "./SeoFurniture";
+import SeoCare from "./SeoCare";
 
 const StyledSeoTypography = styled(Typography)`
   position: absolute;
   top: 0;
   left: 0;
   z-index: 100;
-  height: 119px;
   width: 100%;
-  background: linear-gradient(360deg, #fdfdfd 0%, rgba(253, 253, 253, 0) 100%);
+  background: linear-gradient(360deg, #fdfdfd 0%, rgba(253, 253, 253, 0) 70%);
   opacity: 0;
   &.visible {
     opacity: 1;
@@ -53,6 +58,18 @@ function SeoTextBox() {
     switch (categoryName.toLowerCase()) {
       case "clothing":
         return <SeoClothing />;
+      case "all products":
+        return <SeoAllProducts />;
+      case "leads&harnesses":
+        return <SeoLeads />;
+      case "collars":
+        return <SeoCollars />;
+      case "toys":
+        return <SeoToys />;
+      case "furniture":
+        return <SeoFurniture />;
+      case "care":
+        return <SeoCare />;
     }
   };
   return (
@@ -60,18 +77,24 @@ function SeoTextBox() {
       {!isMoreText && (
         <StyledSeoTypography
           className={!isMoreTextVisible ? "visible" : ""}
+          height={{ sm: '384px', md: '354px', lg: '210px'}}
         ></StyledSeoTypography>
       )}
       <Box
-        mb={2}
+        maxHeight={!isMoreText? { sm: '384px', md: '354px', lg: '210px'} : '2000px'}
         sx={{
           overflow: "hidden",
-          maxHeight: isMoreText ? "10000px" : "119px",
           transitionDuration: "0.5s",
         }}
       >
-        {/* {getCategoryComponent()} */}
-        <SeoClothing />
+        {getCategoryComponent()}
+        {/* <SeoClothing /> */}
+        {/* <SeoAllProducts/> */}
+        {/* <SeoCollars/> */}
+        {/* <SeoLeads/> */}
+        {/* <SeoToys/> */}
+        {/* <SeoFurniture/> */}
+        {/* <SeoCare/> */}
       </Box>
       <StyledMoreButton
         disableRipple={true}

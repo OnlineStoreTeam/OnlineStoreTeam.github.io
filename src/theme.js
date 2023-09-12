@@ -1,6 +1,8 @@
 import { createTheme } from "@mui/material/styles";
 import "typeface-lato";
 
+
+
 const theme = createTheme({
   shadows: [
     "none",
@@ -65,11 +67,11 @@ const theme = createTheme({
   typography: {
     fontFamily: "Lato, sans-serif",
     h1: {
-      fontSize: "32px",
-      fontWeight: "bold",
+      fontSize: "36px",
+      fontWeight: 400,
     },
     h2: {
-      fontSize: "24px",
+      fontSize: "28px",
     },
     h3: {
       fontSize: "20px",
@@ -93,9 +95,97 @@ const theme = createTheme({
   },
   breakpoints:{
     values:{
-      lg: 1168,
-    }
+      sm: 414,
+      md: 790,
+      lg: 1280,
+    },
+  },
+  spacing: 4,
+  paddingX: {
+    padding: '0 16px',
+  },
+  displayButton:{
+    display: 'none',
   }
 });
 
+theme.displayButton = {
+  [theme.breakpoints.up('sm')]: {
+    display: 'block',
+  },
+  [theme.breakpoints.up('md')]: {
+    display: 'block',
+  },
+  [theme.breakpoints.up('lg')]: {
+    display: 'none',
+  },
+};
+
+theme.paddingX = {
+  [theme.breakpoints.up('sm')]: {
+    padding: '0 16px',
+  },
+  [theme.breakpoints.up('md')]: {
+    padding: '0 36px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    padding: '0 56px',
+  },
+};
+theme.typography.h1 = {
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '28px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '28px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '36px',
+  },
+};
+theme.typography.h2 = {
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '24px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '24px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '28px',
+  },
+};
+
+theme.typography.h5 = {
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '14px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '16px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '16px',
+  },
+};
+theme.typography.h3 = {
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '16px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '20px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '20px',
+  },
+};
+theme.typography.h4 = {
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '14px',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '16px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '16px',
+  },
+};
 export default theme;

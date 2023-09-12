@@ -9,6 +9,8 @@ import {
   CardContent,
   Button,
 } from "@mui/material";
+import theme from "../../theme";
+import { useMediaQuery } from "@mui/material";
 
 const StyledCardMedia = styled(CardMedia)`
   width: 315px;
@@ -32,13 +34,13 @@ const StyledButton = muiStyled(Button)`
 const StyledCard = styled(Card)`
   padding: 28px;
   height: 473px;
-  width: 373px;
+  width: 100%;
   transition: all 0.2s ease-in-out;
   border-radius: 2px;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  }
+  // &:hover {
+  //   cursor: pointer;
+  //   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  // }
 `;
 
 function ProductCard({ product }) {
@@ -46,32 +48,45 @@ function ProductCard({ product }) {
   const [ productName, setProductName ] = useState(product.name);
   const [ isButtonPressed, setIsButtonPressed ] = useState(false);
 
+  const screen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+
   useEffect(()=>{
     if(productName.length > 50){
       setProductName( productName.substring(0, 50) + '...');
     }
   }, [])
 
+  const cardHover = ()=>{
+    if(screen){
+      setIsCardHover(!isCardHover);
+    }
+  }
+
   return (
-    <Grid item>
+    <Grid item 
+          width={{sm: '100%', md: '50%', lg:'33%'}}  
+          maxWidth={{ sm: '382px', md: '340px', lg: '373px'}} 
+          >
       <StyledCard
         variant="outlined"
         square
-        onMouseEnter={() => setIsCardHover(true)}
-        onMouseLeave={() => setIsCardHover(false)}
+        onMouseEnter={()=> cardHover()}
+        onMouseLeave={() => cardHover()}
         sx={{
-          filter: product.productStatus==="TEMPORARILY_ABSENT"? "grayscale(100%)" : "grayscale(0%)"
+          filter: product.productStatus==="TEMPORARILY_ABSENT"? "grayscale(100%)" : "grayscale(0%)",
+          '&:hover': screen? {
+            cursor: 'pointer',
+            boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.16)',
+          } : null
         }}
       >
-      
         <StyledCardMedia
           component="img"
           src={product.imagePath}
           title="photo"
           sx={{
-            transform: isCardHover ? "scale(0.95)" : "scale(1)",
-            height: isCardHover ? "223px" : "287px",
-            objectFit: "contain",
+            height: !screen? '233px' : isCardHover ? "223px" : "287px",
+            objectFit: "contain"
           }}
         />
         <CardContent sx={{ padding: "20px 0" }}>
@@ -104,17 +119,13 @@ function ProductCard({ product }) {
           </Typography>
         </CardContent>
         <StyledButton
-          // disableRipple={true}
           variant="contained"
           fullWidth={true}
           disableElevation
           disabled = { product.productStatus === 'TEMPORARILY_ABSENT'? true : false }
           sx={{
-            display: isCardHover ? "block" : "none",
-            // backgroundColor: isButtonPressed ? "#DB8420" : "#F39324"
+            display: !screen? theme.displayButton : isCardHover ? "block" : "none" ,
           }}
-          // onMouseDown={()=>setIsButtonPressed(true)}
-          // onMouseUp={()=> setIsButtonPressed(false)}
         >
           {product.productStatus === 'TEMPORARILY_ABSENT'? 'Out of stock' : 'Add to card'}
         </StyledButton>

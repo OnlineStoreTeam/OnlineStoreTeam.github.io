@@ -17,11 +17,11 @@ import {
 } from '../../store/userProductApi';
 import CategoryDescription from "../../components/CategoryDescription/CategoryDescription";
 import SeoTextBox from "../../components/SeoText/SeoTextBox";
+import theme from "../../theme";
 
 const StyledPaginationBox = styled(Box)`
   display: flex;
   justify-content: center;
-  margin-bottom: 88px;
 `;
 
 function Catalog() {
@@ -31,7 +31,7 @@ function Catalog() {
   const [ pageCount, setPageCount ] = useState();
   const [ currentPage, setCurrentPage ] = useState(0);
   const { data, isLoading, isError } = useGetAllProductsQuery({page: currentPage, limit: 12});
-  
+
   const filteringProducts = (category)=>{
     if(category === "All products"){
       setCatalog(data?.content);
@@ -54,14 +54,21 @@ function Catalog() {
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
   }
+  console.log(categoryName)
 
   return (
-    <Container maxWidth="lg"  disableGutters={true}>
+    <Container fixed 
+      sx={{
+        boxSizing: 'border-box',
+        paddingX: theme.paddingX
+      }}
+      disableGutters={true} 
+      >
       <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="text.primary" href="/">
+        <Link underline="hover" color="text.primary" href="/" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>
           Home
         </Link>
-        <Typography color="#A0A0A0">{categoryName}</Typography>
+        <Typography color="#A0A0A0" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>{categoryName}</Typography>
       </Breadcrumbs>
       <CategoryDescription/>
       { isLoading && <CircularProgress sx={{display: 'block', margin: '0 auto'}}/>}
@@ -83,17 +90,15 @@ function Catalog() {
           mt={4.5}
           >There are no products in this category yet</Typography>}
       <Grid 
-          container 
-          columns={{ xs: 4}} 
-          pt={2} 
-          mb={11} 
-          rowSpacing={6} 
-          columnSpacing={3}
-          justifyContent="start"
+          container
+          mb={{sm: 12, md: 16, lg: 18}} 
+          columnGap={{sm: 0, md: 3, lg: 6}}
+          rowSpacing={{sm: 4, md: 4, lg: 8}} 
+          justifyContent="flex-start"
           >
          {catalog?.map(product => <ProductCard key={product.id} product={product} />)}           
       </Grid>
-      <StyledPaginationBox >
+      <StyledPaginationBox mb={countResults>12? {sm: 12, md: 16, lg: 18} : 0}>
        {countResults>12 && <ReactPaginate
           onPageChange={handlePageClick}
           pageRangeDisplayed={3}

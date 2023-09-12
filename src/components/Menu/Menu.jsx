@@ -28,6 +28,7 @@ function Menu ({isMenuOpen}){
                 <Link href="#" variant="h4" underline="hover" color='inherit'>Blog</Link>
             </Stack>
             <Stack spacing={2} direction='row'>
+                <MenuLinkTab label='All products' path='products'></MenuLinkTab>
                 <MenuLinkTab label='Clothing' path='clothing'></MenuLinkTab>
                 <MenuLinkTab label='Leads&amp;Harnesses' path='leads&amp;harnesses'></MenuLinkTab>
                 <MenuLinkTab label='Collars' path='collars'></MenuLinkTab>

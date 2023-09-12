@@ -4,7 +4,6 @@ import { Typography, Box } from "@mui/material";
 import { CategoryNameContext } from "../../components/Context";
 
 const TextCategory = styled(Typography)`
-  width: 572px;
   text-align: center;
   font-style: normal;
   font-weight: 300;
@@ -16,71 +15,77 @@ function CategoryDescription() {
     const initialCategoryName = useRef(categoryName);
     const [ categoryDescription, setCategoryDescription ] = useState('');
     const [ categoryTitle, setCategoryTitle ] = useState('');
-    
+   
     const changeCategoryDescription = () => {
         switch (categoryName.toLowerCase()) {
         case "all products":
-            setCategoryTitle("Premium Dog Essentials Catalog");
+            setCategoryTitle("Premium Dog Products");
             setCategoryDescription(
-            "We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog's comfort, happiness, and well-being "
+            "We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog's comfort, happiness, and well-being."
             );
             break;
         case "clothing":
             setCategoryTitle("Clothes Collection");
             setCategoryDescription(
-            "Transform your dog's style with our exquisite collection of canine clothing. From cozy sweaters to trendy jackets and adorable costumes, elevate your pet's look with our fashionable attire."
+            "Explore our exclusive collection of high-quality dog clothes designed to keep your furry friend both stylish and comfortable. Find the perfect fit for your dog and elevate their wardrobe today."
             );
             break;
         case "leads&harnesses":
-            setCategoryTitle("Leads&Harnesses Collection");
+            setCategoryTitle("Leads&Harnesses");
             setCategoryDescription(
-            "Discover premium dog leads & harnesses that blend style & functionality. Whether for walks or control, our collection offers the perfect accessory for your beloved companion."
+            "Discover a wide range of high-quality dog leads and harnesses designed for your furry friend's comfort. Shop now for the perfect walking companion! You can trust that our products are built to last, providing years of reliable use."
             );
             break;
         case "collars":
-            setCategoryTitle("Collars Collection");
+            setCategoryTitle("Dog Collars");
             setCategoryDescription(
-            "Discover a diverse range of dog collars that combine style and function seamlessly. From elegant leather to adjustable nylon, find the perfect collar for your beloved canine companion."
+            "Choosing the right dog collar is an important decision for any pet owner. With our range of options you can find a collar that keeps your furry friend safe, stylish, and comfortable. Explore a wide variety of dog collars from trusted brands. "
             );
             break;
         case "toys":
-            setCategoryTitle("Toys Collection");
+            setCategoryTitle("Dog Toys");
             setCategoryDescription(
-            "Explore our captivating collection of dog toys, designed to provide endless joy. From interactive puzzles to durable chew toys, keep your furry friend entertained and engaged."
+            "Browse our wide selection of dog toys, carefully curated to cater to all breeds, sizes, and play styles. From tough chew toys to adorable plushies, we have something for every furry friend!"
             );
             break;
-        case "forniture":
-            setCategoryTitle("Forniture Collection");
+        case "furniture":
+            setCategoryTitle("Stylish Dog Furniture");
             setCategoryDescription(
-            "Elevate your dog's well-being with our extensive selection of premium care products. From grooming items to health essentials, prioritize your pet's vitality, comfort, and joy."
+            "Give your furry friend the gift of a good night's sleep with our range of luxury dog beds. Crafted from high-quality materials and designed for both comfort and aesthetics, our beds provide your dog with the perfect place to rest."
             );
             break;
         case "care":
-            setCategoryTitle("Care Collection");
+            setCategoryTitle("Dog Care Supplies");
             setCategoryDescription(
-            "Nurture your dog's overall well-being with our comprehensive range of premium care products. From grooming to health essentials, prioritize your pet's vitality and happiness."
+            "Your dog's well-being is a top priority. That's why we've curated a comprehensive catalog of high-quality dog care supplies designed to keep your furry friend happy, healthy, and well-cared for."
             );
             break;
         }
     };
 
     useEffect(() => {
-        if (categoryName !== initialCategoryName.current) {
         changeCategoryDescription();
-        initialCategoryName.current = categoryName;
-        }
     }, [categoryName]);
 
   return (
     <Box
       component="div"
-      pb={4.5}
-      sx={{ width: "572px", height: "auto", margin: "0 auto" }}
+      pb={8}
+      pt={{ sm: 4, md: 3, lg: 4}}
+      sx={{ height: "auto", margin: "0 auto" }}
+      width={{ sm: '382px', md: '458px', lg: '572px' }}
     >
-      <Typography component="h1" align="center" sx={{ fontSize: "38px" }}>
+      <Typography 
+        component="h1" 
+        align="center" 
+        variant="h1"
+        >
         {categoryTitle}
       </Typography>
-      <TextCategory variant="h5" component="p">
+      <TextCategory 
+        variant="h5" 
+        component="p"
+        >
         {categoryDescription}
       </TextCategory>
     </Box>
