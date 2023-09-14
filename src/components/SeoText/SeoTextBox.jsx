@@ -77,24 +77,17 @@ function SeoTextBox() {
       {!isMoreText && (
         <StyledSeoTypography
           className={!isMoreTextVisible ? "visible" : ""}
-          height={{ sm: '384px', md: '354px', lg: '210px'}}
+          height={{xs: '384px', sm: '384px', md: '354px', lg: '210px'}}
         ></StyledSeoTypography>
       )}
       <Box
-        maxHeight={!isMoreText? { sm: '384px', md: '354px', lg: '210px'} : '2000px'}
+        maxHeight={!isMoreText? {xs:'384px', sm: '384px', md: '354px', lg: '210px'} : '2000px'}
         sx={{
           overflow: "hidden",
           transitionDuration: "0.5s",
         }}
       >
         {getCategoryComponent()}
-        {/* <SeoClothing /> */}
-        {/* <SeoAllProducts/> */}
-        {/* <SeoCollars/> */}
-        {/* <SeoLeads/> */}
-        {/* <SeoToys/> */}
-        {/* <SeoFurniture/> */}
-        {/* <SeoCare/> */}
       </Box>
       <StyledMoreButton
         disableRipple={true}

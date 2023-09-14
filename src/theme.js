@@ -171,6 +171,9 @@ theme.typography.h5 = {
   },
 };
 theme.typography.h3 = {
+  [theme.breakpoints.up('xs')]: {
+    fontSize: '12px',
+  },
   [theme.breakpoints.up('sm')]: {
     fontSize: '16px',
   },
