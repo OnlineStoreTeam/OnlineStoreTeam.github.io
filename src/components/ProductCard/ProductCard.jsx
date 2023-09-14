@@ -26,10 +26,9 @@ const StyledButton = muiStyled(Button)`
   text-transform: none;
   transition: all 0.2s ease-in-out;
   border-radius: 2px;
-  &.Mui-focusVisible{
-    background-color: black;
-  }
- 
+  // &.Mui-focusVisible{
+  //   background-color: black;
+  // }
   `;
 const StyledCard = styled(Card)`
   padding: 28px;
@@ -37,10 +36,6 @@ const StyledCard = styled(Card)`
   width: 100%;
   transition: all 0.2s ease-in-out;
   border-radius: 2px;
-  // &:hover {
-  //   cursor: pointer;
-  //   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  // }
 `;
 
 function ProductCard({ product }) {
@@ -64,8 +59,8 @@ function ProductCard({ product }) {
 
   return (
     <Grid item 
-          width={{sm: '100%', md: '50%', lg:'33%'}}  
-          maxWidth={{ sm: '382px', md: '340px', lg: '373px'}} 
+          width={{xs: '100%', sm: '100%', md: '50%', lg:'33%'}}  
+          maxWidth={{xs:'100%', sm: '382px', md: '340px', lg: '373px'}} 
           >
       <StyledCard
         variant="outlined"

@@ -54,12 +54,10 @@ function Catalog() {
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
   }
-  console.log(categoryName)
 
   return (
     <Container fixed 
       sx={{
-        boxSizing: 'border-box',
         paddingX: theme.paddingX
       }}
       disableGutters={true} 
@@ -93,7 +91,7 @@ function Catalog() {
           container
           mb={{sm: 12, md: 16, lg: 18}} 
           columnGap={{sm: 0, md: 3, lg: 6}}
-          rowSpacing={{sm: 4, md: 4, lg: 8}} 
+          rowSpacing={{xs: 4, sm: 4, md: 4, lg: 8}} 
           justifyContent="flex-start"
           >
          {catalog?.map(product => <ProductCard key={product.id} product={product} />)}           

@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { Typography, SvgIcon, Box } from "@mui/material";
-import { CategoryNameContext } from "../Context";
-import { display } from "@mui/system";
+import { CategoryNameContext, isModalMenuOpenContext } from "../Context";
+import { useMediaQuery } from "@mui/material";
 
 function MenuLinkTab({ label, path }) {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
+  const screen = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const { isModalMenuOpen, setIsModalMenuOpen } = useContext(isModalMenuOpenContext);
 
   const choseCategory = () => {
     setCategoryName(label);
+    setIsModalMenuOpen(false);
   };
 
   const getCategoryIcon = ()=>{
@@ -87,16 +90,23 @@ function MenuLinkTab({ label, path }) {
   }
 
   return (
-    <Box padding={'12px 0'} width={'112px'}>
+    <Box padding={{xs: '16px 0', lg: '12px 0'}} width={{xs: '100%', lg:'112px'}}>
       <NavLink to={path} onClick={choseCategory} style={{
-        display: 'block',
-        margin: '0 auto',
+        display: screen? 'block': 'flex',
+        margin: screen? '0 auto': '0',
         width: 'fit-content'
       }}>
-        <SvgIcon sx={{ fontSize: 42, textAlign: 'center', display: 'block', margin: '8px auto' }}>
+        <SvgIcon 
+          sx={{ 
+            fontSize: screen? 42 : 32, 
+            textAlign: 'center', 
+            display: 'block', 
+            margin: screen? '8px auto': '0',
+            }}
+        >
            {getCategoryIcon()}
         </SvgIcon>
-        <Typography variant="h4" color="#161616" px={'2px'} textAlign={'center'}>
+        <Typography fontSize={'18px'} color="#161616" px={{ md:2, lg:'2px'}} textAlign={'center'} lineHeight={{md: '32px'}}>
           {label=="Leads&Harnesses" ? 'Leads' : label}
         </Typography>
       </NavLink>

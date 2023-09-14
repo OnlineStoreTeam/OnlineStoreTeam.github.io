@@ -95,6 +95,7 @@ const theme = createTheme({
   },
   breakpoints:{
     values:{
+      xs: 0,
       sm: 414,
       md: 790,
       lg: 1280,
@@ -122,6 +123,9 @@ theme.displayButton = {
 };
 
 theme.paddingX = {
+  [theme.breakpoints.up('xs')]: {
+    padding: '0 5px',
+  },
   [theme.breakpoints.up('sm')]: {
     padding: '0 16px',
   },
@@ -185,7 +189,7 @@ theme.typography.h4 = {
     fontSize: '16px',
   },
   [theme.breakpoints.up('lg')]: {
-    fontSize: '16px',
+    fontSize: '18px',
   },
 };
 export default theme;

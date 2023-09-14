@@ -11,13 +11,11 @@ function NavLinkTab({ label, path }) {
   };
 
   return (
-    <>
       <NavLink to={path} onClick={choseCategory} >
         <Typography variant="h4" color="#161616" px={'2px'}>
           {label}
         </Typography>
       </NavLink>
-    </>
   );
 }
 export default NavLinkTab;

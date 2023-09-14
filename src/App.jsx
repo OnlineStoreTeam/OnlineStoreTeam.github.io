@@ -53,10 +53,7 @@ function App() {
           </Route>
         </Routes>
         <ToastContainer position="bottom-left" autoClose={3000} />
-
    </CategoryNameContext.Provider>
-        
-
   );
 }
 
