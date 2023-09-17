@@ -13,7 +13,8 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import ModalMenu from "../Menu/ModalMenu";
-import { isModalMenuOpenContext } from "../Context";
+import Drawer from '@mui/material/Drawer';
+import Search from "../Search/Search";
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -75,50 +76,83 @@ const StyledAiOutlineSearch = styled(AiOutlineSearch)`
 `;
 
 function Header() {
-
   const [ isMenuOpen, setIsMenuOpen ] = useState(false);
-  const [isModalMenuOpen, setIsModalMenuOpen ] = useState(false);
   const screen = useMediaQuery((theme) => theme.breakpoints.only('lg'));
   const screenSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const [ modalMenuState, setModalMenuState ]= useState(false);
+  const [ searchState, setSearchState ]= useState(false);
 
+
+  const searchOpen = ()=>{
+    setSearchState(true);
+  }
+  const searchClose = ()=>{
+    setSearchState(false);
+  }
+
+  const drawerOpen = ()=>{
+    setModalMenuState(true);
+  }
+  const drawerClose = ()=>{
+    setModalMenuState(false);
+  }
   const openMenu = ()=>{
     if(screen){
       setIsMenuOpen(!isMenuOpen)
     } else {
-      setIsModalMenuOpen(true)
+      drawerOpen();
+    }
+  }
+  const closeMenu = ()=>{
+    if(screen){
+      setIsMenuOpen(!isMenuOpen)
+    } else{
+      drawerClose();
     }
   }
   useEffect(()=>{
-    setIsModalMenuOpen(false);
+    setModalMenuState(false);
     setIsMenuOpen(false);
   }, [screen])
 
   return (
-    <isModalMenuOpenContext.Provider value={{isModalMenuOpen, setIsModalMenuOpen}}>
       <HeaderContainer>
         <NavBar>
-          <MenuLink onClick={()=>openMenu()} >
-            <MenuContainer>
+          <MenuLink>
+            <MenuContainer onClick={()=>openMenu()}>
               <StyledIcon>
                 {!isMenuOpen && <StyledHiMenuAlt1 />}
                 {isMenuOpen && screen && <CloseOutlinedIcon/>}
               </StyledIcon>
               {!screenSm && <MenuTitle >Menu</MenuTitle>}
             </MenuContainer>
-            {screenSm && <IconLink to="/">
+            {screenSm && <Box onClick={searchOpen}>
                   <StyledIcon>
-                      <StyledAiOutlineSearch />
+                      <StyledAiOutlineSearch  />
                   </StyledIcon>
-              </IconLink>}
+              </Box>}
           </MenuLink>
-          <Logo />
-          <NavIcon />
+          <Logo/>
+          <NavIcon searchOpen={searchOpen} />
         </NavBar>
         {screen && <NavLink />}
-        <Menu isMenuOpen={isMenuOpen}/>
-        <ModalMenu/>
+        <Menu isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>
+        <Drawer
+          open={modalMenuState}
+          anchor="left"
+          onClose={drawerClose}
+          transitionDuration={500}       >
+          <ModalMenu closeMenu={closeMenu}/>
+        </Drawer>
+        <Drawer
+          open={searchState}
+          anchor="right"
+          onClose={searchClose}
+          transitionDuration={500}
+        >
+          <Search searchClose={searchClose}/>
+        </Drawer>
       </HeaderContainer>
-    </isModalMenuOpenContext.Provider>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation} from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
 
@@ -12,11 +12,13 @@ import "react-toastify/dist/ReactToastify.css";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import Catalog from "./pages/Catalog/Catalog";
 import { useState, useEffect } from "react";
-import {CategoryNameContext} from './components/Context';
+import { CategoryNameContext, CatalogContext } from './components/Context';
+
 
 
 function App() {
   const [categoryName, setCategoryName] = useState('');
+  const [searchCatalog, setSearchCatalog] = useState('');
   const location = useLocation();
 
   useEffect(() => {
@@ -34,6 +36,7 @@ function App() {
       categoryName,
       setCategoryName
     }}>
+      <CatalogContext.Provider value={{searchCatalog, setSearchCatalog}}>
       <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -53,6 +56,7 @@ function App() {
           </Route>
         </Routes>
         <ToastContainer position="bottom-left" autoClose={3000} />
+        </CatalogContext.Provider>
    </CategoryNameContext.Provider>
   );
 }

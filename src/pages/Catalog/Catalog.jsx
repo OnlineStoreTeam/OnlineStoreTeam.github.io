@@ -8,7 +8,7 @@ import {
   Box
 } from "@mui/material";
 import styled from "styled-components";
-import { CategoryNameContext } from "../../components/Context";
+import { CatalogContext, CategoryNameContext } from "../../components/Context";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ReactPaginate from 'react-paginate';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -56,6 +56,7 @@ function Catalog() {
   }
 
   return (
+    
     <Container fixed 
       sx={{
         paddingX: theme.paddingX

@@ -61,6 +61,7 @@ const theme = createTheme({
     action: {
       disabled: "#FDFDFD",
       disabledBackground: "rgba(22, 22, 22, 0.4)",
+      hover: "red",
       hoverOpacity: 0,
     },
   },

@@ -1,17 +1,16 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { Typography, SvgIcon, Box } from "@mui/material";
-import { CategoryNameContext, isModalMenuOpenContext } from "../Context";
+import { CategoryNameContext } from "../Context";
 import { useMediaQuery } from "@mui/material";
 
-function MenuLinkTab({ label, path }) {
+function MenuLinkTab({ label, path, closeMenu }) {
   const { categoryName, setCategoryName } = useContext(CategoryNameContext);
   const screen = useMediaQuery((theme) => theme.breakpoints.only('lg'));
-  const { isModalMenuOpen, setIsModalMenuOpen } = useContext(isModalMenuOpenContext);
 
   const choseCategory = () => {
     setCategoryName(label);
-    setIsModalMenuOpen(false);
+    closeMenu();
   };
 
   const getCategoryIcon = ()=>{

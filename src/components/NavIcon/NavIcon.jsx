@@ -38,15 +38,15 @@ const StyledFiShoppingBag = styled(FiShoppingBag)`
   font-size: 24px;
 `;
 
-function NavIcon() {
+function NavIcon({searchOpen}) {
   const screen = useMediaQuery((theme) => theme.breakpoints.down('md'));
     return (
         <NavIconContainer>
-            {!screen && <IconLink to="/">
+            {!screen && <Box onClick={ searchOpen }>
                 <StyledIcon>
-                    <StyledAiOutlineSearch />
+                    <StyledAiOutlineSearch  />
                 </StyledIcon>
-            </IconLink>}
+            </Box>}
             <IconLink to="/">
                 <StyledIcon>
                     <StyledAiOutlineUser/>

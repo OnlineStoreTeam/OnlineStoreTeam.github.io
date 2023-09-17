@@ -1,4 +1,5 @@
-import { Box, Stack, Item, Link } from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import MenuLinkTab from "./MenuLinkTab";
 
@@ -17,24 +18,24 @@ const MenuContainer = styled(Box)`
     transition: 0.5s;
 `;
 
-function Menu ({isMenuOpen}){
+function Menu ({isMenuOpen, closeMenu}){
     return (
         <MenuContainer sx={{
             height: isMenuOpen ? '200px': 0
         }}>
             <Stack spacing={3}>
-                <Link href="#" variant="h4" underline="hover" color='inherit'>Contacts</Link>
-                <Link href="#" variant="h4" underline="hover" color='inherit'>Delivery & Returns</Link>
-                <Link href="#" variant="h4" underline="hover" color='inherit'>Blog</Link>
+                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Contacts</Link>
+                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Delivery & Returns</Link>
+                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Blog</Link>
             </Stack>
             <Stack spacing={2} direction='row'>
-                <MenuLinkTab label='All products' path='products'></MenuLinkTab>
-                <MenuLinkTab label='Clothing' path='clothing'></MenuLinkTab>
-                <MenuLinkTab label='Leads&amp;Harnesses' path='leads&amp;harnesses'></MenuLinkTab>
-                <MenuLinkTab label='Collars' path='collars'></MenuLinkTab>
-                <MenuLinkTab label='Toys' path='toys'></MenuLinkTab>
-                <MenuLinkTab label='Furniture' path='furniture'></MenuLinkTab>
-                <MenuLinkTab label='Care' path='care'></MenuLinkTab>
+                <MenuLinkTab label='All products' path='products' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Clothing' path='clothing' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Leads&amp;Harnesses' path='leads&amp;harnesses' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Collars' path='collars' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Toys' path='toys' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Furniture' path='furniture' closeMenu={closeMenu}></MenuLinkTab>
+                <MenuLinkTab label='Care' path='care' closeMenu={closeMenu}></MenuLinkTab>
             </Stack>
 
         </MenuContainer>

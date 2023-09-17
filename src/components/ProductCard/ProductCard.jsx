@@ -26,9 +26,9 @@ const StyledButton = muiStyled(Button)`
   text-transform: none;
   transition: all 0.2s ease-in-out;
   border-radius: 2px;
-  // &.Mui-focusVisible{
-  //   background-color: black;
-  // }
+  &.Mui-focusVisible{
+    background-color: black;
+  }
   `;
 const StyledCard = styled(Card)`
   padding: 28px;
@@ -128,5 +128,4 @@ function ProductCard({ product }) {
     </Grid>
   );
 }
-
 export default ProductCard;
