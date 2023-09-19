@@ -44,7 +44,7 @@ function ModalMenu ({closeMenu}){
     return (
             <MenuContainer width={{sx: 'fit content', sm: '358px', md: '495px'}}>
                 <MenuHeader pl={{xs: 4, sm: 4, md: 9}} pr={{xs: 4, sm: 4, md: 9}} >
-                   <MenuHeaderLogo to="/" 
+                   <MenuHeaderLogo to="/waiting_page" 
                    onClick={closeMenu}
                    > 
                         <img src="/logo.svg" alt="logo" 
@@ -71,10 +71,10 @@ function ModalMenu ({closeMenu}){
                     <MenuLinkTab label='Care' path='care' closeMenu={closeMenu}></MenuLinkTab>
                 </Stack>
                 <Stack spacing={4} pl={{xs: 4, sm: 4, md: 9}}>
-                    <StyledLink href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Log In</StyledLink>
-                    <StyledLink href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Contacts</StyledLink>
-                    <StyledLink href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Delivery & Returns</StyledLink>
-                    <StyledLink href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Blog</StyledLink>
+                    <StyledLink to='/waiting_page' variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Log In</StyledLink>
+                    <StyledLink to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Contacts</StyledLink>
+                    <StyledLink to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Delivery & Returns</StyledLink>
+                    <StyledLink to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Blog</StyledLink>
                 </Stack>
             </MenuContainer>
     )

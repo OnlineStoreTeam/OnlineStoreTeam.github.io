@@ -24,9 +24,9 @@ function Menu ({isMenuOpen, closeMenu}){
             height: isMenuOpen ? '200px': 0
         }}>
             <Stack spacing={3}>
-                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Contacts</Link>
-                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Delivery & Returns</Link>
-                <Link href="#" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Blog</Link>
+                <Link to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Contacts</Link>
+                <Link to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Delivery & Returns</Link>
+                <Link to="/waiting_page" variant="h4" underline="hover" color='inherit' onClick={closeMenu}>Blog</Link>
             </Stack>
             <Stack spacing={2} direction='row'>
                 <MenuLinkTab label='All products' path='products' closeMenu={closeMenu}></MenuLinkTab>

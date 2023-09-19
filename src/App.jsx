@@ -11,8 +11,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import Catalog from "./pages/Catalog/Catalog";
+import WaitingPage from "./pages/WaitingPage";
 import { useState, useEffect } from "react";
 import { CategoryNameContext, CatalogContext } from './components/Context';
+import SearchResults from "./pages/SearchResults/SearchResults";
 
 
 
@@ -49,6 +51,8 @@ function App() {
             <Route path="toys" element={<Catalog />} />
             <Route path="furniture" element={<Catalog />} />
             <Route path="care" element={<Catalog />} />
+            <Route path="waiting_page" element={<WaitingPage/>} />
+            <Route path="search_results" element={<SearchResults/>} />
           </Route>
           <Route path="admin" element={<Admin />}>
             <Route path="order" element={<AdminOrder />} />

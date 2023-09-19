@@ -47,12 +47,12 @@ function NavIcon({searchOpen}) {
                     <StyledAiOutlineSearch  />
                 </StyledIcon>
             </Box>}
-            <IconLink to="/">
+            <IconLink to="/waiting_page">
                 <StyledIcon>
                     <StyledAiOutlineUser/>
                 </StyledIcon>
             </IconLink>
-            <IconLink to="/">
+            <IconLink to="/waiting_page">
                 <StyledIcon>
                     <StyledFiShoppingBag/>
                 </StyledIcon>

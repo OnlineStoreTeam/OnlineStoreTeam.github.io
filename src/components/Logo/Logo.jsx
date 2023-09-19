@@ -7,7 +7,7 @@ function Logo() {
     const screen = useMediaQuery((theme) => theme.breakpoints.down('md'));
     const screenLg = useMediaQuery((theme) => theme.breakpoints.only('lg'));
     return (
-        <Link to="/">
+        <Link to="/waiting_page">
             <Box height={{xs: '42px', lg: '48px'}}>
                 <img src="/logo.svg" alt="logo" 
                     style={{display: 'inline-block', height: '100%', margin: '0 12px 0 0 '}}/>

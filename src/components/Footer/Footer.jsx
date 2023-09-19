@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Box, Typography, Link, useMediaQuery } from "@mui/material";
 import FooterTab from "./FooterTab";
-// import { Link } from "react-router-dom";
+import { Link as LinkTo } from "react-router-dom";
 // import Link from '@mui/material/Link';
 
 const FooterContainer = styled(Box)`
@@ -55,10 +55,11 @@ function Footer() {
           flexDirection: screen? 'column': 'row',
           justifyContent: screen? 'flex-start': 'space-between',
         }}>
-        <Box width={{xs: '190px', sm: '190px', md:'190px', lg:'230px'}} height={{md: '34px', lg:'48px'}} mb={{xs: 6, sm: 6}}>
-          <img src="/logo_footer.png" alt="logo_footer" width={'100%'} height={'100%'}/>
+         <Box width={{xs: '190px', sm: '190px', md:'190px', lg:'230px'}} height={{md: '34px', lg:'48px'}} mb={{xs: 6, sm: 6}}>
+          <LinkTo to="/waiting_page">
+            <img src="/logo_footer.png" alt="logo_footer" width={'100%'} height={'100%'}/>
+          </LinkTo>
         </Box>
-        
         <TextContainer width={{xs:'100%', md: '324px', lg: '466px'}} >
           <Typography variant="h3" textTransform="uppercase">
             Contact us
@@ -94,10 +95,10 @@ function Footer() {
           </Typography>
         </AdditionalLeft>
         <Typography variant="h3" color="#FDFDFD">
-          Website by{" "}
-          <Link href="" color="#FDFDFD">
+          Website by {" "}
+          <LinkTo to="/waiting_page" style={{textDecoration: 'underline'}}>
             Team
-          </Link>
+          </LinkTo>
         </Typography>
       </Additional>
     </FooterContainer>

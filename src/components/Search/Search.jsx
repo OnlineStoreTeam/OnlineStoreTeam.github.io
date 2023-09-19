@@ -1,8 +1,7 @@
 import { Box, Stack, Typography, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import Divider from '@mui/material/Divider';
 import { AiOutlineSearch } from "react-icons/ai";
 import InputAdornment from '@mui/material/InputAdornment';
 import { useContext, useEffect, useState } from "react";
@@ -50,6 +49,7 @@ function Search ({searchClose}){
     const { setSearchCatalog } = useContext(CatalogContext);
     const { setCategoryName } = useContext(CategoryNameContext);
     const { data } = useGetAllProductsQuery({page: 0, limit: 12});
+    const navigate = useNavigate()
 
     useEffect(()=>{
         if(data){
@@ -73,6 +73,12 @@ function Search ({searchClose}){
         setCategoryName('All products')
         closeSearch();
     }
+    const showResults = (e)=>{
+        if(e.key === 'Enter'){
+            navigate('/search_results');
+            closeSearch();
+        }
+    }
 
     return (
             <MenuContainer 
@@ -81,6 +87,7 @@ function Search ({searchClose}){
                 sx={{
                     overflow: 'scroll'
                 }}
+                
             >
                 <MenuHeader >
                     <Typography component='h1' fontSize={'28px'} fontWeight={'bold'}>Search</Typography>
@@ -96,6 +103,7 @@ function Search ({searchClose}){
                     fullWidth
                     value={inputValue}
                     onChange={handelInputChange}
+                    onKeyDown={showResults}
                     InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -118,9 +126,7 @@ function Search ({searchClose}){
                         "{inputValue}"
                     </Box>
                     <Stack direction='column' mb={0}>
-                        { filteringCatalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}
-                        { filteringCatalog?.length>5 && <Typography fontSize={20} letterSpacing={10} px={10} color={'secondary.contrastText'} >...</Typography>}
-                    </Stack>
+                        { filteringCatalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}                    </Stack>
                     {filteringCatalog?.length>0 &&<Link 
                         style={{
                             display: 'flex',
@@ -141,7 +147,7 @@ function Search ({searchClose}){
                             }}
                             />
                     </Link>}
-                    {!filteringCatalog?.length>0 && <Link to={'/products'} onClick={backToCatalog}
+                    {!filteringCatalog?.length && <Link to={'/products'} onClick={backToCatalog}
                         style={{
                             display: 'flex',
                             justifyContent: 'flex-end',

@@ -17,7 +17,7 @@ const Circle = styled.svg`
 
 const FooterTab = ({ label, isLast }) => (
   <>
-    <Link to="/">
+    <Link to="/waiting_page">
       <TabLink
         variant="h3"
         color="#FDFDFD"
