@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Breadcrumbs,
-  Link,
   Typography,
   Grid,
   Box
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { CatalogContext, CategoryNameContext } from "../../components/Context";
+import { CategoryNameContext } from "../../components/Context";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ReactPaginate from 'react-paginate';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -18,10 +18,19 @@ import {
 import CategoryDescription from "../../components/CategoryDescription/CategoryDescription";
 import SeoTextBox from "../../components/SeoText/SeoTextBox";
 import theme from "../../theme";
+import { useMediaQuery } from "@mui/material";
 
 const StyledPaginationBox = styled(Box)`
   display: flex;
   justify-content: center;
+`;
+
+const StyledLink = styled(Link)`
+  &:hover{
+    text-decoration: underline;
+  };
+  color: #161616;
+  font-size: ${props => (props.screen === 'true' ? '14px' : '12px')}; ;
 `;
 
 function Catalog() {
@@ -31,6 +40,7 @@ function Catalog() {
   const [ pageCount, setPageCount ] = useState();
   const [ currentPage, setCurrentPage ] = useState(0);
   const { data, isLoading, isError } = useGetAllProductsQuery({page: currentPage, limit: 12});
+  const screen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   const filteringProducts = (category)=>{
     if(category === "All products"){
@@ -57,16 +67,9 @@ function Catalog() {
 
   return (
     
-    <Container fixed 
-      sx={{
-        paddingX: theme.paddingX
-      }}
-      disableGutters={true} 
-      >
+    <Container fixed sx={{ paddingX: theme.paddingX }} disableGutters={true}>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="text.primary" href="/" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>
-          Home
-        </Link>
+        <StyledLink to="/waiting_page" screen={screen.toString()}>Home</StyledLink>
         <Typography color="#A0A0A0" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>{categoryName}</Typography>
       </Breadcrumbs>
       <CategoryDescription/>

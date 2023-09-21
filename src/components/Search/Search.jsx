@@ -1,9 +1,8 @@
-import { Box, Stack, Typography, TextField } from "@mui/material";
+import { Box, Stack, Typography, TextField, InputAdornment } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { AiOutlineSearch } from "react-icons/ai";
-import InputAdornment from '@mui/material/InputAdornment';
 import { useContext, useEffect, useState } from "react";
 import { CatalogContext, CategoryNameContext } from "../Context";
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
@@ -41,6 +40,14 @@ const SearchField = styled(TextField)`
     
 `;
 
+const StyledLink = styled(Link)`
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    color: #161616;
+    margin-top: 24px;
+`;
+
 function Search ({searchClose}){
     const [ inputValue, setInputValue ] = useState('');
     const [ catalog, setCatalog] = useState();
@@ -75,7 +82,10 @@ function Search ({searchClose}){
     }
     const showResults = (e)=>{
         if(e.key === 'Enter'){
+            closeSearch();
             navigate('/search_results');
+        }
+        if(e.target.id === 'results' || e.target.id === 'results_icon'){
             closeSearch();
         }
     }
@@ -86,8 +96,7 @@ function Search ({searchClose}){
                 px={{xs: 4, sm: 4, md: 9, lg: 9 }}
                 sx={{
                     overflow: 'scroll'
-                }}
-                
+                }}    
             >
                 <MenuHeader >
                     <Typography component='h1' fontSize={'28px'} fontWeight={'bold'}>Search</Typography>
@@ -126,47 +135,16 @@ function Search ({searchClose}){
                         "{inputValue}"
                     </Box>
                     <Stack direction='column' mb={0}>
-                        { filteringCatalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}                    </Stack>
-                    {filteringCatalog?.length>0 &&<Link 
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            cursor: 'pointer',
-                            color: '#161616',
-                            marginTop: '24px'
-                        }}
-                        >
-                        <Typography variant="h6" color='secondary.contrastText' mr={1}>Show all results</Typography>
-                        <ArrowForwardOutlinedIcon 
-                            color="secondary.contrastText" 
-                            fontSize="small"
-                            sx={{
-                                width: '16px',
-                                height: '16px',
-                                margin: 'auto 0'
-                            }}
-                            />
-                    </Link>}
-                    {!filteringCatalog?.length && <Link to={'/products'} onClick={backToCatalog}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            cursor: 'pointer',
-                            color: '#161616',
-                            marginTop: '24px'
-                        }}
-                        >
+                        { filteringCatalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}  
+                    </Stack>
+                    {filteringCatalog?.length>0 &&<StyledLink to='/search_results' onClick={showResults}>
+                        <Typography id='results' variant="h6" color='secondary.contrastText' mr={1}>Show all results</Typography>
+                        <ArrowForwardOutlinedIcon id='results_icon' color="secondary.contrastText" sx={{fontSize: 16, margin: 'auto 0'}}/>
+                     </StyledLink>}
+                    {!filteringCatalog?.length && <StyledLink to={'/products'} onClick={backToCatalog}>
                         <Typography variant="h6" color='secondary.contrastText' mr={1}>See all products</Typography>
-                        <ArrowForwardOutlinedIcon 
-                            color="secondary.contrastText" 
-                            fontSize="small"
-                            sx={{
-                                width: '16px',
-                                height: '16px',
-                                margin: 'auto 0'
-                            }}
-                            />
-                    </Link>}
+                        <ArrowForwardOutlinedIcon color="secondary.contrastText" sx={{fontSize: 16, margin: 'auto 0'}}/>
+                    </StyledLink>}
                 </Box>}
                 
             </MenuContainer>
