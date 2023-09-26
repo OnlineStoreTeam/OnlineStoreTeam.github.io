@@ -67,7 +67,7 @@ function Catalog() {
 
   return (
     
-    <Container fixed sx={{ paddingX: theme.paddingX }} disableGutters={true}>
+    <Container fixed sx={{ paddingX: theme.paddingX, position: 'relative' }} disableGutters={true}>
       <Breadcrumbs aria-label="breadcrumb">
         <StyledLink to="/waiting_page" screen={screen.toString()}>Home</StyledLink>
         <Typography color="#A0A0A0" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>{categoryName}</Typography>

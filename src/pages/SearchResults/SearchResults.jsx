@@ -9,6 +9,8 @@ import { useGetAllProductsQuery} from '../../store/userProductApi';
 import SearchOffSharpIcon from '@mui/icons-material/SearchOffSharp';
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import ProductSlider from "../../components/ProductSlider/ProductSlider";
+import ReactPaginate from 'react-paginate';
 
 const StyledLink = styled(Link)`
   &:hover{
@@ -38,6 +40,10 @@ const ViewAllLink = styled(Link)`
     justify-content: flex-end;
     align-items: center;
 `;
+const StyledPaginationBox = styled(Box)`
+  display: flex;
+  justify-content: center;
+`;
 
 function SearchResults (){
     const { searchCatalog }= useContext(CatalogContext);
@@ -47,6 +53,8 @@ function SearchResults (){
     const [ isSearchTouched,  setIsSearchTouched ] = useState(false);
     const [ catalog, setCatalog] = useState();
     const { data } = useGetAllProductsQuery({page: 0, limit: 12});
+    const [ countResults, setCountResults ] = useState();
+    const [ pageCount, setPageCount ] = useState();
 
     useEffect(()=>{
         if(data){
@@ -57,6 +65,8 @@ function SearchResults (){
     useEffect(()=>{
         if(searchCatalog){
             setFilteringCatalog(searchCatalog);
+            setCountResults(searchCatalog.length);
+            setPageCount(Math.ceil(searchCatalog.length/12))
         }
     }, [searchCatalog])
 
@@ -73,6 +83,10 @@ function SearchResults (){
         setInputValue(e.target.value);
         setIsSearchTouched(true);
     }
+    const handlePageClick = (page)=>{
+        console.log(page?.selected)
+        // setCurrentPage(page?.selected);    
+      }
 
     return(
         <Container fixed sx={{paddingX: theme.paddingX}} disableGutters={true}>
@@ -128,7 +142,30 @@ function SearchResults (){
                 >
                 {filteringCatalog?.map(product => <ProductCard key={product.id} product={product} />)}    
             </Grid>
-            <Box mb={48}>
+            <StyledPaginationBox mb={countResults>12? {sm: 12, md: 16, lg: 18} : 0}>
+                {countResults>12 && <ReactPaginate
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={pageCount}
+                    containerClassName='pagination flex'
+                    previousLabel='Previous'
+                    // previousClassName='page-item'
+                    previousLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
+                    nextLabel='Next'
+                    // nextClassName='page-item'
+                    nextLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
+                    // pageClassName='page-item'
+                    pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
+                    activeLinkClassName='bg-black border-black text-white'
+                    disabledClassName='opacity-50 cursor-default'
+                    breakLabel='...'
+                    // breakClassName='page-item'
+                    breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
+                    renderOnZeroPageCount={null}
+                />}
+            </StyledPaginationBox>
+            <Box mb={'48px'}>
                 <FlexBox sx={{justifyContent: 'space-between'}}>
                     <Typography fontSize={28} fontWeight={700}>Explore new arrivals</Typography>
                     <ViewAllLink to='/products'>
@@ -137,6 +174,7 @@ function SearchResults (){
                     </ViewAllLink>
                 </FlexBox>
             </Box>
+            <ProductSlider></ProductSlider>
             
         </Container>
     )

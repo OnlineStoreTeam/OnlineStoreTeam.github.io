@@ -9,7 +9,6 @@ const MenuContainer = styled(Box)`
     left: 0;
     right: 0;
     background-color: #FAFAFA;
-    border-top: 1px solid #EEE;
     padding: 0 54px;
     display: flex;
     justify-content: space-between;

@@ -19,24 +19,24 @@ import Search from "../Search/Search";
 const HeaderContainer = styled(Box)`
   display: flex;
   width: 100%;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
   background: #fdfdfd;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
   &:hover{
     cursor: pointer
   }
 `;
 const NavBar = styled(Box)`
   display: flex;
-  padding: 0 56px;
+  padding: 16px 56px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  border-bottom: 1px solid #EEE;
 `;
 const MenuContainer = styled(Box)`
   display: flex;
@@ -136,7 +136,7 @@ function Header() {
           <NavIcon searchOpen={searchOpen} />
         </NavBar>
         {screen && <NavLink />}
-        <Menu isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>
+        {screen && <Menu isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>}
         <Drawer
           open={modalMenuState}
           anchor="left"
