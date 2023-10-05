@@ -1,99 +1,52 @@
-// import React from 'react';
-// import { NavLink, Link, Routes, Route} from 'react-router-dom';
-// import { Home } from '../pages/Home';
-// import { AdminProduct } from '../admin/admin-product/AdminProduct';
-// import {
-//   LuSearch,
-//   LuHeart,
-//   LuUser,
-//   LuShoppingCart,
-//   LuChevronDown
-// } from "react-icons/lu";
-//
-// function Header() {
-//   const setActiveLink = ({ isActive }) =>
-//     'mx-5 p-3 rounded-md ' + (isActive ? 'text-white' : 'text-white');
-//
-//   return (
-//     <header className=''>
-//       <div className='py-2 px-9 bg-[#808080] flex items-center justify-between text-base'>
-//         <nav>
-//           <NavLink to='/' className={setActiveLink}>About us</NavLink>
-//           <NavLink to='/' className={setActiveLink}>Custumer service</NavLink>
-//           <NavLink to='/' className={setActiveLink}>Contacts</NavLink>
-//           <NavLink to='/' className={setActiveLink}>Blog</NavLink>
-//           <NavLink to='/admin/product' className={setActiveLink}>Admin</NavLink>
-//         </nav>
-//         <button className='justify-self-end flex items-center text-white' >
-//             En
-//             <LuChevronDown />
-//         </button>
-//       </div>
-//       <div className='py-6 px-14' >
-//         <div className='flex justify-between items-center'>
-//           <Link to={'/'} className='inline-block w-52 p-4 bg-[#808080] text-white text-2xl text-center'>LOGO</Link>
-//           <fieldset className=' w-[422px] border-b flex justify-center' >
-//             <input
-//               type="search"
-//               name="search-field"
-//               className=' px-4 py-2 grow focus:outline-neutral-900 placeholder:text-black  placeholder:text-bold placeholder:text-xl'
-//               placeholder='Search'
-//             />
-//             <button type='button' name='search-button' className=''>
-//               <LuSearch className='h-6 w-6 font-light'/>
-//             </button>
-//           </fieldset>
-//           <div className='flex justify-center items-center w-[200px] gap-8'>
-//             <Link to='/' className=''><LuHeart className='h-6 w-6' /></Link>
-//             <Link to='/' className=''><LuUser className='h-6 w-6' /></Link>
-//             <Link to='/' className=''><LuShoppingCart className='h-6 w-6' /></Link>
-//           </div>
-//         </div>
-//         <div className='py-6 flex justify-between flex-wrap items-center text-xl'>
-//           <Link to='/' className=''>Clothing</Link>
-//           <Link to='/' className=''>LEADS & HARNESSES</Link>
-//           <Link to='/' className=''>Collars</Link>
-//           <Link to='/' className=''>Toys</Link>
-//           <Link to='/' className=''>Forniture</Link>
-//           <Link to='/' className=''>Care</Link>
-//           <Link to='/' className=''>Sale</Link>
-//         </div>
-//       </div>
-//
-//     </header>
-//   );
-// }
-//
-// export default Header;
 
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Logo from "../Logo/Logo";
 import NavLink from "../NavLink/NavLink";
 import NavIcon from "../NavIcon/NavIcon";
-import {HiMenuAlt1} from "react-icons/hi";
-import { styled as muiStyled } from '@mui/system';
+import { HiMenuAlt1 } from "react-icons/hi";
+import { AiOutlineSearch } from "react-icons/ai";
+import { styled as muiStyled } from "@mui/system";
+import Menu from "../Menu/Menu";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { useMediaQuery } from "@mui/material";
+import { Link } from "react-router-dom";
+import ModalMenu from "../Menu/ModalMenu";
+import Drawer from '@mui/material/Drawer';
+import Search from "../Search/Search";
 
 const HeaderContainer = styled(Box)`
   display: flex;
   width: 100%;
-  padding-top: 16px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
-  background: #FDFDFD;
+  background: #fdfdfd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  &:hover{
+    cursor: pointer
+  }
 `;
 const NavBar = styled(Box)`
   display: flex;
-  padding: 0 56px;
+  padding: 16px 56px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  border-bottom: 1px solid #EEE;
 `;
 const MenuContainer = styled(Box)`
   display: flex;
-  width: 175px;
+  width: fit-content;
+  align-items: center;
+  gap: 12px;
+`;
+const MenuLink = styled(Box)`
+  display: flex;
+  // width: 175px;
   align-items: center;
   gap: 12px;
 `;
@@ -106,7 +59,6 @@ const StyledIcon = styled.div`
   justify-content: center;
 `;
 const MenuTitle = muiStyled(Typography)`
-  font-family: 'lato', sans-serif;
   font-size: 18px;
   color: #161616;
   font-style: normal;
@@ -116,20 +68,90 @@ const MenuTitle = muiStyled(Typography)`
 const StyledHiMenuAlt1 = styled(HiMenuAlt1)`
   font-size: 24px;
 `;
+const IconLink = styled(Link)`
+  text-decoration: none;
+`;
+const StyledAiOutlineSearch = styled(AiOutlineSearch)`
+  font-size: 24px;
+`;
+
 function Header() {
+  const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+  const screen = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const screenSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const [ modalMenuState, setModalMenuState ]= useState(false);
+  const [ searchState, setSearchState ]= useState(false);
+
+
+  const searchOpen = ()=>{
+    setSearchState(true);
+  }
+  const searchClose = ()=>{
+    setSearchState(false);
+  }
+
+  const drawerOpen = ()=>{
+    setModalMenuState(true);
+  }
+  const drawerClose = ()=>{
+    setModalMenuState(false);
+  }
+  const openMenu = ()=>{
+    if(screen){
+      setIsMenuOpen(!isMenuOpen)
+    } else {
+      drawerOpen();
+    }
+  }
+  const closeMenu = ()=>{
+    if(screen){
+      setIsMenuOpen(!isMenuOpen)
+    } else{
+      drawerClose();
+    }
+  }
+  useEffect(()=>{
+    setModalMenuState(false);
+    setIsMenuOpen(false);
+  }, [screen])
+
   return (
       <HeaderContainer>
-          <NavBar>
-              <MenuContainer>
+        <NavBar>
+          <MenuLink>
+            <MenuContainer onClick={()=>openMenu()}>
+              <StyledIcon>
+                {!isMenuOpen && <StyledHiMenuAlt1 />}
+                {isMenuOpen && screen && <CloseOutlinedIcon/>}
+              </StyledIcon>
+              {!screenSm && <MenuTitle >Menu</MenuTitle>}
+            </MenuContainer>
+            {screenSm && <Box onClick={searchOpen}>
                   <StyledIcon>
-                      <StyledHiMenuAlt1 />
+                      <StyledAiOutlineSearch  />
                   </StyledIcon>
-                  <MenuTitle>Menu</MenuTitle>
-              </MenuContainer>
-              <Logo />
-              <NavIcon />
-          </NavBar>
-        <NavLink/>
+              </Box>}
+          </MenuLink>
+          <Logo/>
+          <NavIcon searchOpen={searchOpen} />
+        </NavBar>
+        {screen && <NavLink />}
+        {screen && <Menu isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>}
+        <Drawer
+          open={modalMenuState}
+          anchor="left"
+          onClose={drawerClose}
+          transitionDuration={500}       >
+          <ModalMenu closeMenu={closeMenu}/>
+        </Drawer>
+        <Drawer
+          open={searchState}
+          anchor="right"
+          onClose={searchClose}
+          transitionDuration={500}
+        >
+          <Search searchClose={searchClose}/>
+        </Drawer>
       </HeaderContainer>
   );
 }

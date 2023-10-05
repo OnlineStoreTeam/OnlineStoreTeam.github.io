@@ -1,19 +1,20 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {Box} from '@mui/material';
 import styled from 'styled-components';
 import {AiOutlineSearch, AiOutlineUser} from "react-icons/ai";
 import {FiShoppingBag} from "react-icons/fi";
+import { useMediaQuery } from "@mui/material";
 
 const NavIconContainer = styled(Box)`
   display: flex;
-  width: 175px;
+  width: fit-content;
   justify-content: flex-end;
   align-items: center;
   gap: 32px;
 `;
 
-const IconLink = styled(NavLink)`
+const IconLink = styled(Link)`
   text-decoration: none;
 `;
 const StyledIcon = styled.div`
@@ -37,20 +38,21 @@ const StyledFiShoppingBag = styled(FiShoppingBag)`
   font-size: 24px;
 `;
 
-function NavIcon() {
+function NavIcon({searchOpen}) {
+  const screen = useMediaQuery((theme) => theme.breakpoints.down('md'));
     return (
         <NavIconContainer>
-            <IconLink to="/">
+            {!screen && <Box onClick={ searchOpen }>
                 <StyledIcon>
-                    <StyledAiOutlineSearch />
+                    <StyledAiOutlineSearch  />
                 </StyledIcon>
-            </IconLink>
-            <IconLink to="/">
+            </Box>}
+            <IconLink to="/waiting_page">
                 <StyledIcon>
                     <StyledAiOutlineUser/>
                 </StyledIcon>
             </IconLink>
-            <IconLink to="/">
+            <IconLink to="/waiting_page">
                 <StyledIcon>
                     <StyledFiShoppingBag/>
                 </StyledIcon>
