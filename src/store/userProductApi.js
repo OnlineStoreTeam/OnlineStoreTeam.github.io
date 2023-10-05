@@ -5,7 +5,7 @@ export const userProductApi = createApi({
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
     // baseUrl: 'https://happytails-store.onrender.com ',
-    baseUrl: 'http://localhost:8080/',
+    baseUrl: 'http://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({

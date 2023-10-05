@@ -5,11 +5,11 @@ export const productApi = createApi({
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
     // baseUrl: 'https://happytails-store.onrender.com ',
-    baseUrl: 'http://localhost:8080/',
+    baseUrl: 'http://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      query: ({page, limit}) => `admin/products?page=${page}&size=${limit}`,
+      query: ({page, limit}) => `products?page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
           ? [
@@ -19,12 +19,12 @@ export const productApi = createApi({
           : [{ type: 'Products', id: 'LIST' }],
     }),
     getOneProduct: builder.query({
-      query: (id = 1) => `admin/products/${id}`,
+      query: (id = 1) => `products/${id}`,
     }),
     addProduct: builder.mutation({
       query(body) {
         return {
-          url: 'admin/products',
+          url: 'products',
           method: 'POST',
           body,
           headers: {
@@ -37,7 +37,7 @@ export const productApi = createApi({
     editProduct: builder.mutation({
       query({id, body}) {
         return {
-          url: `admin/products/${id}`,
+          url: `products/${id}`,
           method: 'PUT',
           body,
           headers: {
@@ -50,7 +50,7 @@ export const productApi = createApi({
     deleteProduct: builder.mutation({
       query(id) {
         return {
-          url: `admin/products/${id}`,
+          url: `products/${id}`,
           method: 'DELETE',
         }
       },
