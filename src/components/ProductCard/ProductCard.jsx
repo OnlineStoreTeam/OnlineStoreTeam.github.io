@@ -41,15 +41,15 @@ const StyledCard = styled(Card)`
 function ProductCard({ product }) {
   const [isCardHover, setIsCardHover] = useState(false);
   const [ productName, setProductName ] = useState(product.name);
-  const [ isButtonPressed, setIsButtonPressed ] = useState(false);
+  // const [ isButtonPressed, setIsButtonPressed ] = useState(false);
 
   const screen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   useEffect(()=>{
-    if(productName.length > 50){
-      setProductName( productName.substring(0, 50) + '...');
+    if(productName?.length > 50){
+      setProductName( productName?.substring(0, 50) + '...');
     }
-  }, [])
+  }, [productName])
 
   const cardHover = ()=>{
     if(screen){

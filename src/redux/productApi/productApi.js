@@ -27,6 +27,16 @@ export const productApi = createApi({
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
+    searchProductsByName: builder.query({
+      query: ({page, limit, value}) => `products/search?name=${value}&page=${page}&size=${limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              result.map(({ id }) => ({ type: 'Products', id })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+    }),
     getOneProduct: builder.query({
       query: (id = 1) => `products/${id}`,
     }),
@@ -71,6 +81,7 @@ export const productApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetProductsByCategoryQuery,
+  useSearchProductsByNameQuery,
   useGetOneProductQuery,
   useAddProductMutation,
   useEditProductMutation,

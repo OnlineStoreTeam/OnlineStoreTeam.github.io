@@ -1,13 +1,15 @@
 import { Box, Stack, Typography, TextField, InputAdornment } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { AiOutlineSearch } from "react-icons/ai";
-import { useContext, useEffect, useState } from "react";
-import { CatalogContext, CategoryNameContext } from "../Context";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
-import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
+import { useDispatch } from "react-redux";
+import { setCategoryId } from "../../redux/categories/categorySlice";
+import { setSearchCatalog } from "../../redux/productApi/productsSlice";
+import { useSearchProductsByNameQuery } from "../../redux/productApi/productApi";
 import ProductItem from './ProductItem';
+import styled from "styled-components";
 
 
 const MenuContainer = styled(Box)`
@@ -51,43 +53,42 @@ const StyledLink = styled(Link)`
 function Search ({searchClose}){
     const [ inputValue, setInputValue ] = useState('');
     const [ catalog, setCatalog] = useState();
-    const [ filteringCatalog, setFilteringCatalog ]= useState();
     const [ isSearchTouched,  setIsSearchTouched ] = useState(false);
-    const { setSearchCatalog } = useContext(CatalogContext);
-    const { setCategoryName } = useContext(CategoryNameContext);
-    const { data } = useGetAllProductsQuery({page: 0, limit: 12});
-    const navigate = useNavigate()
+    const { data } = useSearchProductsByNameQuery({page: 0, limit: 12, value: inputValue});
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         if(data){
-            setCatalog(data.content);
+            setCatalog(data);
         }
       }, [data])
 
     const handelInputChange = (e)=>{
         setIsSearchTouched(true);
         setInputValue(e.target.value);
-        let value = e.target.value.toLowerCase().split(' ')[0];;
-        const newCatalog = catalog.filter((product)=>product.name.toLowerCase().includes(value));
-        value? setFilteringCatalog(newCatalog) : setFilteringCatalog(null);
     }
     const closeSearch = ()=>{
         searchClose();
         setIsSearchTouched(false);
-        setSearchCatalog(filteringCatalog);
+        
     }
     const backToCatalog = ()=>{
-        setCategoryName('All products')
+        dispatch(setCategoryId(0))
         closeSearch();
     }
     const showResults = (e)=>{
         if(e.key === 'Enter'){
+            console.log(catalog)
+            dispatch(setSearchCatalog(catalog));
             closeSearch();
             navigate('/search_results');
+            
         }
         if(e.target.id === 'results' || e.target.id === 'results_icon'){
+            dispatch(setSearchCatalog(catalog));
             closeSearch();
-        }
+        }  
     }
 
     return (
@@ -130,18 +131,18 @@ function Search ({searchClose}){
                         fontSize='16px' 
                         color='secondary.contrastText'
                     >
-                        {filteringCatalog?.length>0 && `${filteringCatalog?.length} Product Results for `}
-                        {!filteringCatalog?.length && ` Sorry, nothing found for `}
+                        {catalog?.length>0 && `${catalog?.length} Product Results for `}
+                        {!catalog?.length && ` Sorry, nothing found for `}
                         "{inputValue}"
                     </Box>
                     <Stack direction='column' mb={0}>
-                        { filteringCatalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}  
+                        { catalog?.slice(0,5).map(product=><ProductItem product={product} key={product.id}/>)}  
                     </Stack>
-                    {filteringCatalog?.length>0 &&<StyledLink to='/search_results' onClick={showResults}>
+                    {catalog?.length>0 &&<StyledLink to='/search_results' onClick={showResults}>
                         <Typography id='results' variant="h6" color='secondary.contrastText' mr={1}>Show all results</Typography>
                         <ArrowForwardOutlinedIcon id='results_icon' color="secondary.contrastText" sx={{fontSize: 16, margin: 'auto 0'}}/>
                      </StyledLink>}
-                    {!filteringCatalog?.length && <StyledLink to={'/products'} onClick={backToCatalog}>
+                    {!catalog?.length && <StyledLink to={'/products'} onClick={backToCatalog}>
                         <Typography variant="h6" color='secondary.contrastText' mr={1}>See all products</Typography>
                         <ArrowForwardOutlinedIcon color="secondary.contrastText" sx={{fontSize: 16, margin: 'auto 0'}}/>
                     </StyledLink>}
