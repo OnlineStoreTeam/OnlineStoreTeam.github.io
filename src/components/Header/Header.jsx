@@ -1,20 +1,21 @@
 
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import { HiMenuAlt1 } from "react-icons/hi";
+import { AiOutlineSearch } from "react-icons/ai";
+import CloseOutlinedIcon  from '@mui/icons-material/CloseOutlined';
+import { styled as muiStyled } from "@mui/system";
+import { useMediaQuery, Drawer } from "@mui/material";
+import { useGetAllCategoriesQuery } from "../../redux/categories/categoryApi";
+import styled from "styled-components";
 import Logo from "../Logo/Logo";
 import NavLink from "../NavLink/NavLink";
 import NavIcon from "../NavIcon/NavIcon";
-import { HiMenuAlt1 } from "react-icons/hi";
-import { AiOutlineSearch } from "react-icons/ai";
-import { styled as muiStyled } from "@mui/system";
 import Menu from "../Menu/Menu";
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { useMediaQuery } from "@mui/material";
-import { Link } from "react-router-dom";
 import ModalMenu from "../Menu/ModalMenu";
-import Drawer from '@mui/material/Drawer';
 import Search from "../Search/Search";
+
 
 const HeaderContainer = styled(Box)`
   display: flex;
@@ -68,9 +69,6 @@ const MenuTitle = muiStyled(Typography)`
 const StyledHiMenuAlt1 = styled(HiMenuAlt1)`
   font-size: 24px;
 `;
-const IconLink = styled(Link)`
-  text-decoration: none;
-`;
 const StyledAiOutlineSearch = styled(AiOutlineSearch)`
   font-size: 24px;
 `;
@@ -82,6 +80,7 @@ function Header() {
   const [ modalMenuState, setModalMenuState ]= useState(false);
   const [ searchState, setSearchState ]= useState(false);
 
+  const { data } =useGetAllCategoriesQuery({page:0, limit:10})
 
   const searchOpen = ()=>{
     setSearchState(true);
@@ -135,14 +134,14 @@ function Header() {
           <Logo/>
           <NavIcon searchOpen={searchOpen} />
         </NavBar>
-        {screen && <NavLink />}
-        {screen && <Menu isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>}
+        {screen && <NavLink categories={data?.content}/>}
+        {screen && <Menu categories={data?.content} isMenuOpen={isMenuOpen} closeMenu={closeMenu}/>}
         <Drawer
           open={modalMenuState}
           anchor="left"
           onClose={drawerClose}
           transitionDuration={500}       >
-          <ModalMenu closeMenu={closeMenu}/>
+          <ModalMenu categories={data?.content} closeMenu={closeMenu}/>
         </Drawer>
         <Drawer
           open={searchState}

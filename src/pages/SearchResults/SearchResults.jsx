@@ -5,7 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import {CatalogContext} from '../../components/Context';
 import theme from "../../theme";
-import { useGetAllProductsQuery} from '../../store/userProductApi';
+import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
 import SearchOffSharpIcon from '@mui/icons-material/SearchOffSharp';
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';

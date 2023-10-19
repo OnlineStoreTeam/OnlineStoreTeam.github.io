@@ -1,4 +1,4 @@
-import {useDeleteProductMutation} from '../../store/productApi';
+import {useDeleteProductMutation} from '../../redux/productApi/productApi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

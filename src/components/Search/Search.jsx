@@ -6,7 +6,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { CatalogContext, CategoryNameContext } from "../Context";
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
-import { useGetAllProductsQuery} from '../../store/userProductApi';
+import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
 import ProductItem from './ProductItem';
 
 

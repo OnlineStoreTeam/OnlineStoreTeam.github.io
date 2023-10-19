@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Box, Button } from "@mui/material";
 import { styled as muiStyled } from "@mui/system";
-import styled from "styled-components";
-import SeoClothing from "../../components/SeoText/SeoClothing";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
+import styled from "styled-components";
 import { CategoryNameContext } from "../../components/Context";
 import SeoAllProducts from "./SeoAllProducts";
 import SeoCollars from "./SeoCollars";
@@ -11,6 +10,7 @@ import SeoLeads from "./SeoLeads";
 import SeoToys from "./SeoToys";
 import SeoFurniture from "./SeoFurniture";
 import SeoCare from "./SeoCare";
+import SeoClothing from "./SeoClothing";
 
 const StyledSeoTypography = styled(Typography)`
   position: absolute;
@@ -42,8 +42,7 @@ const StyledMoreButton = muiStyled(Button)`
   }
 `;
 
-function SeoTextBox() {
-  const { categoryName, setCategoryName } = useContext(CategoryNameContext);
+function SeoTextBox({categoryName}) {
   const [isMoreText, setIsMoreText] = useState(false);
   const [isMoreTextVisible, setIsMoreTextVisible] = useState(false);
 
@@ -55,7 +54,7 @@ function SeoTextBox() {
   };
 
   const getCategoryComponent = () => {
-    switch (categoryName.toLowerCase()) {
+    switch (categoryName?.toLowerCase()) {
       case "clothing":
         return <SeoClothing />;
       case "all products":

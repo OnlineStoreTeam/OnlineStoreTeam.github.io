@@ -1,13 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   LuEdit2, 
   LuMoreHorizontal,
   LuSearch,
   LuTrash2, 
  } from 'react-icons/lu';
+ import { useGetAllCategoriesQuery } from '../../redux/categories/categoryApi';
 
 function AdminProductItem({ product, editProduct, deleteProduct }) {
   const [displayMenu, setDisplayMenu] = useState(false);
+  const [ currentCategory, setCurrentCategory ] = useState();
+
+  const { data } =useGetAllCategoriesQuery({page:0, limit:10});
+
+
+  useEffect(()=>{
+    data?.content.map((category)=>{
+      if(category.id === product.categoryId){
+      return setCurrentCategory(category.name)
+      }
+      return null
+    })
+  }, [data, product.categoryId])
+  
   const setStatusColor = (productStatus) => 
   productStatus === 'ACTIVE' ? ' bg-green-400' : 'bg-neutral-500';
 
@@ -25,15 +40,12 @@ function AdminProductItem({ product, editProduct, deleteProduct }) {
       <td className='py-3 px-3 flex justify-center'>
         <img 
           src={product.imagePath}
-          // src={'http://localhost:8080/'+product.imagePath} 
-          // src='http:\\localhost:8080\images\\image.png' 
-          // src='/product.webp' 
-          alt='' className='h-12 block' 
+          alt={product.name} className='h-12 block' 
         />
       </td>
       <td className='py-3 px-5'>{product.name}</td>
       <td className='py-3 px-5'>{product.article}</td>
-      <td className='py-3 px-5'>{product.category}</td>
+      <td className='py-3 px-5'>{currentCategory}</td>
       <td className='py-3 px-5 whitespace-nowrap'>$ {product.price}</td>
       <td className='py-3 px-5'>{product.quantity}</td>
       <td className='py-3 px-5'>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
-import { useAddProductMutation, useEditProductMutation } from '../../store/productApi'
+import { useForm } from 'react-hook-form';
+import { useAddProductMutation, useEditProductMutation } from '../../redux/productApi/productApi';
 import { 
   LuAlertCircle, 
   LuX 
@@ -32,16 +32,6 @@ function AdminProductForm({closeForm, product, allProducts}) {
     watch,
     reset,
   } = useForm({
-    // defaultValues: {
-    //   name: 'Name',
-    //   article: 'BBBGGG01',
-    //   category: 'Toys',
-    //   description: 'Product description',
-    //   price: 600,
-    //   quantity: 135,
-    //   productStatus: 'ACTIVE',
-    //   imagePath: 'product.webp',
-    // },
     mode: 'onBlur',
   });
   
@@ -50,7 +40,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
       reset({
         name: editedProduct.name,
         article: editedProduct.article,
-        category: editedProduct.category,
+        categoryId: editedProduct.category,
         description: editedProduct.description,
         price: editedProduct.price,
         quantity: editedProduct.quantity,
@@ -59,7 +49,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
       });
       setImageUrl(editedProduct.imagePath);
     } 
-  }, [product])
+  }, [editedProduct, reset])
 
   const formValidation = {
     name: {
@@ -145,18 +135,16 @@ function AdminProductForm({closeForm, product, allProducts}) {
       const newProduct = {
         name: data.name,
         article: data.article,
-        category: data.category,
+        categoryId: data.category,
         description: data.description,
         price: data.price,
         quantity: data.quantity,
         productStatus: data.status,
-        imagePath: imageUrl
+        imagePath: imageUrl,
+        id: editedProduct.id
       }
-     
-    //  console.log(newProduct.imagePath)
-     editProduct({id: editedProduct.id, body: newProduct})
+          editProduct({body: newProduct})
         .then(() => {
-          // console.log(newProduct.imagePath)
             toast.success('Product successfully edited');
         })
         .catch((error) => {
@@ -171,7 +159,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
       addProduct({
         name: data.name,
         article: data.article,
-        category: data.category,
+        categoryId: data.category,
         description: data.description,
         price: data.price,
         quantity: data.quantity,
@@ -310,12 +298,12 @@ function AdminProductForm({closeForm, product, allProducts}) {
                     <option value='' disabled>
                       Category
                     </option>
-                    <option value='Clothing'>Clothing</option>
-                    <option value='Leads&harnesses'>Leads&harnesses</option>
-                    <option value='Toys'>Toys</option>
-                    <option value='Care'>Care</option>
-                    <option value='Furniture'>Furniture</option>
-                    <option value='Collars'>Collars</option>
+                    <option value={1}>Clothing</option>
+                    <option value={2}>Leads&harnesses</option>
+                    <option value={3}>Toys</option>
+                    <option value={4}>Care</option>
+                    <option value={5}>Furniture</option>
+                    <option value={6}>Collars</option>
                   </select>
                 </label>
                 <div className='h-5 mt-1'>

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { style, styled } from "@mui/system";
-import { useGetAllProductsQuery} from '../../store/productApi';
+import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
 import { useContext, useState, useEffect } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';

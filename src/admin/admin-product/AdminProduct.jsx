@@ -4,9 +4,7 @@ import {
   LuSearch,
 } from "react-icons/lu";
 
-import { 
-  useGetAllProductsQuery,
-} from '../../store/productApi';
+import { useGetAllProductsQuery } from '../../redux/productApi/productApi';
 import AdminProductForm from './AdminProductForm';
 import AdminProductItem from './AdminProductItem';
 import AdminProductDeleteMessage from './AdminProductDeleteMessage';
@@ -21,7 +19,7 @@ function AdminProduct() {
   const [currentPage, setCurrentPage] = useState(0);
   const { data } = useGetAllProductsQuery({page: currentPage, limit: 10});
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+   
   const closeForm = (state) => {
     setFormIsOpen(state);
     setSelectedProduct({})
@@ -50,7 +48,6 @@ function AdminProduct() {
   return (
     <div className='mt-4 mr-14 mb-16 ml-6'>
       <nav className='text-small'>
-        {/* <Link to={'/admin'}>Dashboard</Link> */}
         <span>Dashboard</span>
         <span> / </span>
         <span className='text-neutral-900'>Products</span>
@@ -155,8 +152,8 @@ function AdminProduct() {
                 </td>
               </tr>
             }
-            {/* {data.map(product => <AdminProductItem key={product.id} product={product} />)} */}
-            {data?.content.map(product => <AdminProductItem key={product.id} product={product} editProduct={editProduct} deleteProduct={deleteProduct}/>)}           
+            {data?.content.map((product) => <AdminProductItem key={product.id} product={product} editProduct={editProduct} deleteProduct={deleteProduct}/>
+             )}           
           </tbody>
         </table>
       </div>
@@ -169,17 +166,13 @@ function AdminProduct() {
           pageCount={pageCount}
           containerClassName='pagination flex'
           previousLabel='Previous'
-          // previousClassName='page-item'
           previousLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
           nextLabel='Next'
-          // nextClassName='page-item'
           nextLinkClassName='inline-block h-10 py-1.5 px-2.5 border text-center'
-          // pageClassName='page-item'
           pageLinkClassName='inline-block w-10 h-10 p-2 border text-center'
           activeLinkClassName='bg-black border-black text-white'
           disabledClassName='opacity-50 cursor-default'
           breakLabel='...'
-          // breakClassName='page-item'
           breakLinkClassName='inline-block w-10 h-10 p-2 border text-center'
           renderOnZeroPageCount={null}
         />}

@@ -1,24 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import ReactPaginate from 'react-paginate';
 import {
   Container,
   Breadcrumbs,
   Typography,
-  Grid,
   Box
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { CategoryNameContext } from "../../components/Context";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import ReactPaginate from 'react-paginate';
-import CircularProgress from '@mui/material/CircularProgress';
-import { 
-  useGetAllProductsQuery, 
-} from '../../store/userProductApi';
-import CategoryDescription from "../../components/CategoryDescription/CategoryDescription";
-import SeoTextBox from "../../components/SeoText/SeoTextBox";
-import theme from "../../theme";
 import { useMediaQuery } from "@mui/material";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import SeoTextBox from "../../components/SeoText/SeoTextBox";
+import AllProducts from "../../components/CatalogPages/AllProducts";
+import { selectCategoryId } from "../../redux/categories/categorySlice";
+import theme from "../../theme";
+import { useEffect } from "react";
+import ProductsByCategory from "../../components/CatalogPages/ProductsByCategory";
+import { useGetAllCategoriesQuery } from "../../redux/categories/categoryApi";
+import CategoryDescription from "../../components/CategoryDescription/CategoryDescription";
 
 const StyledPaginationBox = styled(Box)`
   display: flex;
@@ -34,72 +33,48 @@ const StyledLink = styled(Link)`
 `;
 
 function Catalog() {
-  const { categoryName, setCategoryName } = useContext(CategoryNameContext);
-  const [ catalog, setCatalog ]= useState();
+  const [ categoryName, setCategoryName ] = useState();
   const [ countResults, setCountResults ] = useState();
   const [ pageCount, setPageCount ] = useState();
   const [ currentPage, setCurrentPage ] = useState(0);
-  const { data, isLoading, isError } = useGetAllProductsQuery({page: currentPage, limit: 12});
   const screen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const categoryId = useSelector(selectCategoryId);
+  const { data } = useGetAllCategoriesQuery({page:0, limit:10});
 
-  const filteringProducts = (category)=>{
-    if(category === "All products"){
-      setCatalog(data?.content);
-      setCountResults(data?.totalElements);
-      setPageCount(data?.totalPages);
-    } else {
-      const productsByCategory = data?.content.filter(product=> product.category.toLowerCase() === categoryName.toLowerCase());
-      setCatalog(productsByCategory);
-      setCountResults(productsByCategory?.length);
-      setPageCount(1)
+  useEffect(()=>{
+    if(categoryId === 0){
+      setCategoryName('All products')
+    } else{
+      if(data){
+        const category = data?.content.find(category=>category.id === categoryId)
+        setCategoryName(category.name)
+      }
     }
+    
+    
+  }, [data, categoryId, setCategoryName])
+
+  const filterCatalogByCategory = (countOfPage, countOfResults)=>{
+    setPageCount(countOfPage);
+    setCountResults(countOfResults);
   }
-
-  useEffect(() => {
-    if (!isLoading && !isError && data) {
-      filteringProducts(categoryName);
-    }
-  }, [data, isLoading, isError, categoryName]);
      
   const handlePageClick = (page)=>{
     setCurrentPage(page?.selected);    
   }
 
   return (
-    
     <Container fixed sx={{ paddingX: theme.paddingX, position: 'relative' }} disableGutters={true}>
       <Breadcrumbs aria-label="breadcrumb">
         <StyledLink to="/waiting_page" screen={screen.toString()}>Home</StyledLink>
         <Typography color="#A0A0A0" fontSize={{ sm: '12px', md: '12px', lg: '14px'}}>{categoryName}</Typography>
       </Breadcrumbs>
-      <CategoryDescription/>
-      { isLoading && <CircularProgress sx={{display: 'block', margin: '0 auto'}}/>}
-      { isError  && (
-        <Typography 
-          align="center" 
-          variant="h2"
-          color="secondary.dark"
-          mt={4.5}
-        >
-          Error: Unable to load data
-        </Typography>
-      )}
-      { !isLoading && !isError && !countResults && 
-        <Typography 
-          align="center" 
-          variant="h2"
-          color="secondary.dark"
-          mt={4.5}
-          >There are no products in this category yet</Typography>}
-      <Grid 
-          container
-          mb={{sm: 12, md: 16, lg: 18}} 
-          columnGap={{sm: 0, md: 3, lg: 6}}
-          rowSpacing={{xs: 4, sm: 4, md: 4, lg: 8}} 
-          justifyContent="flex-start"
-          >
-         {catalog?.map(product => <ProductCard key={product.id} product={product} />)}           
-      </Grid>
+      <CategoryDescription categoryName={categoryName}/>
+      {categoryId === 0? (
+        <AllProducts currentPage={currentPage} filterCatalog={filterCatalogByCategory} />
+      ):(
+        <ProductsByCategory currentPage={currentPage} filterCatalog={filterCatalogByCategory}/>
+      ) }
       <StyledPaginationBox mb={countResults>12? {sm: 12, md: 16, lg: 18} : 0}>
        {countResults>12 && <ReactPaginate
           onPageChange={handlePageClick}
@@ -123,7 +98,7 @@ function Catalog() {
           renderOnZeroPageCount={null}
         />}
       </StyledPaginationBox>
-      <SeoTextBox/>
+      <SeoTextBox categoryName={categoryName}/>
     </Container>
   );
 }
