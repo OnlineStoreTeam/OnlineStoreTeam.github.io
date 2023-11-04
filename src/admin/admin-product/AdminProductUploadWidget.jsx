@@ -25,7 +25,7 @@ const AdminProductUploadWidget = ({handleImageAdd })=>{
                 handleImageAdd(imageName, imageUrl);
             }
         })
-    }, [])
+    }, [handleImageAdd])
     return(
         // <button type="button" onClick={()=> widgetRef.current.open()}>
         //     Upload

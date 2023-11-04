@@ -56,12 +56,17 @@ function CategoryDescription({categoryName}) {
             "Your dog's well-being is a top priority. That's why we've curated a comprehensive catalog of high-quality dog care supplies designed to keep your furry friend happy, healthy, and well-cared for."
             );
             break;
+        default: 
+        setCategoryTitle("Premium Dog Products");
+        setCategoryDescription(
+        "We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog's comfort, happiness, and well-being."
+        );
         }
     };
 
     useEffect(() => {
         changeCategoryDescription();
-    }, [categoryName, changeCategoryDescription]);
+    }, [categoryName]);
 
   return (
     <Box

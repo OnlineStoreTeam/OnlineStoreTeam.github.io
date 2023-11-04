@@ -1,6 +1,6 @@
-import { Typography, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useMediaQuery } from "@mui/material";
 
 function Logo() {

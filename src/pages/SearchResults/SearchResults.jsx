@@ -80,7 +80,7 @@ function SearchResults() {
       setCountResults(data?.totalElements);
       setPageCount(data?.totalPages);
     }
-  }, [searchCatalog]);
+  }, [searchCatalog, data]);
 
   const showResults = (e) => {
     if (e.key === 'Enter') {

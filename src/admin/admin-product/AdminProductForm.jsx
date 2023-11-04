@@ -55,7 +55,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
     name: {
       required: 'This field is required!',
       pattern: {
-        value: /^[a-zA-Z0-9 ,\._-]{2,50}$/,
+        value: /^[a-zA-Z0-9 , ._-]{2,50}$/,
         message: 'Name should only contain alphanumeric characters'
       },
       minLength: {
@@ -78,7 +78,7 @@ function AdminProductForm({closeForm, product, allProducts}) {
     description: {
       required: 'This field is required!',
       pattern: {
-        value: /^[a-zA-Z0-9 '&!#%\(\)\*\+,\.:;_-]{2,255}$/,
+        value: /^[a-zA-Z0-9 '&!#%()*+,.:;_-]{2,255}$/,
         message: 'Description should only contain alphanumeric characters'
       },
       minLength: {

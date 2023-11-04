@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { AiOutlineSearch } from "react-icons/ai";

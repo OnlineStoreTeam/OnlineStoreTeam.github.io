@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Typography, Box, Button } from "@mui/material";
 import { styled as muiStyled } from "@mui/system";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
 import styled from "styled-components";
-import { CategoryNameContext } from "../../components/Context";
 import SeoAllProducts from "./SeoAllProducts";
 import SeoCollars from "./SeoCollars";
 import SeoLeads from "./SeoLeads";
@@ -69,6 +68,8 @@ function SeoTextBox({categoryName}) {
         return <SeoFurniture />;
       case "care":
         return <SeoCare />;
+      default:
+        return <SeoAllProducts />;
     }
   };
   return (

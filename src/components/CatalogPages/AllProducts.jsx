@@ -2,9 +2,7 @@ import React, {useEffect, useState } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography, Grid } from '@mui/material';
 import ProductCard from '../ProductCard/ProductCard';
-import CategoryDescription from '../CategoryDescription/CategoryDescription';
 import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
-
 const AllProducts = ({currentPage, filterCatalog}) => {
 
   const { data, isLoading, isError } = useGetAllProductsQuery({

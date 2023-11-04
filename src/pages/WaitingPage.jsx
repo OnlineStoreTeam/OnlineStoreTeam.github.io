@@ -1,6 +1,5 @@
 import { Box, Container, Typography, CardMedia } from "@mui/material";
 import styled from "styled-components";
-import theme from "../theme";
 import { useMediaQuery } from "@mui/material";
 
 const TextBox = styled(Box)`

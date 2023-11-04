@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setCategoryId } from "../../redux/categories/categorySlice";

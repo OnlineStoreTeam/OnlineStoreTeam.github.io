@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, CardMedia } from "@mui/material";
+import { CardContent, Typography, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function ProductItem ({product}){
