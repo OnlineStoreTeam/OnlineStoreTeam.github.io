@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Container,
   Typography,
@@ -61,26 +61,24 @@ function SearchResults() {
   const [searchValue, setSearchValue] = useState(null);
   const [isSearchTouched, setIsSearchTouched] = useState(false);
   const [catalog, setCatalog] = useState();
-  const { data } = useSearchProductsByNameQuery({
-    page: 0,
+  const [countResults, setCountResults] = useState();
+  const [pageCount, setPageCount] = useState();
+  const [ currentPage, setCurrentPage ] = useState();
+  const { data, refetch } = useSearchProductsByNameQuery({
+    page: currentPage,
     limit: 12,
     value: searchValue,
   });
-  const [countResults, setCountResults] = useState();
-  const [pageCount, setPageCount] = useState();
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (searchValue && data) {
-      setCatalog(data);
-    }
-  }, [data, dispatch, searchValue]);
+      setCatalog(data?.content);
+  }, [data]);
 
   useEffect(() => {
     if (searchCatalog) {
       setCatalog(searchCatalog);
-      setCountResults(searchCatalog.length);
-      setPageCount(Math.ceil(searchCatalog.length / 12));
+      setCountResults(data?.totalElements);
+      setPageCount(data?.totalPages);
     }
   }, [searchCatalog]);
 
@@ -88,6 +86,7 @@ function SearchResults() {
     if (e.key === 'Enter') {
       setIsSearchTouched(true);
       setSearchValue(e.target.value);
+      refetch();
     } else if (e.target.id === 'results') {
       setIsSearchTouched(true);
       setSearchValue(inputValue);
@@ -95,7 +94,7 @@ function SearchResults() {
   };
   const handlePageClick = (page) => {
     console.log(page?.selected);
-    // setCurrentPage(page?.selected);
+    setCurrentPage(page?.selected);
   };
 
   return (

@@ -72,7 +72,7 @@ function ModalMenu({ closeMenu, categories }) {
         {categories?.map((category) => (
           <MenuLinkTab
             label={category.name}
-            path={category.name}
+            path={category.path}
             id={category.id}
             closeMenu={closeMenu}
             key={category.id}

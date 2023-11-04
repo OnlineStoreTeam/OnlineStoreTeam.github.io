@@ -18,7 +18,7 @@ const ProductsByCategory = ({currentPage, filterCatalog}) => {
 
   useEffect(() => { 
     if (!isLoading && !isError && data) {
-        setCatalog(data);
+        setCatalog(data.content);
         filterCatalog(data?.totalPages, data?.totalElements )  }
   }, [data, isLoading, isError, filterCatalog]);
 

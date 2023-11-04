@@ -22,7 +22,7 @@ export const productApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              result.map(({ id }) => ({ type: 'Products', id })),
+              result.content.map(({ id }) => ({ type: 'Products', id })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
@@ -32,7 +32,7 @@ export const productApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              result.map(({ id }) => ({ type: 'Products', id })),
+              result.content.map(({ id }) => ({ type: 'Products', id })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],

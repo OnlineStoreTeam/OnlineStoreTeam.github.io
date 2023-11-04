@@ -19,7 +19,7 @@ function NavLink({ categories }) {
       {categories?.map((category) => (
         <NavLinkTab
           label={category.name}
-          path={category.name}
+          path={category.path}
           id={category.id}
           key={category.id}
         />

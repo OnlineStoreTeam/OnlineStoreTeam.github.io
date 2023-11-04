@@ -58,7 +58,7 @@ function Menu({ isMenuOpen, closeMenu, categories }) {
         {categories?.map((category) => (
           <MenuLinkTab
             label={category.name}
-            path={category.name}
+            path={category.path}
             closeMenu={closeMenu}
             key={category.id}
             id={category.id}
