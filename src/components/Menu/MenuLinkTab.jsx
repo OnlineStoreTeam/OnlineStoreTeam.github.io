@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { Typography, SvgIcon, Box } from "@mui/material";
-import { CategoryNameContext } from "../Context";
 import { useMediaQuery } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setCategoryId } from "../../redux/categories/categorySlice";
 
-function MenuLinkTab({ label, path, closeMenu }) {
-  const { categoryName, setCategoryName } = useContext(CategoryNameContext);
+function MenuLinkTab({ label, path, id, closeMenu }) {
+  const dispatch = useDispatch();
+
   const screen = useMediaQuery((theme) => theme.breakpoints.only('lg'));
 
   const choseCategory = () => {
-    setCategoryName(label);
+    dispatch(setCategoryId(id))
     closeMenu();
   };
 
@@ -106,7 +108,7 @@ function MenuLinkTab({ label, path, closeMenu }) {
            {getCategoryIcon()}
         </SvgIcon>
         <Typography fontSize={'18px'} color="#161616" px={{ md:2, lg:'2px'}} textAlign={'center'} lineHeight={{md: '32px'}}>
-          {label=="Leads&Harnesses" ? 'Leads' : label}
+          {label==="Leads&Harnesses" ? 'Leads' : label}
         </Typography>
       </NavLink>
     </Box>

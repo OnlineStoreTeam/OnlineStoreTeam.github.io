@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import { style, styled } from "@mui/system";
-import { useGetAllProductsQuery} from '../../store/productApi';
-import { useContext, useState, useEffect } from "react";
+import { styled } from "@mui/system";
+import { useGetAllProductsQuery } from "../../redux/productApi/productApi";
+import { useState, useEffect } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
@@ -66,7 +66,6 @@ function ProductSlider (){
             setClick(click-1);
             setSlide(slide+397);
         }
-        console.log(click)
     }
 
     return(

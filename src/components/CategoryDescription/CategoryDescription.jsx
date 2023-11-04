@@ -1,8 +1,6 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Typography, Box } from "@mui/material";
-import { CategoryNameContext } from "../../components/Context";
-
 const TextCategory = styled(Typography)`
   text-align: center;
   font-style: normal;
@@ -10,14 +8,12 @@ const TextCategory = styled(Typography)`
   line-height: 150%;
 `;
 
-function CategoryDescription() {
-    const { categoryName, setCategoryName } = useContext(CategoryNameContext);
-    const initialCategoryName = useRef(categoryName);
+function CategoryDescription({categoryName}) {
     const [ categoryDescription, setCategoryDescription ] = useState('');
     const [ categoryTitle, setCategoryTitle ] = useState('');
-   
+
     const changeCategoryDescription = () => {
-        switch (categoryName.toLowerCase()) {
+        switch (categoryName?.toLowerCase()) {
         case "all products":
             setCategoryTitle("Premium Dog Products");
             setCategoryDescription(
@@ -65,7 +61,7 @@ function CategoryDescription() {
 
     useEffect(() => {
         changeCategoryDescription();
-    }, [categoryName]);
+    }, [categoryName, changeCategoryDescription]);
 
   return (
     <Box

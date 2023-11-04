@@ -4,7 +4,6 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    // baseUrl: 'https://happytails-store.onrender.com ',
     baseUrl: 'http://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
@@ -14,6 +13,26 @@ export const productApi = createApi({
         result
           ? [
               ...result.content.map(({ id }) => ({ type: 'Products', id })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+    }),
+    getProductsByCategory: builder.query({
+      query: ({page, limit, id}) => `product?categoryId=${id}&page=${page}&size=${limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              result.content.map(({ id }) => ({ type: 'Products', id })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+    }),
+    searchProductsByName: builder.query({
+      query: ({page, limit, value}) => `products/search?name=${value}&page=${page}&size=${limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              result.content.map(({ id }) => ({ type: 'Products', id })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
@@ -35,9 +54,9 @@ export const productApi = createApi({
       invalidatesTags: [{ type: 'Products', id: 'LIST' }]
     }),
     editProduct: builder.mutation({
-      query({id, body}) {
+      query({body}) {
         return {
-          url: `products/${id}`,
+          url: `products`,
           method: 'PUT',
           body,
           headers: {
@@ -61,6 +80,8 @@ export const productApi = createApi({
 
 export const {
   useGetAllProductsQuery,
+  useGetProductsByCategoryQuery,
+  useSearchProductsByNameQuery,
   useGetOneProductQuery,
   useAddProductMutation,
   useEditProductMutation,

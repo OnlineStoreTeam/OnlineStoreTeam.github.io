@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { CategoryNameContext } from "../Context";
+import { useDispatch } from "react-redux";
+import { setCategoryId } from "../../redux/categories/categorySlice";
 
-function NavLinkTab({ label, path }) {
-  const { categoryName, setCategoryName } = useContext(CategoryNameContext);
+function NavLinkTab({ label, path, id }) {
+  const dispatch = useDispatch();
 
   const choseCategory = () => {
-    setCategoryName(label);
+    dispatch(setCategoryId(id))
   };
 
   return (
