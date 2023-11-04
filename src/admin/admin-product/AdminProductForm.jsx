@@ -1,30 +1,30 @@
-// import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { useAddProductMutation, useEditProductMutation } from '../../redux/productApi/productApi';
 import { 
-//   LuAlertCircle, 
-//   LuAlertTriangle, 
-//   LuCheckCircle, 
-//   LuChevronDown, 
-//   LuChevronLeft, 
-//   LuChevronUp, 
-//   LuEdit2, 
-//   LuFileText, 
-//   LuImage, 
-//   LuMoreHorizontal, 
-//   LuPlusCircle, 
-//   LuSearch, 
-//   LuTrash2, 
+  LuAlertCircle, 
   LuX 
 } from "react-icons/lu";
-import { 
-  FiUploadCloud, 
-} from "react-icons/fi";
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AdminProductUploadWidget from './AdminProductUploadWidget';
 
-function AdminProductForm({closeForm}) {
+function AdminProductForm({closeForm, product, allProducts}) {
+  const [addProduct] = useAddProductMutation();
+  const [editProduct] = useEditProductMutation();
+  const [editedProduct, setEditedProduct] = useState(product);
+  const [imageUrl, setImageUrl] = useState();
+  const [imageName, setImageName] = useState();
+
+  const handleImageAdd = (name, url)=>{
+    setImageName(name);
+    setImageUrl(url);
+  }
+  const handleFileRemove = () => {
+    setImageName('');
+    setImageUrl('');
+  };
   const {
     register,
     formState: { errors, isValid },
@@ -34,22 +34,38 @@ function AdminProductForm({closeForm}) {
   } = useForm({
     mode: 'onBlur',
   });
+  
+  useEffect(()=>{
+    if (editedProduct) {
+      reset({
+        name: editedProduct.name,
+        article: editedProduct.article,
+        categoryId: editedProduct.category,
+        description: editedProduct.description,
+        price: editedProduct.price,
+        quantity: editedProduct.quantity,
+        status: editedProduct.productStatus,
+        
+      });
+      setImageUrl(editedProduct.imagePath);
+    } 
+  }, [editedProduct, reset])
 
   const formValidation = {
     name: {
       required: 'This field is required!',
       pattern: {
         value: /^[a-zA-Z0-9 ,\._-]{2,50}$/,
-        message: 'Invalid character'
+        message: 'Name should only contain alphanumeric characters'
       },
       minLength: {
         value: 2,
-        message: 'From 2 to 50 characters'
+        message: 'Name should be between 2 and 50 characters long'
       },
       maxLength: {
         value: 50,
-        message: 'From 2 to 50 characters'
-      }
+        message: 'Name should be between 2 and 50 characters long'
+      },
     },
     price: {
       required: 'This field is required!',
@@ -63,30 +79,30 @@ function AdminProductForm({closeForm}) {
       required: 'This field is required!',
       pattern: {
         value: /^[a-zA-Z0-9 '&!#%\(\)\*\+,\.:;_-]{2,255}$/,
-        message: 'Invalid character'
+        message: 'Description should only contain alphanumeric characters'
       },
       minLength: {
         value: 2,
-        message: 'From 2 to 255 characters'
+        message: 'Description should be between 2 and 255 characters long'
       },
       maxLength: {
         value: 255,
-        message: 'From 2 to 255 characters'
+        message: 'Description should be between 2 and 255 characters long'
       },
     },
     article: {
       required: 'This field is required!',
       pattern: {
         value: /^[A-Z0-9]{3,8}$/,
-        message: 'Invalid character'
+        message: 'Article should only contain alphanumeric characters'
       },
       minLength: {
         value: 3,
-        message: 'From 3 to 8 characters'
+        message: 'Article should be between 3 and 8 characters long'
       },
       maxLength: {
         value: 8,
-        message: 'From 3 to 8 characters'
+        message: 'Article should be between 3 and 8 characters long'
       }
     },
     quantity: { 
@@ -95,37 +111,80 @@ function AdminProductForm({closeForm}) {
         value: 0,
         message: 'The value cannot be negative'
       },
-      validate: v => Number.isInteger(+v) || 'Must be an integer'
+      validate: v => {
+        const regex = /^\d+$/;
+        if (v.toString().charAt(0) === '+') {
+          return 'Invalid characters';
+        }
+        if (!regex.test(v)) {
+          return 'Must be an integer';
+        }
+        return true;
+      },
+      
     },
     category: { required: 'This field is required!' },
     status: { required: 'This field is required!' },
     image: { 
       required: 'This field is required!', 
-      validate: v => v[0].size < 512000 || 'validate: Max size 500kb'
+    },
+  };
+  
+  const onSubmit = (data) => {
+    if(editedProduct && editedProduct.id){
+      const newProduct = {
+        name: data.name,
+        article: data.article,
+        categoryId: data.category,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        productStatus: data.status,
+        imagePath: imageUrl,
+        id: editedProduct.id
+      }
+          editProduct({body: newProduct})
+        .then(() => {
+            toast.success('Product successfully edited');
+        })
+        .catch((error) => {
+          console.error('rejected', error);
+          toast.error('Editing the product was unsuccessful')
+        });
+      setEditedProduct({});
+      closeForm(false);
+      reset();
+    }
+    else{
+      addProduct({
+        name: data.name,
+        article: data.article,
+        categoryId: data.category,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        productStatus: data.status,
+        imagePath: imageUrl,
+      }).then(() => {
+          toast.success('Product successfully created');
+          closeForm(false);
+          reset();
+        })
+        .catch((error) => {
+          if(allProducts.find(prod=>prod.article === data.article)){
+            toast.error('Such an article already exists')
+          } else{
+            toast.error('Adding the product was unsuccessful')
+            closeForm(false);
+            reset();
+          }
+          console.error('rejected', error.data);
+        });
     }
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // addPost({
-    //   name: data.name,
-    //   article: data.article,
-    //   category: data.category,
-    //   description: data.description,
-    //   price: data.price,
-    //   quantity: data.quantity,
-    //   status: data.status,
-    //   image: 'https://i.pravatar.cc',
-    // }).unwrap();
-    closeForm(false);
-    reset();
-  };
-
-  // const notify1 = () => toast.success("Wow so easy!");
-  // const notify2 = () => toast.error("Write your text :)");
-
   return (
-    <div className='overlay px-36 flex justify-center items-center'>
+    <div className='overlay px-10 flex justify-center items-center lg:px-36 z-40'>
       <div className='w-full max-w-screen-lg p-6 bg-white rounded'>
         <div className='flex justify-end'>
           <button
@@ -142,14 +201,15 @@ function AdminProductForm({closeForm}) {
             className='w-full'
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className='w-full grid grid-cols-[30%_22%_40%] grid-rows-[84px_84px_84px_84px_40px] gap-x-[4%] gap-y-2 text-normal'>
+            <div className='w-full grid grid-cols-[30%_22%_40%] grid-rows-[84px_84px_84px_minmax(84px,_104px)_40px] gap-x-[4%] gap-y-2 text-normal'>
               <div className=''>
-                <label className=''>Name
+                <label className='relative'>Name
                   <input
                     className={'w-full mt-0.5 input '+(errors?.name ? 'input-error' : '')}
                     maxLength='50'
                     {...register('name', formValidation.name)}
                   />
+                  {errors?.name && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.name &&
@@ -159,7 +219,7 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Price, $
+                <label className='relative'>Price, $
                   <input
                     type='number'
                     className={'w-full mt-0.5 input '+(errors?.price ? 'input-error' : '')}
@@ -167,6 +227,7 @@ function AdminProductForm({closeForm}) {
                     step='0.01'
                     {...register('price', formValidation.price)}
                   />
+                  {errors?.price && <LuAlertCircle className='absolute w-5 h-5 right-9 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.price &&
@@ -189,17 +250,19 @@ function AdminProductForm({closeForm}) {
                 </label>
                 <div className='h-5'>
                   {errors?.description &&
-                  <p className='text-error'>
+                  <p className='text-error flex'>
+                    <LuAlertCircle className='w-4 h-4 text-error mr-1' />
                     {errors?.description?.message || 'Error!'}
                   </p>}
                 </div>
               </div>
               <div className=''>
-                <label className=''>Code
+                <label className='relative'>Code
                   <input
                     className={'w-full mt-0.5 input '+(errors?.article ? 'input-error' : '')}
                     maxLength='8'                  {...register('article', formValidation.article)}
                   />
+                  {errors?.article && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.article &&
@@ -209,13 +272,14 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Quantity
+                <label className='relative'>Quantity
                   <input
-                    type='number'
+                    type='text'
                     className={'w-full mt-0.5 input '+(errors?.quantity ? 'input-error' : '')}
                     min='0'
                     {...register('quantity', formValidation.quantity)}
                   />
+                  {errors?.quantity && <LuAlertCircle className='absolute w-5 h-5 right-2 top-8 text-error' />}
                 </label>
                 <div className='h-5 mt-1'>
                   {errors?.quantity &&
@@ -225,7 +289,7 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Category
+                <label className='relative'>Category
                   <select
                     className={'w-full mt-0.5 input '+(errors?.category ? 'input-error' : '')}
                     defaultValue=''
@@ -234,12 +298,12 @@ function AdminProductForm({closeForm}) {
                     <option value='' disabled>
                       Category
                     </option>
-                    <option value='Clothing'>Clothing</option>
-                    <option value='Leads&harnesses'>Leads&harnesses</option>
-                    <option value='Toys'>Toys</option>
-                    <option value='Care'>Care</option>
-                    <option value='Forniture'>Forniture</option>
-                    <option value='Collars'>Collars</option>
+                    <option value={1}>Clothing</option>
+                    <option value={2}>Leads&harnesses</option>
+                    <option value={3}>Toys</option>
+                    <option value={4}>Care</option>
+                    <option value={5}>Furniture</option>
+                    <option value={6}>Collars</option>
                   </select>
                 </label>
                 <div className='h-5 mt-1'>
@@ -250,16 +314,16 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className=''>
-                <label className=''>Status
+                <label className='relative'>Status
                   <select
-                    className={'w-full mt-0.5 input'+(errors?.status ? 'input-error' : '')}
+                    className={'w-full mt-0.5 input '+(errors?.status ? 'input-error' : '')}
                     defaultValue=''
                     {...register('status', formValidation.status)}
                   >
                     <option value='' disabled>
                       Status
                     </option>
-                    <option value='ACTIVE'>Enabled</option>
+                    <option value='ACTIVE'>In stock</option>
                     <option value='TEMPORARILY_ABSENT'>Out of stock</option>
                   </select>
                 </label>
@@ -271,33 +335,31 @@ function AdminProductForm({closeForm}) {
                 </div>
               </div>
               <div className='col-span-2'>
-                <label className='relative'>Image
-                  {/* <span className='w-full h-10 mt-0.5 grid grid-cols-[151px_1fr]'>
-                    <button className='h-full px-4 bg-neutral-900 border-l border-t border-b border-neutral-900 rounded-l-sm text-white text-base  whitespace-nowrap flex items-center gap-2'>
-                      <FiUploadCloud className='text-xl' />
-                      Select Image
-                    </button>
-                    <span className={'w-full h-full px-3 py-2 border-t border-r border-b rounded-r-sm text-neutral-500 '+(errors?.image ? 'input-error' : 'border-neutral-400')}>
-                      {'Max file size 500 kB'}
-                    </span>
-                  </span> */}
-                  <input
-                    type='file'
-                    className={'w-full mt-0.5 input input-file '+(errors?.image ? 'input-error' : '')}
-                    placeholder='Max file size 500 kB'
-                    accept='.png,.jpg,.jpeg,.webp,'
-                    size='512000'
-                    {...register('image', formValidation.image)}
-                  />
-                </label>
+                <div className='relative'>Image {!imageUrl && <LuAlertCircle className='w-4 h-4 ml-1 inline-block' />}</div>
+                <div className='relative'>
+                  {!imageUrl && 
+                    <AdminProductUploadWidget 
+                      handleImageAdd={handleImageAdd} 
+                    />
+                  }
+                  {imageUrl &&
+                    <div className='input w-2/5 mt-1 flex items-center justify-between'>
+                      <img src={imageUrl} alt="" className='max-h-full' />
+                      <span className='pl-1 grow'>{imageName}</span>
+                      <button type='button' onClick={handleFileRemove}><LuX className='text-lg'/></button>                 
+                    </div>
+                  }
+                
+                </div>
                 <div className='h-5 mt-1'>
-                  {errors?.image &&
-                  <p className='text-error'>
-                    {errors?.image?.message || 'Error!'}
+                  {!imageUrl &&
+                  <p className='text-error flex'>
+                    <LuAlertCircle className='w-4 h-4 text-error mr-1' />
+                    {'This field is required!'}
                   </p>}
                 </div>
               </div>
-              <div className='row-start-5 col-span-2'>
+              <div className='row-start-5 col-span-3 lg:col-span-2'>
                 <button
                   type='button'
                   className='btn-secondary w-40 mr-10'
@@ -307,7 +369,7 @@ function AdminProductForm({closeForm}) {
                 </button>
                 <button
                   type='submit'
-                  disabled={!isValid}
+                  disabled={!isValid || !imageUrl}
                   className='btn-primary w-40'
                 >
                   Save
@@ -318,10 +380,7 @@ function AdminProductForm({closeForm}) {
         </div>
       </div>
     
-      {/* <ToastContainer 
-        position="bottom-left" 
-        autoClose={3000} 
-      /> */}
+     
     </div>
   );
 }

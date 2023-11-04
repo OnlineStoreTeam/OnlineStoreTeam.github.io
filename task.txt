@@ -1,39 +1,42 @@
+-------------------- important --------------------
+
+npm run server
+    запускає json-server на порту 3004
+npm run deploy
+    компілює проект в папку build і пушить на github в гілку gh-pages
+
+
+гілки:
+  main
+    це production
+  dev
+    головна гілка розробки і тестування
+  ...
+    гілки для етапів розробки
+
+-------------------- to do --------------------
+
 to do
+  admin-product-form
+    image
+      валідувати при onChange, а не onBlur
   admin-product
-    form
-      image
-        домалювати по макету
-        валідувати при onChange, а не onBlur
-      save
-        close form or no?
     table
-      icon-more
-        edit
-    search
-      колір хрестика
-    кнопки фільтрації категорії
-      додати обробники
-      додати дінамічни стилі
-    0 Product Displayed
-      змінна для кількості товарів
-      поточнити фразу
+      кнопки фільтрації категорії
+        додати обробники
+        додати дінамічни стилі
+      0 Product Displayed
+        змінна для кількості товарів
+        поточнити фразу
     pagination
-  admin-product-item
-    change icons
 
 
 later
   видалити зайві шрифти
   admin
-    redirect to adminProduct
     button Search - onClick
     button Admin - onClick
     button LogOut - onClick
-
-
-plan
-  routing
-    захищений routing for admin & cabinet
 
 -------------------- git --------------------
 
@@ -52,10 +55,14 @@ git pull
 -------------------- npm --------------------
 
 npm start
+npm run server
+  "server": "json-server --watch server/db.json -p 3004"
 npm run build
 npm run deploy
 
+
 npx create-react-app .
+npx create-react-app my-app --template redux
 npm install -D tailwindcss
   npx tailwindcss init
   content: [
@@ -65,11 +72,12 @@ npm install -D tailwindcss
   @tailwind components;
   @tailwind utilities;
 
+npm install react-redux
+npm install @reduxjs/toolkit
+npm install -g json-server
 npm i react-router-dom
 npm install react-icons --save
 npm i react-toastify
 npm i react-hook-form
 npm install react-paginate --save
 npm install gh-pages --save-dev
-  @reduxjs/toolkit
-  react-redux
