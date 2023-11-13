@@ -4,7 +4,7 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://18.193.85.240:5000/',
+    baseUrl: 'https://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({

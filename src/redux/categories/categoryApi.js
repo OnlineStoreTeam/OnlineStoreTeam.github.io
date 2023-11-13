@@ -4,7 +4,7 @@ export const categoryApi = createApi({
   reducerPath: 'categoryApi',
   tagTypes: ['Categories'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://18.193.85.240:5000/',
+    baseUrl: 'https://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
     getAllCategories: builder.query({
