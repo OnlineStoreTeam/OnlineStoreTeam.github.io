@@ -4,7 +4,7 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://3.79.184.103:5000/',
+    baseUrl: 'https://happy-tails-spring-app-20231128202137.azuremicroservices.io/',
   }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({
